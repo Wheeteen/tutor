@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import redirect, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from wechat_sdk import WechatBasic
@@ -115,6 +116,10 @@ def index(request):
     return HttpResponse(response, content_type="application/xml")
 
 from weixin.client import WeixinAPI
+from django.contrib.auth.models import User
+from django.contrib.auth.views import login
+from django.contrib.auth.decorators import login_required
+
 def authorization(request):
     """
     获取用户信息，登录
@@ -129,4 +134,32 @@ def authorization(request):
     api = WeixinAPI(access_token=auth_info['access_token'])
     resp = api.user(openid=auth_info['openid'])
     print resp
-    return HttpResponse('success')
+    """
+    {   'province': 'Guangdong',
+        'openid': 'odE4WwK3g05pesjOYGbwcbmOWTnc',
+        'headimgurl': 'http://wx.qlogo.cn/mmopen/fR41VbicrntibxhNY3WfaKgHBTbe1d6Gz0tPjhHpicwJerJiaAictfHiaLiaqCcVIs5EKOzsD4yaiadyUIUHK2Lu07K9EqArtialVJd4b/0',
+        'language': 'zh_CN',
+        'city': 'Yunfu',
+        'country': 'CN',
+        'sex': 1,
+        'privilege': [],
+        'nickname': u'\u5c39\u5b50\u52fa'
+    }
+    """
+    openid = resp['openid']
+
+    try:
+        user = User.objects.get(username=openid)
+    except User.DoesNotExist,e:
+        user = User.objects.create_user(openid,password=openid)
+    if user and user.is_active:
+        login(request,user)
+    else:
+        return HttpResponse('error')
+    # return render_to_response('login.html')
+
+    return HttpResponse('success<a herf= "/login"></a>')
+
+@login_required()
+def login(request):
+    return HttpResponse('登录成功')
