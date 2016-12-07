@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, render
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth import authenticate,login
 from wechat_sdk import WechatBasic
 from wechat_sdk.exceptions import ParseError
 from wechat_sdk.messages import (TextMessage, VoiceMessage, ImageMessage,
@@ -117,7 +117,6 @@ def index(request):
 
 from weixin.client import WeixinAPI
 from django.contrib.auth.models import User
-from django.contrib.auth.views import login
 from django.contrib.auth.decorators import login_required
 
 def authorization(request):
@@ -151,15 +150,21 @@ def authorization(request):
     try:
         user = User.objects.get(username=openid)
     except User.DoesNotExist,e:
+        print "user not exist"
         user = User.objects.create_user(openid,password=openid)
     if user and user.is_active:
+        user = authenticate(username=openid, password=openid)
         login(request,user)
     else:
         return HttpResponse('error')
-    # return render_to_response('login.html')
+    return HttpResponse('success<a herf= "/loginSuc">测试</a>')
 
-    return HttpResponse('success<a herf= "/login"></a>')
+def login_from_pwd(request):
+    user = authenticate(username='odE4WwK3g05pesjOYGbwcbmOWTnc',password='odE4WwK3g05pesjOYGbwcbmOWTnc')
+    if user and user.is_active:
+        login(request,user)
+    return redirect('/loginSuc/')
 
 @login_required()
-def login(request):
+def loginSuc(request):
     return HttpResponse('登录成功')
