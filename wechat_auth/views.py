@@ -164,7 +164,14 @@ def login_from_pwd(request):
     if user and user.is_active:
         login(request,user)
     return redirect('/loginSuc/')
-
+from rest_framework.decorators import api_view
+from tutor.models import Teacher
+from api.serializers import TeacherSerializer
+from rest_framework.response import Response
 @login_required()
+@api_view(['GET'])
 def loginSuc(request):
+    teachers = Teacher.objects.all()
+    serializer = TeacherSerializer(teachers, many=True)
+    return Response(serializer.data)
     return HttpResponse('登录成功')
