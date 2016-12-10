@@ -6,6 +6,6 @@ from wechat_auth import views
 urlpatterns = [
     url(r'^index', views.index),
     url(r'^login_from_pwd', views.login_from_pwd),
-    url(r'^loginSuc', views.loginSuc),
+    # url(r'^loginSuc', views.loginSuc),
     url(r'^authorization', views.authorization),
 ]

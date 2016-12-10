@@ -84,6 +84,18 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Banner',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('url', models.TextField()),
+                ('image_path', models.TextField()),
+            ],
+            options={
+                'db_table': 'banner',
+                'managed': False,
+            },
+        ),
+        migrations.CreateModel(
             name='DjangoAdminLog',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -198,10 +210,21 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='SysText',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('salary_standard', models.TextField()),
+                ('require_explain', models.TextField()),
+            ],
+            options={
+                'db_table': 'sys_text',
+                'managed': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Teacher',
             fields=[
-                ('tea', models.ForeignKey(primary_key=True, serialize=False, to='api.AuthUser')),
-                ('wechat_id', models.TextField(null=True, blank=True)),
+                ('tea_id', models.AutoField(serialize=False, primary_key=True)),
                 ('name', models.TextField(null=True, blank=True)),
                 ('qualification', models.IntegerField(null=True, blank=True)),
                 ('sex', models.IntegerField(null=True, blank=True)),

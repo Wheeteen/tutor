@@ -156,7 +156,17 @@ def authorization(request):
         user = authenticate(username=openid, password=openid)
         login(request,user)
     else:
+        #返回错误
         return HttpResponse('error')
+    #TODO：判断是不是已经填了问卷并在数据库创建了数据
+    teacher = user.teacher_set.all()
+    parent =  user.parentorder_set.all()
+    if not len(teacher) or not len(parent):
+        #都不存在，返回填问卷界面
+        return HttpResponse("")
+    else:
+        #已填问卷返回，主页
+        return HttpResponse("")
     return HttpResponse('success<a herf= "/loginSuc">测试</a>')
 
 def login_from_pwd(request):
@@ -164,14 +174,3 @@ def login_from_pwd(request):
     if user and user.is_active:
         login(request,user)
     return redirect('/loginSuc/')
-from rest_framework.decorators import api_view
-from tutor.models import Teacher
-from api.serializers import TeacherSerializer
-from rest_framework.response import Response
-@login_required()
-@api_view(['GET'])
-def loginSuc(request):
-    teachers = Teacher.objects.all()
-    serializer = TeacherSerializer(teachers, many=True)
-    return Response(serializer.data)
-    return HttpResponse('登录成功')
