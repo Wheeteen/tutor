@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 __author__ = 'youmi'
-from django.conf.urls import include, url
+from django.conf.urls import url
 from wechat_auth import views
 urlpatterns = [
     url(r'^index', views.index),

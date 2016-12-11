@@ -13,3 +13,9 @@ class TeacherSerializer(serializers.ModelSerializer):
                   'mon_begin','mon_end','tues_begin','tues_end','wed_begin','wed_end','thur_begin',
                   'thur_end','fri_begin','fri_end','sat_morning','sat_afternoon','sat_evening',
                   'sun_morning','sun_afternoon','sun_evening','hot_not')
+
+class ParentOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParentOrder
+        fields = '__all__'
+

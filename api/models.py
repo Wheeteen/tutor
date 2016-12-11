@@ -131,6 +131,17 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Message(models.Model):
+    msg_id = models.AutoField(primary_key=True)
+    wechat = models.ForeignKey(AuthUser, blank=True, null=True)
+    message_content = models.TextField(blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'message'
+
+
 class OrderApply(models.Model):
     oa_id = models.IntegerField(primary_key=True)
     apply_type = models.IntegerField()
@@ -149,9 +160,9 @@ class OrderApply(models.Model):
 
 class ParentOrder(models.Model):
     pd_id = models.AutoField(primary_key=True)
-    wechat_id = models.TextField()
-    subject = models.TextField()
-    aim = models.TextField()
+    wechat = models.ForeignKey(AuthUser, blank=True, null=True)
+    subject = models.TextField(blank=True, null=True)
+    aim = models.TextField(blank=True, null=True)
     mon_begin = models.IntegerField(blank=True, null=True)
     mon_end = models.IntegerField(blank=True, null=True)
     tues_begin = models.IntegerField(blank=True, null=True)
@@ -162,29 +173,29 @@ class ParentOrder(models.Model):
     thur_end = models.IntegerField(blank=True, null=True)
     fri_begin = models.IntegerField(blank=True, null=True)
     fri_end = models.IntegerField(blank=True, null=True)
-    sat_morning = models.IntegerField()
-    sat_afternoon = models.IntegerField()
-    sat_evening = models.IntegerField()
-    sun_morning = models.IntegerField()
-    sun_afternoon = models.IntegerField()
-    sun_evening = models.IntegerField()
-    weekend_tutor_length = models.IntegerField(unique=True)
-    teacher_sex = models.IntegerField()
-    teacher_method = models.TextField()
-    learning_phase = models.IntegerField()
-    class_field = models.IntegerField(db_column='class')  # Field renamed because it was a Python reserved word.
-    grade = models.IntegerField()
+    sat_morning = models.IntegerField(blank=True, null=True)
+    sat_afternoon = models.IntegerField(blank=True, null=True)
+    sat_evening = models.IntegerField(blank=True, null=True)
+    sun_morning = models.IntegerField(blank=True, null=True)
+    sun_afternoon = models.IntegerField(blank=True, null=True)
+    sun_evening = models.IntegerField(blank=True, null=True)
+    weekend_tutor_length = models.IntegerField(blank=True, null=True)
+    teacher_sex = models.IntegerField(blank=True, null=True)
+    teacher_method = models.TextField(blank=True, null=True)
+    learning_phase = models.IntegerField(blank=True, null=True)
+    class_field = models.IntegerField(db_column='class', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    grade = models.IntegerField(blank=True, null=True)
     require = models.TextField(blank=True, null=True)
-    salary = models.DecimalField(max_digits=20, decimal_places=2)
-    allowance_not = models.IntegerField()
-    deadline = models.DateTimeField()
-    name = models.TextField()
-    tel = models.TextField()
-    address = models.TextField()
-    pass_not = models.IntegerField()
-    create_time = models.DateTimeField()
-    update_time = models.DateTimeField()
-    status = models.IntegerField()
+    salary = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
+    allowance_not = models.IntegerField(blank=True, null=True)
+    deadline = models.DateTimeField(blank=True, null=True)
+    name = models.TextField(blank=True, null=True)
+    tel = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    pass_not = models.IntegerField(blank=True, null=True)
+    create_time = models.DateTimeField(blank=True, null=True)
+    update_time = models.DateTimeField(blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -238,6 +249,7 @@ class Teacher(models.Model):
     sun_afternoon = models.IntegerField(blank=True, null=True)
     sun_evening = models.IntegerField(blank=True, null=True)
     hot_not = models.IntegerField(blank=True, null=True)
+    grade = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
