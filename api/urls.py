@@ -8,5 +8,8 @@ urlpatterns = [
     url(r'^createTeacher', views.createTeacher),
     url(r'^updateTeacher', views.updateTeacher),
     url(r'^getTeachers', views.getTeachers),
+    url(r'^getParentOrder', views.getParentOrder),
+    url(r'^createParentOrder', views.createParentOrder),
     url(r'^applyParent', views.applyParent),
+    url(r'^inviteTeacher', views.inviteTeacher),
 ]

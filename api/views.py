@@ -65,6 +65,11 @@ def getTeachers(request):
 @login_required()
 @api_view(['POST'])
 def createTeacher(request):
+    """
+    创建老师
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         teacher = Teacher(**request.data)
         user = AuthUser.objects.get(username=request.user.username)
@@ -75,6 +80,11 @@ def createTeacher(request):
 @login_required()
 @api_view(['POST'])
 def updateTeacher(request):
+    """
+    修改老师
+    :param request:
+    :return:
+    """
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         teacher = user.teacher_set.update(**request.data)
@@ -83,6 +93,11 @@ def updateTeacher(request):
 @login_required()
 @api_view(['POST'])
 def createParentOrder(request):
+    """
+    创建家长订单
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         po = ParentOrder(**request.data)
         user = AuthUser.objects.get(username=request.user.username)
@@ -93,6 +108,11 @@ def createParentOrder(request):
 @login_required()
 @api_view(['POST'])
 def updateParentOrder(request):
+    """
+    更新家长订单
+    :param request:
+    :return:
+    """
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         po = user.parentorder_set.update(**request.data)
@@ -102,16 +122,20 @@ def updateParentOrder(request):
 @api_view(['POST'])
 def getParentOrder(request):
     """
-    获取家长列表。
+    获取家长列表。家长对于老师的申请处理
     :param request:
     :return:
     """
-    #TODO：需要确定这个表单的状态。是不是已经报名或者拒绝
     size = request.data.get("size",0)
     start = request.data.get("start",0)
+    user = AuthUser.objects.get(username=request.user.username)
+    tea = user.teacher_set.all()[0]
     parentOrders = ParentOrder.objects.all()[start:start + size]
+    for po in parentOrders:
+        orderApply = po.orderapply_set.filter(apply_type=1, tea=tea)
+        po.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
     serializer = ParentOrderSerializer(parentOrders, many=True)
-    return Response[serializer.data]
+    return Response(serializer.data)
 
 @login_required()
 @api_view(['POST'])
@@ -125,6 +149,7 @@ def applyParent(request):
     :return:
     """
     #TODO:消息提醒
+    #获取家长id
     pd_id = request.data.get("pd_id", None)
     user = AuthUser.objects.get(username=request.user.username)
     #查找教师
@@ -132,6 +157,31 @@ def applyParent(request):
     #查找家长订单
     pd = ParentOrder.objects.get(pd_id=pd_id)
     order = OrderApply(apply_type=1, pd=pd,tea=teacher,parent_willing=1,teacher_willing=2,
+                       pass_not=1,update_time=timezone.now())
+    order.save()
+    return Response("success")
+
+@login_required()
+@api_view(['POST'])
+def inviteTeacher(request):
+    """
+    家长邀请老师
+    :param request:
+    {
+
+    }
+    :return:
+    """
+    #TODO:消息提醒
+    #获取老师id
+    tea_id = request.data.get("tea_id", None)
+    user = AuthUser.objects.get(username=request.user.username)
+    #查找家长订单
+    #TODO： 每个家长是否只有一个需求
+    parentorder = user.parentorder_set.all()[0]
+    #查找教师
+    teacher = Teacher.objects.get(tea_id=tea_id)
+    order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
                        pass_not=1,update_time=timezone.now())
     order.save()
     return Response("success")

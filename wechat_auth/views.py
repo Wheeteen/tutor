@@ -25,6 +25,11 @@ wechat_instance = WechatBasic(
 
 @csrf_exempt
 def index(request):
+    """
+    微信端接入,跳转主页
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         # 检验合法性
         # 从 request 中提取基本信息 (signature, timestamp, nonce, xml)
@@ -121,9 +126,12 @@ from django.contrib.auth.decorators import login_required
 
 def authorization(request):
     """
-    获取用户信息，登录
+    获取用户信息，登录,跳转
     :param request:
     :return:
+    """
+    """
+    https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6fe7f0568b75d925&redirect_uri=http://www.yinzishao.cn/authorization&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect
     """
     code = request.GET.get('code')
     api = WeixinAPI(appid=APP_ID,
@@ -170,7 +178,7 @@ def authorization(request):
     return HttpResponse('success<a herf= "/loginSuc">测试</a>')
 
 def login_from_pwd(request):
-    user = authenticate(username='odE4WwK3g05pesjOYGbwcbmOWTnc',password='odE4WwK3g05pesjOYGbwcbmOWTnc')
+    user = authenticate(username='odE4WwK3g05pesjOYGbwcbmOWTnc2',password='odE4WwK3g05pesjOYGbwcbmOWTnc2')
     if user and user.is_active:
         login(request,user)
     return redirect('/loginSuc/')
