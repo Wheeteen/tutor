@@ -9,7 +9,8 @@ from api.serializers import TeacherSerializer,ParentOrderSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from rest_framework.response import Response
-from api.models import Teacher,AuthUser,ParentOrder,OrderApply
+from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
+from django.db import transaction
 from rest_framework import status
 import datetime
 @login_required()
@@ -148,7 +149,6 @@ def applyParent(request):
     }
     :return:
     """
-    #TODO:消息提醒
     #获取家长id
     pd_id = request.data.get("pd_id", None)
     user = AuthUser.objects.get(username=request.user.username)
@@ -156,9 +156,22 @@ def applyParent(request):
     teacher = user.teacher_set.all()[0]
     #查找家长订单
     pd = ParentOrder.objects.get(pd_id=pd_id)
-    order = OrderApply(apply_type=1, pd=pd,tea=teacher,parent_willing=1,teacher_willing=2,
-                       pass_not=1,update_time=timezone.now())
-    order.save()
+
+    #事务
+    try:
+        with transaction.atomic():
+            #新建订单
+            order = OrderApply(apply_type=1, pd=pd,tea=teacher,parent_willing=1,teacher_willing=2,
+                               pass_not=1,update_time=timezone.now())
+            order.save()
+            message_content = teacher.name + u"向您报名!"
+            #新建消息
+            message = Message(sender=user, receiver=pd.wechat, message_content=message_content,status=0)
+            message.save()
+            #TODO:推送到微信端
+
+    except Exception,e:
+        return Response("error")
     return Response("success")
 
 @login_required()
@@ -181,8 +194,22 @@ def inviteTeacher(request):
     parentorder = user.parentorder_set.all()[0]
     #查找教师
     teacher = Teacher.objects.get(tea_id=tea_id)
-    order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
-                       pass_not=1,update_time=timezone.now())
-    order.save()
+
+    #事务
+    try:
+        with transaction.atomic():
+            #新建订单
+            order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
+                               pass_not=1,update_time=timezone.now())
+            order.save()
+            message_content = str(parentorder.name) + u"向您发起了邀请!"
+            #新建消息
+            message = Message(sender=user, receiver=teacher.wechat, message_content=message_content,status=0)
+            message.save()
+            #TODO:推送到微信端
+
+    except Exception,e:
+        print e
+        return Response("error")
     return Response("success")
 

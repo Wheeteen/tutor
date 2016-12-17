@@ -87,6 +87,14 @@ class Banner(models.Model):
         db_table = 'banner'
 
 
+class CorsheadersCorsmodel(models.Model):
+    cors = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'corsheaders_corsmodel'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -133,9 +141,10 @@ class DjangoSession(models.Model):
 
 class Message(models.Model):
     msg_id = models.AutoField(primary_key=True)
-    wechat = models.ForeignKey(AuthUser, blank=True, null=True)
+    sender = models.ForeignKey(AuthUser, db_column='sender', blank=True, null=True, related_name="sender")
     message_content = models.TextField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
+    receiver = models.ForeignKey(AuthUser, db_column='receiver', blank=True, null=True,related_name="receiver")
 
     class Meta:
         managed = False
@@ -143,7 +152,7 @@ class Message(models.Model):
 
 
 class OrderApply(models.Model):
-    oa_id = models.IntegerField(primary_key=True)
+    oa_id = models.AutoField(primary_key=True)
     apply_type = models.IntegerField()
     pd = models.ForeignKey('ParentOrder')
     tea = models.ForeignKey('Teacher')
