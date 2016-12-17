@@ -213,3 +213,16 @@ def inviteTeacher(request):
         return Response("error")
     return Response("success")
 
+@login_required()
+@api_view(['POST'])
+def readMessage(request):
+    """
+    阅读消息，将status改为１
+    :param request:
+    :return:
+    """
+    msg_id = request.data.get("msg_id", None)
+    user = AuthUser.objects.get(username=request.user.username)
+    msg = Message.objects.filter(msg_id=msg_id, receiver = user).update(status=1)
+    return Response("success")
+

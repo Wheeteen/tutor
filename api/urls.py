@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^createParentOrder', views.createParentOrder),
     url(r'^applyParent', views.applyParent),
     url(r'^inviteTeacher', views.inviteTeacher),
+    url(r'^readMessage', views.readMessage),
 ]
