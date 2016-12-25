@@ -60,6 +60,7 @@ def getTeachers(request):
     if grade:
         where = ['FIND_IN_SET('+grade+'),grade']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
+    #TODO:是否邀请该老师
     serializer = TeacherSerializer(teachers, many=True)
     return Response(serializer.data)
 

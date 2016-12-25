@@ -3,6 +3,7 @@
 __author__ = 'youmi'
 
 from wechat_sdk import WechatConf
+from wechat_sdk import WechatBasic
 import json
 
 def get_access_token_function():
@@ -13,12 +14,28 @@ def get_access_token_function():
 
 
 def set_access_token_function(access_token=None, access_token_expires_at=None):
-    data = {
-        "access_token": access_token,
-        "access_token_expires_at": access_token_expires_at
-    }
-    with open('access_token.json',"w") as f:
-        f.write(json.dumps(data))
+    with open('access_token.json', 'r+') as f :
+        data = f.read()
+        d = json.loads(data)
+        d["access_token"] = access_token
+        d["access_token_expires_at"] = access_token_expires_at
+        f.seek(0)
+        f.write(json.dumps(d))
+
+
+def get_jsapi_ticket_function():
+    with open('access_token.json', 'r') as f:
+        data = json.loads(f.read())
+        return (data['jsapi_ticket'],data['jsapi_ticket_expires_at'])
+
+def set_jsapi_ticket_function(jsapi_ticket=None, jsapi_ticket_expires_at=None):
+    with open('access_token.json', 'r+') as f :
+        data = f.read()
+        d = json.loads(data)
+        d["jsapi_ticket"] = jsapi_ticket
+        d["jsapi_ticket_expires_at"] = jsapi_ticket_expires_at
+        f.seek(0)
+        f.write(json.dumps(d))
 
 def sendTemplateMessage():
     token = conf.get_access_token()['access_token']
@@ -72,9 +89,15 @@ conf = WechatConf(
     appsecret='bb5550ec25cfdd716dcf8202ffe03eeb',
     access_token_getfunc=get_access_token_function,
     access_token_setfunc=set_access_token_function,
+    jsapi_ticket_getfunc=get_jsapi_ticket_function,
+    jsapi_ticket_setfunc=set_jsapi_ticket_function
 )
 
 print conf.get_access_token()
-
-sendTemplateMessage()
+print conf.get_jsapi_ticket()
+import time
+jt = conf.get_jsapi_ticket()
+print jt['jsapi_ticket']
+print WechatBasic().generate_jsapi_signature(1482652615,"yinzishao","http://www.yinzishao.cn/testjs",jt['jsapi_ticket'])
+# sendTemplateMessage()
 
