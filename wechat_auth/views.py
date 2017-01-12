@@ -181,4 +181,4 @@ def login_from_pwd(request):
     user = authenticate(username='odE4WwK3g05pesjOYGbwcbmOWTnc2',password='odE4WwK3g05pesjOYGbwcbmOWTnc2')
     if user and user.is_active:
         login(request,user)
-    return redirect('/loginSuc/')
+    return redirect('http://www.baidu.com')

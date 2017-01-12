@@ -65,6 +65,22 @@ def getTeachers(request):
     return Response(serializer.data)
 
 @login_required()
+@api_view(['GET'])
+def getInfo(request):
+    """
+    获取个人信息
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    teacher = user.teacher_set.all()
+    parent =  user.parentorder_set.all()
+    if len(teacher):
+        serializer = TeacherSerializer(teacher[0])
+    if len(parent):
+        serializer = ParentOrderSerializer(parent[0])
+    return Response(serializer.data)
+@login_required()
 @api_view(['POST'])
 def createTeacher(request):
     """
@@ -72,12 +88,15 @@ def createTeacher(request):
     :param request:
     :return:
     """
+    user = AuthUser.objects.get(username=request.user.username)
+    teachers = user.teacher_set.all()
+    if len(teachers) > 0:
+        return Response("已经存在")
     if request.method == 'POST':
         teacher = Teacher(**request.data)
-        user = AuthUser.objects.get(username=request.user.username)
         teacher.wechat = user
         teacher.save()
-    return Response("")
+    return Response("创建成功!")
 
 @login_required()
 @api_view(['POST'])
@@ -91,6 +110,20 @@ def updateTeacher(request):
     if request.method == 'POST':
         teacher = user.teacher_set.update(**request.data)
     return Response("更新成功")
+@login_required()
+@api_view(['GET'])
+def deleteTeacher(request):
+    """
+    删除
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    teachers = user.teacher_set.all()
+    if len(teachers) > 0:
+        teachers[0].delete()
+        return Response("删除成功")
+    return Response("没有对象")
 
 @login_required()
 @api_view(['POST'])
