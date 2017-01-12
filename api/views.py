@@ -4,15 +4,22 @@ __author__ = 'yinzishao'
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,authentication_classes
 from api.serializers import TeacherSerializer,ParentOrderSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.http.response import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
 from django.db import transaction
 from rest_framework import status
 import datetime
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
 @login_required()
 @api_view(['GET'])
 def loginSuc(request):
@@ -63,9 +70,9 @@ def getTeachers(request):
     #TODO:是否邀请该老师
     serializer = TeacherSerializer(teachers, many=True)
     return Response(serializer.data)
-
 @login_required()
 @api_view(['GET'])
+@csrf_exempt
 def getInfo(request):
     """
     获取个人信息
@@ -75,13 +82,14 @@ def getInfo(request):
     user = AuthUser.objects.get(username=request.user.username)
     teacher = user.teacher_set.all()
     parent =  user.parentorder_set.all()
-    if len(teacher):
-        serializer = TeacherSerializer(teacher[0])
     if len(parent):
         serializer = ParentOrderSerializer(parent[0])
+    if len(teacher):
+        serializer = TeacherSerializer(teacher[0])
     return Response(serializer.data)
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def createTeacher(request):
     """
     创建老师
@@ -98,8 +106,10 @@ def createTeacher(request):
         teacher.save()
     return Response("创建成功!")
 
+
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def updateTeacher(request):
     """
     修改老师
@@ -109,7 +119,7 @@ def updateTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         teacher = user.teacher_set.update(**request.data)
-    return Response("更新成功")
+    return Response({"code": "success"})
 @login_required()
 @api_view(['GET'])
 def deleteTeacher(request):

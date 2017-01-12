@@ -176,9 +176,9 @@ def authorization(request):
         #已填问卷返回，主页
         return HttpResponse("")
     return HttpResponse('success<a herf= "/loginSuc">测试</a>')
-
+@csrf_exempt
 def login_from_pwd(request):
     user = authenticate(username='odE4WwK3g05pesjOYGbwcbmOWTnc2',password='odE4WwK3g05pesjOYGbwcbmOWTnc2')
     if user and user.is_active:
         login(request,user)
-    return redirect('http://www.baidu.com')
+    return redirect('/updateTeacher/')
