@@ -27,24 +27,24 @@ def loginSuc(request):
     teachers = Teacher.objects.all()
     serializer = TeacherSerializer(teachers, many=True)
     return Response(serializer.data)
-
+#TODO：为家长推荐老师
 @login_required()
 @api_view(['POST'])
-#TODO：为家长推荐老师
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getTeachers(request):
     """
-    全部老师根据类别获取老师列表
-    :param request:
-    {
-    "size":6,
-    "start":0,
-    "subject":1,
-    "grade":1,
-    "hot":1,
-    "newest":1
-    }
-    :return:
-        teacher obejcts
+        全部老师根据类别获取老师列表
+        :param request:
+        {
+        "size":6,
+        "start":0,
+        "subject":1,
+        "grade":1,
+        "hot":1,
+        "newest":1
+        }
+        :return:
+            teacher obejcts
     """
     size = request.data.get("size",0)
     start = request.data.get("start",0)
@@ -87,6 +87,37 @@ def getInfo(request):
     if len(teacher):
         serializer = TeacherSerializer(teacher[0])
     return Response(serializer.data)
+
+@login_required()
+@api_view(['GET'])
+@csrf_exempt
+def getTeacherInfo(request):
+    """
+    获取个人信息
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    teacher = user.teacher_set.all()
+    if len(teacher):
+        serializer = TeacherSerializer(teacher[0])
+        return Response(serializer.data)
+    return Response({"code":"not found"})
+@login_required()
+@api_view(['GET'])
+@csrf_exempt
+def getParentInfo(request):
+    """
+    获取个人信息
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    parent =  user.parentorder_set.all()
+    if len(parent):
+        serializer = ParentOrderSerializer(parent[0])
+        return Response(serializer.data)
+    return Response({"code":"not found"})
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -137,21 +168,26 @@ def deleteTeacher(request):
 
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def createParentOrder(request):
     """
     创建家长订单
     :param request:
     :return:
     """
+    user = AuthUser.objects.get(username=request.user.username)
+    parentorder = user.parentorder_set.all()
+    if len(parentorder) > 0:
+        return Response("已经存在")
     if request.method == 'POST':
         po = ParentOrder(**request.data)
-        user = AuthUser.objects.get(username=request.user.username)
         po.wechat = user
         po.save()
-    return Response("")
+    return Response("创建成功!")
 
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def updateParentOrder(request):
     """
     更新家长订单
@@ -164,7 +200,23 @@ def updateParentOrder(request):
     return Response("更新成功")
 
 @login_required()
+@api_view(['GET'])
+def deleteParent(request):
+    """
+    删除
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    parentorder = user.parentorder_set.all()
+    if len(parentorder) > 0:
+        parentorder[0].delete()
+        return Response("删除成功")
+    return Response("没有对象")
+
+@login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getParentOrder(request):
     """
     获取家长列表。家长对于老师的申请处理
@@ -184,6 +236,7 @@ def getParentOrder(request):
 
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def applyParent(request):
     """
     老师报名家长
@@ -220,6 +273,7 @@ def applyParent(request):
 
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def inviteTeacher(request):
     """
     家长邀请老师
@@ -259,6 +313,7 @@ def inviteTeacher(request):
 
 @login_required()
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def readMessage(request):
     """
     阅读消息，将status改为１
