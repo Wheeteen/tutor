@@ -130,12 +130,12 @@ def createTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     teachers = user.teacher_set.all()
     if len(teachers) > 0:
-        return Response("已经存在")
+        return Response({"code": "已经存在!"})
     if request.method == 'POST':
         teacher = Teacher(**request.data)
         teacher.wechat = user
         teacher.save()
-    return Response("创建成功!")
+    return Response({"code": "success"})
 
 
 @login_required()
@@ -163,8 +163,8 @@ def deleteTeacher(request):
     teachers = user.teacher_set.all()
     if len(teachers) > 0:
         teachers[0].delete()
-        return Response("删除成功")
-    return Response("没有对象")
+        return Response({"code": "success"})
+    return Response({"code": "not found"})
 
 @login_required()
 @api_view(['POST'])
@@ -178,12 +178,12 @@ def createParentOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
     parentorder = user.parentorder_set.all()
     if len(parentorder) > 0:
-        return Response("已经存在")
+        return Response({"code": "已经存在"})
     if request.method == 'POST':
         po = ParentOrder(**request.data)
         po.wechat = user
         po.save()
-    return Response("创建成功!")
+    return Response({"code": "success"})
 
 @login_required()
 @api_view(['POST'])
@@ -197,7 +197,7 @@ def updateParentOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         po = user.parentorder_set.update(**request.data)
-    return Response("更新成功")
+    return Response({"code": "success"})
 
 @login_required()
 @api_view(['GET'])
@@ -211,8 +211,8 @@ def deleteParent(request):
     parentorder = user.parentorder_set.all()
     if len(parentorder) > 0:
         parentorder[0].delete()
-        return Response("删除成功")
-    return Response("没有对象")
+        return Response({"code": "success"})
+    return Response({"code": "not found"})
 
 @login_required()
 @api_view(['POST'])
@@ -268,8 +268,8 @@ def applyParent(request):
             #TODO:推送到微信端
 
     except Exception,e:
-        return Response("error")
-    return Response("success")
+        return Response({"code": "error"})
+    return Response({"code": "success"})
 
 @login_required()
 @api_view(['POST'])
@@ -308,8 +308,8 @@ def inviteTeacher(request):
 
     except Exception,e:
         print e
-        return Response("error")
-    return Response("success")
+        return Response({"code": "error"})
+    return Response({"code": "success"})
 
 @login_required()
 @api_view(['POST'])
@@ -323,5 +323,5 @@ def readMessage(request):
     msg_id = request.data.get("msg_id", None)
     user = AuthUser.objects.get(username=request.user.username)
     msg = Message.objects.filter(msg_id=msg_id, receiver = user).update(status=1)
-    return Response("success")
+    return Response({"code": "success"})
 

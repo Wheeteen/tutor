@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^loginSuc', csrf_exempt(views.loginSuc)),
     url(r'^createTeacher', csrf_exempt(views.createTeacher)),
     url(r'^updateTeacher', csrf_exempt(views.updateTeacher)),
+    url(r'^updateParentOrder', csrf_exempt(views.updateParentOrder)),
     url(r'^getTeachers', csrf_exempt(views.getTeachers)),
     url(r'^getParentOrder', csrf_exempt(views.getParentOrder)),
     url(r'^createParentOrder', csrf_exempt(views.createParentOrder)),
