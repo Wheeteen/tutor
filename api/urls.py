@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^getTeacherInfo', csrf_exempt(views.getTeacherInfo)),
     url(r'^getParentInfo', csrf_exempt(views.getParentInfo)),
     url(r'^deleteParent', csrf_exempt(views.deleteParent)),
+    url(r'^getMsg', csrf_exempt(views.getMsg)),
 ]

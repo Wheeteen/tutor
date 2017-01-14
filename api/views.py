@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import time
+
 __author__ = 'yinzishao'
 from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.decorators import api_view,authentication_classes
-from api.serializers import TeacherSerializer,ParentOrderSerializer
+from api.serializers import TeacherSerializer,ParentOrderSerializer,MessageSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -45,6 +47,7 @@ def getTeachers(request):
         :return:
             teacher obejcts
     """
+    #TODO:排序与选择
     size = request.data.get("size",0)
     start = request.data.get("start",0)
     #根据学科排序
@@ -61,14 +64,19 @@ def getTeachers(request):
     if newest:
         order = '-create_time'
     if subject:
-        where = ['FIND_IN_SET('+subject+'),subject']
-    #年级
+        where = ['FIND_IN_SET('+str(subject)+',subject)']
+    #年级,如果里面是字符串，需要加引号
     if grade:
-        where = ['FIND_IN_SET('+grade+'),grade']
+        where = ['FIND_IN_SET("'+str(grade)+'",grade)']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
-    #TODO:是否邀请该老师
+    user = AuthUser.objects.get(username=request.user.username)
+    pd = user.parentorder_set.all()[0]
+    for t in teachers:
+        orderApply = t.orderapply_set.filter(apply_type=2, pd=pd)
+        t.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
     serializer = TeacherSerializer(teachers, many=True)
     return Response(serializer.data)
+
 @login_required()
 @api_view(['GET'])
 @csrf_exempt
@@ -131,6 +139,7 @@ def createTeacher(request):
     if len(teachers) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
+        request.data['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         teacher = Teacher(**request.data)
         teacher.wechat = user
         teacher.save()
@@ -147,9 +156,11 @@ def updateTeacher(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
-    if request.method == 'POST':
+    teachers = user.teacher_set.all()
+    if request.method == 'POST' and len(teachers) > 0:
         teacher = user.teacher_set.update(**request.data)
-    return JsonResponse()
+        return JsonResponse()
+    return JsonError("not found")
 @login_required()
 @api_view(['GET'])
 @csrf_exempt
@@ -159,6 +170,7 @@ def deleteTeacher(request):
     :param request:
     :return:
     """
+    #TODO：删除外键约束
     user = AuthUser.objects.get(username=request.user.username)
     teachers = user.teacher_set.all()
     if len(teachers) > 0:
@@ -180,6 +192,9 @@ def createParentOrder(request):
     if len(parentorder) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
+        now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        request.data['create_time']= now
+        request.data['update_time']= now
         po = ParentOrder(**request.data)
         po.wechat = user
         po.save()
@@ -195,10 +210,13 @@ def updateParentOrder(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
-    if request.method == 'POST':
+    parentorder = user.parentorder_set.all()
+    if request.method == 'POST' and len(parentorder) > 0:
+        now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        request.data['update_time']= now
         po = user.parentorder_set.update(**request.data)
-    return JsonResponse()
-
+        return JsonResponse()
+    return JsonError("not found")
 @login_required()
 @api_view(['GET'])
 def deleteParent(request):
@@ -207,6 +225,7 @@ def deleteParent(request):
     :param request:
     :return:
     """
+    #TODO：删除外键约束
     user = AuthUser.objects.get(username=request.user.username)
     parentorder = user.parentorder_set.all()
     if len(parentorder) > 0:
@@ -300,9 +319,10 @@ def inviteTeacher(request):
             order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
                                pass_not=1,update_time=timezone.now())
             order.save()
-            message_content = str(parentorder.name) + u"向您发起了邀请!"
+            message_title = str(parentorder.name) + u"向您发起了邀请!"
+            message_content = str(parentorder.name) + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
             #新建消息
-            message = Message(sender=user, receiver=teacher.wechat, message_content=message_content,status=0)
+            message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
             message.save()
             #TODO:推送到微信端
 
@@ -311,6 +331,21 @@ def inviteTeacher(request):
         return JsonError(e.message)
     return JsonResponse()
 
+@login_required()
+@api_view(['GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def getMsg(request):
+    """
+    获取消息列表
+    :param request:
+    :return:
+    """
+    user = AuthUser.objects.get(username=request.user.username)
+    msgs = user.receiver.all()
+    for msg in msgs:
+        msg.isDetailed = False
+    serializer = MessageSerializer(msgs, many=True)
+    return Response(serializer.data)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))

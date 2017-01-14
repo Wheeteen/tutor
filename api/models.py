@@ -143,6 +143,7 @@ class Message(models.Model):
     msg_id = models.AutoField(primary_key=True)
     sender = models.ForeignKey(AuthUser, db_column='sender', blank=True, null=True, related_name="sender")
     message_content = models.TextField(blank=True, null=True)
+    message_title = models.TextField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
     receiver = models.ForeignKey(AuthUser, db_column='receiver', blank=True, null=True,related_name="receiver")
 
