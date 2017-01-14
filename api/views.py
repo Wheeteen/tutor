@@ -143,7 +143,7 @@ def createTeacher(request):
         teacher = Teacher(**request.data)
         teacher.wechat = user
         teacher.save()
-    return JsonResponse()
+    return JsonResponse({"wechat_id":teacher.wechat_id})
 
 
 @login_required()
@@ -159,7 +159,8 @@ def updateTeacher(request):
     teachers = user.teacher_set.all()
     if request.method == 'POST' and len(teachers) > 0:
         teacher = user.teacher_set.update(**request.data)
-        return JsonResponse()
+        serializer = TeacherSerializer(user.teacher_set.all()[0])
+        return JsonResponse(serializer.data)
     return JsonError("not found")
 @login_required()
 @api_view(['GET'])
@@ -198,7 +199,7 @@ def createParentOrder(request):
         po = ParentOrder(**request.data)
         po.wechat = user
         po.save()
-    return JsonResponse()
+    return JsonResponse({"wechat_id":po.wechat_id})
 
 @login_required()
 @api_view(['POST'])
@@ -213,9 +214,11 @@ def updateParentOrder(request):
     parentorder = user.parentorder_set.all()
     if request.method == 'POST' and len(parentorder) > 0:
         now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        request.data['update_time']= now
-        po = user.parentorder_set.update(**request.data)
-        return JsonResponse()
+        temp = request.data.dict()
+        temp['update_time']= now
+        po = user.parentorder_set.update(**temp)
+        serializer = ParentOrderSerializer(user.parentorder_set.all()[0])
+        return JsonResponse(serializer.data)
     return JsonError("not found")
 @login_required()
 @api_view(['GET'])
