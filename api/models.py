@@ -171,6 +171,7 @@ class ParentOrder(models.Model):
     pd_id = models.AutoField(primary_key=True)
     wechat = models.ForeignKey(AuthUser, blank=True, null=True)
     subject = models.TextField(blank=True, null=True)
+    subject_other = models.TextField(blank=True, null=True)
     aim = models.TextField(blank=True, null=True)
     mon_begin = models.IntegerField(blank=True, null=True)
     mon_end = models.IntegerField(blank=True, null=True)
@@ -191,6 +192,7 @@ class ParentOrder(models.Model):
     weekend_tutor_length = models.IntegerField(blank=True, null=True)
     teacher_sex = models.IntegerField(blank=True, null=True)
     teacher_method = models.TextField(blank=True, null=True)
+    teacher_method_other = models.TextField(blank=True, null=True)
     learning_phase = models.IntegerField(blank=True, null=True)
     class_field = models.IntegerField(db_column='class', blank=True, null=True)  # Field renamed because it was a Python reserved word.
     grade = models.IntegerField(blank=True, null=True)
@@ -205,7 +207,7 @@ class ParentOrder(models.Model):
     create_time = models.DateTimeField(blank=True, null=True)
     update_time = models.DateTimeField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
-
+    bonus = models.TextField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'parent_order'
