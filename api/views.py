@@ -8,13 +8,12 @@ from rest_framework.decorators import api_view,authentication_classes
 from api.serializers import TeacherSerializer,ParentOrderSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
+from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
 from django.db import transaction
-from rest_framework import status
-import datetime
+
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class CsrfExemptSessionAuthentication(SessionAuthentication):
 
@@ -102,7 +101,7 @@ def getTeacherInfo(request):
     if len(teacher):
         serializer = TeacherSerializer(teacher[0])
         return Response(serializer.data)
-    return Response({"code":"not found"})
+    return JsonError("not found")
 @login_required()
 @api_view(['GET'])
 @csrf_exempt
@@ -117,7 +116,7 @@ def getParentInfo(request):
     if len(parent):
         serializer = ParentOrderSerializer(parent[0])
         return Response(serializer.data)
-    return Response({"code":"not found"})
+    return JsonError("not found")
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -130,12 +129,12 @@ def createTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     teachers = user.teacher_set.all()
     if len(teachers) > 0:
-        return Response({"code": "已经存在!"})
+        return JsonError("already existed")
     if request.method == 'POST':
         teacher = Teacher(**request.data)
         teacher.wechat = user
         teacher.save()
-    return Response({"code": "success"})
+    return JsonResponse()
 
 
 @login_required()
@@ -150,9 +149,10 @@ def updateTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         teacher = user.teacher_set.update(**request.data)
-    return Response({"code": "success"})
+    return JsonResponse()
 @login_required()
 @api_view(['GET'])
+@csrf_exempt
 def deleteTeacher(request):
     """
     删除
@@ -163,8 +163,8 @@ def deleteTeacher(request):
     teachers = user.teacher_set.all()
     if len(teachers) > 0:
         teachers[0].delete()
-        return Response({"code": "success"})
-    return Response({"code": "not found"})
+        return JsonResponse()
+    return JsonError("not found")
 
 @login_required()
 @api_view(['POST'])
@@ -178,12 +178,12 @@ def createParentOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
     parentorder = user.parentorder_set.all()
     if len(parentorder) > 0:
-        return Response({"code": "已经存在"})
+        return JsonError("already existed")
     if request.method == 'POST':
         po = ParentOrder(**request.data)
         po.wechat = user
         po.save()
-    return Response({"code": "success"})
+    return JsonResponse()
 
 @login_required()
 @api_view(['POST'])
@@ -197,7 +197,7 @@ def updateParentOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == 'POST':
         po = user.parentorder_set.update(**request.data)
-    return Response({"code": "success"})
+    return JsonResponse()
 
 @login_required()
 @api_view(['GET'])
@@ -211,8 +211,8 @@ def deleteParent(request):
     parentorder = user.parentorder_set.all()
     if len(parentorder) > 0:
         parentorder[0].delete()
-        return Response({"code": "success"})
-    return Response({"code": "not found"})
+        return JsonResponse()
+    return JsonError("not found")
 
 @login_required()
 @api_view(['POST'])
@@ -268,8 +268,8 @@ def applyParent(request):
             #TODO:推送到微信端
 
     except Exception,e:
-        return Response({"code": "error"})
-    return Response({"code": "success"})
+        return JsonError(e.message)
+    return JsonResponse()
 
 @login_required()
 @api_view(['POST'])
@@ -308,8 +308,8 @@ def inviteTeacher(request):
 
     except Exception,e:
         print e
-        return Response({"code": "error"})
-    return Response({"code": "success"})
+        return JsonError(e.message)
+    return JsonResponse()
 
 @login_required()
 @api_view(['POST'])
@@ -323,5 +323,5 @@ def readMessage(request):
     msg_id = request.data.get("msg_id", None)
     user = AuthUser.objects.get(username=request.user.username)
     msg = Message.objects.filter(msg_id=msg_id, receiver = user).update(status=1)
-    return Response({"code": "success"})
+    return JsonResponse()
 
