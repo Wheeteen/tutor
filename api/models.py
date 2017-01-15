@@ -162,6 +162,7 @@ class OrderApply(models.Model):
     update_time = models.DateTimeField()
     screenshot_path = models.TextField(blank=True, null=True)
     pass_not = models.IntegerField()
+    expectation = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -266,7 +267,6 @@ class Teacher(models.Model):
     hot_not = models.IntegerField(blank=True, null=True, default=0)
     grade = models.TextField(blank=True, null=True)
     number = models.CharField(max_length=45, null=True)
-    expectation = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False

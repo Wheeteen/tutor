@@ -22,3 +22,7 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = '__all__'
     isDetailed = serializers.BooleanField(read_only=True, default='false')
+class OrderApplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderApply
+        fields = '__all__'

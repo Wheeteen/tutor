@@ -137,7 +137,9 @@ def changeObejct(obj):
     changeWeek(obj, "sun_afternoon")
     changeWeek(obj, "sun_evening")
     if obj.has_key('salary'):
-        obj['salary'] = float('%.2f' % float(obj['salary']))
+        obj['salary'] = float('%.2f' % float(obj['salary'])) if obj['salary'] != "" else 0.00
+    if obj.has_key('deadline') and obj['deadline'] == "":
+        del obj['deadline']
     return obj
 def changeWeek(obj, time):
     if obj.has_key(time):

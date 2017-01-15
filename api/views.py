@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.decorators import api_view,authentication_classes
-from api.serializers import TeacherSerializer,ParentOrderSerializer,MessageSerializer
+from api.serializers import TeacherSerializer,ParentOrderSerializer,MessageSerializer,OrderApplySerializer
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -288,6 +288,7 @@ def applyParent(request):
     """
     #获取家长id
     pd_id = request.data.get("pd_id", None)
+    expectation = request.data.get("expectation", None)
     user = AuthUser.objects.get(username=request.user.username)
     #查找教师
     teacher = user.teacher_set.all()[0]
@@ -299,9 +300,9 @@ def applyParent(request):
         with transaction.atomic():
             #新建订单
             order = OrderApply(apply_type=1, pd=pd,tea=teacher,parent_willing=1,teacher_willing=2,
-                               pass_not=1,update_time=timezone.now())
+                               pass_not=1,update_time=timezone.now(),expectation=expectation)
             order.save()
-            message_content = teacher.name + u"向您报名!"
+            message_content = str(teacher.name) + u"向您报名!"
             #新建消息
             message = Message(sender=user, receiver=pd.wechat, message_content=message_content,status=0)
             message.save()
@@ -352,6 +353,14 @@ def inviteTeacher(request):
         return JsonError(e.message)
     return JsonResponse()
 
+@login_required()
+@api_view(['GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def getOrder(request):
+    user = AuthUser.objects.get(username=request.user.username)
+    t = user.teacher_set.all()[0]
+    oas = OrderApply.objects.filter(tea=t)
+    return Response(OrderApplySerializer(oas,many=True).data)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
