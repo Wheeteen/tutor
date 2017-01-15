@@ -64,10 +64,10 @@ def getTeachers(request):
     if newest:
         order = '-create_time'
     if subject:
-        where = ['FIND_IN_SET('+str(subject)+',subject)']
+        where = ['FIND_IN_SET("'+subject+'",subject)']
     #年级,如果里面是字符串，需要加引号
     if grade:
-        where = ['FIND_IN_SET("'+str(grade)+'",grade)']
+        where = ['FIND_IN_SET('+str(grade)+',grade)']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
     user = AuthUser.objects.get(username=request.user.username)
     pd = user.parentorder_set.all()[0]
@@ -139,8 +139,9 @@ def createTeacher(request):
     if len(teachers) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
-        request.data['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        teacher = Teacher(**request.data)
+        temp = request.data.dict()
+        temp['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        teacher = Teacher(**temp)
         teacher.wechat = user
         teacher.save()
     return JsonResponse({"wechat_id":teacher.wechat_id})
@@ -193,10 +194,11 @@ def createParentOrder(request):
     if len(parentorder) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
+        temp = request.data.dict()
         now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        request.data['create_time']= now
-        request.data['update_time']= now
-        po = ParentOrder(**request.data)
+        temp['create_time']= now
+        temp['update_time']= now
+        po = ParentOrder(**temp)
         po.wechat = user
         po.save()
     return JsonResponse({"wechat_id":po.wechat_id})
@@ -363,3 +365,8 @@ def readMessage(request):
     msg = Message.objects.filter(msg_id=msg_id, receiver = user).update(status=1)
     return JsonResponse()
 
+@login_required()
+@api_view(['GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def getWechatInfo(request):
+    return Response(request.session.get("info",None))

@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^getParentInfo', csrf_exempt(views.getParentInfo)),
     url(r'^deleteParent', csrf_exempt(views.deleteParent)),
     url(r'^getMsg', csrf_exempt(views.getMsg)),
+    url(r'^getWechatInfo', csrf_exempt(views.getWechatInfo)),
 ]
