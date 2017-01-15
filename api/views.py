@@ -353,14 +353,89 @@ def inviteTeacher(request):
         return JsonError(e.message)
     return JsonResponse()
 
+def judge(teach_willing,result):
+    if teach_willing == 2:
+        result = u"愿意"
+    elif teach_willing == 0:
+        result = u"拒绝"
+    print result
+    return result
 @login_required()
 @api_view(['GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
-    t = user.teacher_set.all()[0]
-    oas = OrderApply.objects.filter(tea=t)
-    return Response(OrderApplySerializer(oas,many=True).data)
+    t = user.teacher_set.all()
+    pd = user.parentorder_set.all()
+    oas = None
+    if len(t) > 0:
+        #老师的订单详情
+        oas = OrderApply.objects.filter(tea=t[0])
+        results = []
+        for oa in oas:
+            temp = {}
+            oa.type = "teacher"
+            oa.name= str(oa.pd.name)
+            if oa.apply_type == 2:
+                #家长主动
+                oa.result= judge(oa.teacher_willing,u"已邀请") #默认是待处理
+                #是否接受邀请
+                if oa.teacher_willing == 1:
+                    #家长主动，并且教师待处理，应该弹出接受或者拒绝
+                    oa.finish = 0
+                    pass
+                else:
+                    #教师已经处理，则直接返回结果。
+                    oa.finish = 1
+                    pass
+
+            elif oa.apply_type == 1:
+                #教师主动
+                oa.result= judge(oa.parent_willing,u"已报名")
+                #是否取消报名
+                if oa.parent_willing == 1:
+                    #教师主动，并且家长待处理，应该弹出取消报名
+                    oa.finish = 0
+                else:
+                    #家长已经处理，则直接返回结果。
+                    oa.finish = 1
+        return Response(OrderApplySerializer(oas,many=True).data)
+
+    elif len(pd) > 0:
+        #家长的订单详情
+        oas = OrderApply.objects.filter(pd=pd[0])
+        results = []
+        for oa in oas:
+            temp = {}
+            oa.type = "parent"
+            oa.name= str(oa.tea.name)
+            if oa.apply_type == 2:
+                #家长主动
+                oa.result= judge(oa.teacher_willing,u"已邀请")
+                #是否取消邀请
+                if oa.teacher_willing == 1:
+                    #家长主动，并且老师待处理，应该弹出取消邀请
+                    oa.finish = 0
+                else:
+                    #老师已经处理，则直接返回结果。
+                    oa.finish = 1
+            elif oa.apply_type == 1:
+                #教师主动
+                oa.result= judge(oa.parent_willing,u"已报名")
+                print '-----------'
+                #是否接受报名
+                if oa.parent_willing == 1:
+                    #教师主动，并且家长待处理，应该弹出取消报名
+                    oa.finish = 0
+                else:
+                    #家长已经处理，则直接返回结果。
+                    oa.finish = 1
+        return Response(OrderApplySerializer(oas,many=True).data)
+
+    if not oas:
+        return Response({"info":"没有订单！"})
+
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
