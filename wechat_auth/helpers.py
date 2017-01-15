@@ -136,6 +136,8 @@ def changeObejct(obj):
     changeWeek(obj, "sun_morning")
     changeWeek(obj, "sun_afternoon")
     changeWeek(obj, "sun_evening")
+    if obj.has_key('salary'):
+        obj['salary'] = float('%.2f' % float(obj['salary']))
     return obj
 def changeWeek(obj, time):
     if obj.has_key(time):
