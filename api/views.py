@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
 from django.db import transaction
-
+from wechat_auth.helpers import changeBaseToImg,changeObejct
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class CsrfExemptSessionAuthentication(SessionAuthentication):
 
@@ -39,7 +39,7 @@ def getTeachers(request):
         {
         "size":6,
         "start":0,
-        "subject":1,
+        "subject":"语文",
         "grade":1,
         "hot":1,
         "newest":1
@@ -48,8 +48,8 @@ def getTeachers(request):
             teacher obejcts
     """
     #TODO:排序与选择
-    size = request.data.get("size",0)
-    start = request.data.get("start",0)
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
     #根据学科排序
     subject = request.data.get("subject", 0)
     #根据年级排序
@@ -70,7 +70,11 @@ def getTeachers(request):
         where = ['FIND_IN_SET('+str(grade)+',grade)']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
     user = AuthUser.objects.get(username=request.user.username)
-    pd = user.parentorder_set.all()[0]
+    pds = user.parentorder_set.all()
+    if len(pds) > 0:
+        pd = pds[0]
+    else:
+        return JsonError("家长不存在！请重新填问卷")
     for t in teachers:
         orderApply = t.orderapply_set.filter(apply_type=2, pd=pd)
         t.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
@@ -139,7 +143,11 @@ def createTeacher(request):
     if len(teachers) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
-        temp = request.data.dict()
+        temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+        changeObejct(temp)
+        photos = temp.get('teach_show_photo',None)
+        if photos:
+            temp['teach_show_photo'] = changeBaseToImg(photos)
         temp['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         teacher = Teacher(**temp)
         teacher.wechat = user
@@ -159,7 +167,9 @@ def updateTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     teachers = user.teacher_set.all()
     if request.method == 'POST' and len(teachers) > 0:
-        teacher = user.teacher_set.update(**request.data)
+        temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+        changeObejct(temp)
+        teacher = user.teacher_set.update(**temp)
         serializer = TeacherSerializer(user.teacher_set.all()[0])
         return JsonResponse(serializer.data)
     return JsonError("not found")
@@ -194,7 +204,8 @@ def createParentOrder(request):
     if len(parentorder) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
-        temp = request.data.dict()
+        temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+        changeObejct(temp)
         now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         temp['create_time']= now
         temp['update_time']= now
@@ -216,7 +227,8 @@ def updateParentOrder(request):
     parentorder = user.parentorder_set.all()
     if request.method == 'POST' and len(parentorder) > 0:
         now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        temp = request.data.dict()
+        temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+        changeObejct(temp)
         temp['update_time']= now
         po = user.parentorder_set.update(**temp)
         serializer = ParentOrderSerializer(user.parentorder_set.all()[0])
@@ -247,10 +259,14 @@ def getParentOrder(request):
     :param request:
     :return:
     """
-    size = request.data.get("size",0)
-    start = request.data.get("start",0)
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
     user = AuthUser.objects.get(username=request.user.username)
-    tea = user.teacher_set.all()[0]
+    teas = user.teacher_set.all()
+    if len(teas) > 0:
+        tea = teas[0]
+    else:
+        return JsonError("家长不存在！请重新填问卷")
     parentOrders = ParentOrder.objects.all()[start:start + size]
     for po in parentOrders:
         orderApply = po.orderapply_set.filter(apply_type=1, tea=tea)
@@ -266,7 +282,7 @@ def applyParent(request):
     老师报名家长
     :param request:
     {
-
+        "pd_id":2
     }
     :return:
     """
@@ -303,7 +319,7 @@ def inviteTeacher(request):
     家长邀请老师
     :param request:
     {
-
+        "tea_id"：2
     }
     :return:
     """
@@ -324,8 +340,8 @@ def inviteTeacher(request):
             order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
                                pass_not=1,update_time=timezone.now())
             order.save()
-            message_title = str(parentorder.name) + u"向您发起了邀请!"
-            message_content = str(parentorder.name) + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
+            message_title = parentorder.name + u"向您发起了邀请!"
+            message_content = parentorder.name + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
             #新建消息
             message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
             message.save()
@@ -337,16 +353,22 @@ def inviteTeacher(request):
     return JsonResponse()
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getMsg(request):
     """
     获取消息列表
     :param request:
+    {
+        "start":0,
+        "size":6
+    }
     :return:
     """
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
     user = AuthUser.objects.get(username=request.user.username)
-    msgs = user.receiver.all()
+    msgs = user.receiver.all()[start:start + size]
     for msg in msgs:
         msg.isDetailed = False
     serializer = MessageSerializer(msgs, many=True)
@@ -358,6 +380,9 @@ def readMessage(request):
     """
     阅读消息，将status改为１
     :param request:
+    {
+        "msg_id":1
+    }
     :return:
     """
     msg_id = request.data.get("msg_id", None)

@@ -5,7 +5,7 @@ __author__ = 'youmi'
 from wechat_sdk import WechatConf
 from wechat_sdk import WechatBasic
 import json
-
+from django.conf import settings
 def get_access_token_function():
     """ 注意返回值为一个 Tuple，第一个元素为 access_token 的值，第二个元素为 access_token_expires_at 的值 """
     with open('access_token.json', 'r') as f:
@@ -93,11 +93,54 @@ conf = WechatConf(
     jsapi_ticket_setfunc=set_jsapi_ticket_function
 )
 
-print conf.get_access_token()
-print conf.get_jsapi_ticket()
+# print conf.get_access_token()
+# print conf.get_jsapi_ticket()
+# import time
+# jt = conf.get_jsapi_ticket()
+# print jt['jsapi_ticket']
+# print WechatBasic().generate_jsapi_signature(1482652615,"yinzishao","http://www.yinzishao.cn/testjs",jt['jsapi_ticket'])
+# # sendTemplateMessage()
+import base64
+import re
 import time
-jt = conf.get_jsapi_ticket()
-print jt['jsapi_ticket']
-print WechatBasic().generate_jsapi_signature(1482652615,"yinzishao","http://www.yinzishao.cn/testjs",jt['jsapi_ticket'])
-# sendTemplateMessage()
+def changeBaseToImg(data):
+    dir = settings.BASE_DIR + '/api/static/'
+    result = []
+    for imgData in data:
+        p = r"image/(.*?);base64,(.*)"
+        r = re.search(p,imgData["img"])
+        type = r.group(1)
+        base64Data = r.group(2)
+        name = str(int(time.time() * 1000000)) + '.' + type
+        path = dir+name
+        print path
+        with open(path, "wb") as fh:
+            fh.write(base64.decodestring(base64Data))
+            result.append('/static/'+name)
+    return ','.join(result)
 
+def changeObejct(obj):
+    changeWeek(obj, "mon_begin")
+    changeWeek(obj, "mon_end")
+    changeWeek(obj, "tues_begin")
+    changeWeek(obj, "tues_end")
+    changeWeek(obj, "wed_begin")
+    changeWeek(obj, "wed_end")
+    changeWeek(obj, "thur_begin")
+    changeWeek(obj, "thur_end")
+    changeWeek(obj, "fri_begin")
+    changeWeek(obj, "fri_end")
+    changeWeek(obj, "sat_morning")
+    changeWeek(obj, "sat_afternoon")
+    changeWeek(obj, "sat_evening")
+    changeWeek(obj, "sun_morning")
+    changeWeek(obj, "sun_afternoon")
+    changeWeek(obj, "sun_evening")
+    return obj
+def changeWeek(obj, time):
+    if obj.has_key(time):
+        m = obj.get(time, None)
+        if m != "":
+            obj[time] = int(m)
+        else:
+            del obj[time]
