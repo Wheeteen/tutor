@@ -1,0 +1,41 @@
+家长问卷：
+
+1.get获取时薪参考标准
+  salary: {},salary.text为内容（看内容多不多，看看要不要分几个参数)
+
+2.post过去的参数：
+//数组的我等等整理成字符串
+subject: [],
+subject_other: '',
+aim: [],
+teacher_sex: [],
+teacher_method: [],
+teacher_method_other:'',
+learning_phase:2,
+class_field:1,
+grade:0,
+  require:'',
+  salary: '',
+  allowance_not:'',
+  bonus: '',
+  name: '',
+  tel: '',
+  address: '',
+  deadline:'',
+  weekend_tutor_length: '',
+  mon_begin:'',
+  mon_end: '',
+  tues_begin:'',
+  tues_end: '',
+  wed_begin: '',
+  wed_end: '',
+  thur_begin: '',
+  thur_end: '',
+  fri_begin: '',
+  fri_end: '',
+  sat_morning: null,
+  sat_afternoon: null,
+  sat_evening: null,
+  sun_morning: null,
+  sun_afternoon: null,
+  sun_evening: null,

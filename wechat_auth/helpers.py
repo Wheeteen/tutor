@@ -6,6 +6,11 @@ from wechat_sdk import WechatConf
 from wechat_sdk import WechatBasic
 import json
 from django.conf import settings
+
+week = ["mon_begin","mon_end","tues_begin","tues_end",
+            "wed_begin","wed_end","thur_begin","thur_end","fri_begin","fri_end"]
+weekend = ["sat_morning","sat_afternoon","sat_evening",
+               "sun_morning","sun_afternoon","sun_evening"]
 def get_access_token_function():
     """ 注意返回值为一个 Tuple，第一个元素为 access_token 的值，第二个元素为 access_token_expires_at 的值 """
     with open('access_token.json', 'r') as f:
@@ -120,31 +125,103 @@ def changeBaseToImg(data):
     return ','.join(result)
 
 def changeObejct(obj):
-    changeWeek(obj, "mon_begin")
-    changeWeek(obj, "mon_end")
-    changeWeek(obj, "tues_begin")
-    changeWeek(obj, "tues_end")
-    changeWeek(obj, "wed_begin")
-    changeWeek(obj, "wed_end")
-    changeWeek(obj, "thur_begin")
-    changeWeek(obj, "thur_end")
-    changeWeek(obj, "fri_begin")
-    changeWeek(obj, "fri_end")
-    changeWeek(obj, "sat_morning")
-    changeWeek(obj, "sat_afternoon")
-    changeWeek(obj, "sat_evening")
-    changeWeek(obj, "sun_morning")
-    changeWeek(obj, "sun_afternoon")
-    changeWeek(obj, "sun_evening")
+    """
+    兼容接受到的对象
+    :param obj:
+    :return:
+    """
+    w = week + weekend
+    changeWeek(obj,w)
+    print obj
     if obj.has_key('salary'):
         obj['salary'] = float('%.2f' % float(obj['salary'])) if obj['salary'] != "" else 0.00
     if obj.has_key('deadline') and obj['deadline'] == "":
         del obj['deadline']
     return obj
-def changeWeek(obj, time):
-    if obj.has_key(time):
-        m = obj.get(time, None)
-        if m != "":
-            obj[time] = int(m)
-        else:
-            del obj[time]
+
+def getParentOrderObj(objs,many=False):
+
+    """
+    将对象转换为前端所需对象
+    :param obj:
+    :return:
+    """
+    if many:
+        for obj in objs:
+            changeParentOrderObj(obj)
+    else:
+        changeParentOrderObj(objs)
+def changeParentOrderObj(obj):
+    pw = obj.get('parent_willing', None)
+    obj["isInvited"] = ''
+    if pw:
+        if pw == 1:
+            obj["isInvited"] = u"已报名"
+        elif pw == 2:
+            obj["isInvited"] = u"已接受"
+        elif pw == 0:
+            obj["isInvited"] = u"已拒绝"
+    #性别
+    teacher_sex = obj.get('teacher_sex', 0)
+    if teacher_sex == 0 or teacher_sex == None:
+        obj["teacher_sex"] = u"不限"
+    elif teacher_sex == 1:
+        obj["teacher_sex"] = u"男"
+    elif teacher_sex == 2:
+        obj["teacher_sex"] = u"女"
+
+
+
+    changeWeekToRange(obj, week)
+    changeWeekEndToRange(obj, weekend)
+
+def changeWeek(obj, times):
+    for time in times:
+        if obj.has_key(time):
+            m = obj.get(time, None)
+            if m != "":
+                obj[time] = int(m)
+            else:
+                del obj[time]
+
+
+def changeWeekToRange(obj, time):
+    obj["time"]  = ""
+    for index in range(0, len(time),2):
+        field_name = time[index]
+        if obj[field_name] != None:
+            if field_name.startswith("mon"):
+                date = u"一"
+            if field_name.startswith("tues"):
+                date = u"二"
+            if field_name.startswith("wed"):
+                date = u"三"
+            if field_name.startswith("thur"):
+                date = u"四"
+            if field_name.startswith("fri"):
+                date = u"五"
+            start = obj.get(field_name, None)
+            end = obj.get(time[index+1], None)
+            obj["time"] = obj["time"] + u"星期" + date + str(start) + u"点到" + str(end) + u"点 "
+
+def changeWeekEndToRange(obj, time):
+    obj["time"] = obj.get("time", "")
+    for field_name in time:
+        if obj[field_name] != None:
+            if field_name == "sat_morning":
+                date = u"星期六早上 "
+            if field_name == "sat_afternoon":
+                date = u"星期六下午 "
+            if field_name == "sat_evening":
+                date = u"星期六晚上 "
+            if field_name == "sun_morning":
+                date = u"星期日早上 "
+            if field_name == "sun_afternoon":
+                date = u"星期日下午 "
+            if field_name == "sun_evening":
+                date = u"星期日晚上 "
+            obj["time"] = obj["time"] + date
+
+
+
+

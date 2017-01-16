@@ -1,0 +1,212 @@
+
+###老师问卷（简历填写）（同期望，期望的时候多了对家教的教学设想）###
+1.get获取家教薪酬标准
+  salary: {}
+
+2.post提交表单
+参数如下：
+      //数组的等等整理成字符串
+       name: '',
+       qualification:'',
+       number: '',
+       sex: '',
+       native_place: '',
+       campus_major: '',
+       tel: '',
+       grade: [], //年级
+       subject: [], //科目
+       subject_other: '',
+       place: '',
+       teacher_method: [], 
+       self_comment: '',
+       salary_bottom: '',
+       salary_top:'',
+       score: [],  //
+       score_other: [],//忽略
+       score_first:'', //忽略
+       expection: '',
+       certificate_photo: '',
+       teach_show_photo: [
+          {img:''},
+          {img:''},
+          {img:''}
+       ],
+       tutorIndex: '', //忽略
+       teacher_method_other: '',
+       mon_begin:'',
+        mon_end: '',
+        tues_begin:'',
+        tues_end: '',
+        wed_begin: '',
+        wed_end: '',
+        thur_begin: '',
+        thur_end: '',
+        fri_begin: '',
+        fri_end: '',
+        sat_morning: null,
+        sat_afternoon: null,
+        sat_evening: null,
+        sun_morning: null,
+        sun_afternoon: null,
+        sun_evening: null,
+
+ 提交成功后返回result = 1,否则返回0,然后是msg(不正确的信息)（只验证了不为空和电话号码，其他内容没验证）
+
+3.get页面内容，（用于在用户主页（我的）-->  ‘修改资料’时用）
+  url传的是用户的Id,
+  如果result =1, this.$set('form',res.json().data);
+
+
+
+
+###老师主页（推荐），家教信息列表###
+1.get家教信息列表，url传的是用户的id
+  样式如下：
+  get返回的信息参数有些变化：(跟家长问卷的参数差不多对应)
+  msgList: [ //这个参数是以前写的
+     {
+     id:0,
+     username:'张先生', //原来的name直接改为username好了
+     distance:0.8,
+     info: '已报名',
+     teacherSex: '不限', //新增，老师性别
+     education: '高中', //新增，‘小学’，‘初中’等 
+     grade:'一年级', //与education对应的年级
+     subject:'数学', 
+     otherSubject: '', //新增，其他科目
+     aim:'提高成绩',  //新增，目的        
+     address:"大学城小洲",
+     time:"周六上午",
+     ranking: '成绩优良', //新增，学习情况
+     tutorChar:"nice,细心", //新增，教学特点
+     otherTutorChar: '', //新增，其他教学特点
+     detailed:"", //新增，其他要求
+     hprice: '18/h',  //新增，薪水
+     allowanceValue: '100/月', //新增，补贴
+     date:'2017-01-12', //在××之前找到家教
+     now: '2016.12.28 16:59' //对应提交表单的时间
+     },
+  ]
+ 2. post‘取消报名’
+    url参数如下：
+    {
+      'id': id, //用户id
+      'index': this.msgList[index].id  //列表的id
+     }
+
+
+
+ ###老师主页（我的）####
+
+ 1.get 获取用户是否有消息提醒和用户的头像
+ url传的是用户的id
+ 
+ 获取用户的微信头像
+  
+ 
+2.当‘消息提醒’按钮有变化时，post提交信息
+ 参数如下：
+ {
+	'id':id, //用户id
+	'remindInfo' : res //有消息提醒为true,or false
+ }
+
+ 成功result为1
+
+
+
+####‘我的’之‘我的消息’（同家长的‘我的消息’） ####
+
+1.get 获取‘我的消息’列表
+  url传的是id
+  列表样式如下：
+  msgList:[
+          {
+          'text':'张先生已接受您的报名', //简短信息
+          'detailed':'张先生已接受您的报名,请到“我的老师”处查看详细信息',  //详细信息
+          'strong':true, //用户还没看过这条信息（false为用户已经看过这条信息)
+          'isDetailed':false //(是否展开来看该简短信息的详细信息，全部为false就好)
+          'id':'' //信息的Id
+          },    
+  ],
+
+
+ 2.post提交用户看过这条信息
+   参数为：
+   {
+      'id': id, //用户id
+      'index': this.msgList[index].id  //该信息的id
+   }
+
+
+###我的单子（老师个人主页之我的单子）###
+
+1.get所有‘我的单子’,url传的是用户的id:
+ 'id': id
+
+  返回的信息列表如下：
+  同老师推荐的msgList,多了个isRed
+  (当info的信息为‘报名被拒绝’和‘拒绝邀请’时，isRed为true,其他为false）
+   msgList: [ //这个参数是以前写的
+     {
+     id:0,
+     username:'张先生', //原来的name直接改为username好了
+     distance:0.8,
+     info: '已报名',
+     teacherSex: '不限', //新增，老师性别
+     education: '高中', //新增，‘小学’，‘初中’等 
+     grade:'一年级', //与education对应的年级
+     subject:'数学', 
+     otherSubject: '', //新增，其他科目
+     aim:'提高成绩',  //新增，目的        
+     address:"大学城小洲",
+     time:"周六上午",
+     ranking: '成绩优良', //新增，学习情况
+     tutorChar:"nice,细心", //新增，教学特点
+     otherTutorChar: '', //新增，其他教学特点
+     detailed:"", //新增，其他要求
+     hprice: '18/h',  //新增，薪水
+     allowanceValue: '100/月', //新增，补贴
+     date:'2017-01-12', //在××之前找到家教
+     isRed: 'true',
+     now: '2016.12.28 16:59' //对应提交表单的时间
+     },
+  ]
+
+
+ 2. post提交‘接受邀请’
+    参数如下：
+    {
+      'id': id, //用户id
+      'index': this.msgList[index].id, //列表id
+      'invited': 'accept'  //表示接受邀请
+    }
+
+    返回的信息：
+    {
+    	account:'', //支付宝账号
+    	money: ''  //转账的money
+    }
+
+3.post提交‘拒绝邀请’
+  参数如下：  //同上，只是第三个参数是refuse
+  {
+	  'id': id,
+	  'index': this.msgList[index].id,
+	  'invited': 'refuse'  //表示拒绝邀请
+  }
+
+4.post提交截图
+  参数如下： //第一第二个参数同上
+  {
+	  'id': id,
+	  'index': this.msgList[index].id,
+	  'img': this.form.img //图片路径
+  }
+
+  成功result =1
+
+
+  ###‘接受邀请’这里：“请在半小时内确认，管理员才会将家长联系方式发送给您，否则将删除订单”
+  这个是我还没弄，是我写的，还是你写的？
+

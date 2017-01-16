@@ -197,7 +197,7 @@ class ParentOrder(models.Model):
     teacher_method_other = models.TextField(blank=True, null=True)
     learning_phase = models.IntegerField(blank=True, null=True)
     class_field = models.IntegerField(db_column='class', blank=True, null=True)  # Field renamed because it was a Python reserved word.
-    grade = models.IntegerField(blank=True, null=True)
+    grade = models.TextField(blank=True, null=True)
     require = models.TextField(blank=True, null=True)
     salary = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     allowance_not = models.IntegerField(blank=True, null=True, default=0)

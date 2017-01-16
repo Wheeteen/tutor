@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
 from django.db import transaction
-from wechat_auth.helpers import changeBaseToImg,changeObejct
+from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class CsrfExemptSessionAuthentication(SessionAuthentication):
 
@@ -42,7 +42,6 @@ def getTeachers(request):
         "subject":"语文",
         "grade":1,
         "hot":1,
-        "newest":1
         }
         :return:
             teacher obejcts
@@ -54,20 +53,17 @@ def getTeachers(request):
     subject = request.data.get("subject", 0)
     #根据年级排序
     grade = request.data.get("grade", 0)
-    #根据最新最热排序
-    hot = request.data.get("hot",0)
-    newest = request.data.get("newest",0)
+    #根据最新最热排序,两个参数是最热门和最新，默认为最热门（参数为1），然后是最新（参数为2）
+    hot = request.data.get("hot",1)
     where = []
-    order = 'name'
-    if hot:
-        order = '-hot_not'
-    if newest:
+    order = '-hot_not'
+    if hot == 2:
         order = '-create_time'
     if subject:
         where = ['FIND_IN_SET("'+subject+'",subject)']
     #年级,如果里面是字符串，需要加引号
     if grade:
-        where = ['FIND_IN_SET('+str(grade)+',grade)']
+        where = ['FIND_IN_SET("'+grade+'",grade)']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
     user = AuthUser.objects.get(username=request.user.username)
     pds = user.parentorder_set.all()
@@ -127,7 +123,8 @@ def getParentInfo(request):
     parent =  user.parentorder_set.all()
     if len(parent):
         serializer = ParentOrderSerializer(parent[0])
-        return Response(serializer.data)
+        po = serializer.data
+        return Response(po)
     return JsonError("not found")
 @login_required()
 @api_view(['POST'])
@@ -257,6 +254,7 @@ def getParentOrder(request):
     """
     获取家长列表。家长对于老师的申请处理
     :param request:
+    {"start":0,"size":6}
     :return:
     """
     size = int(request.data.get("size",0))
@@ -272,7 +270,10 @@ def getParentOrder(request):
         orderApply = po.orderapply_set.filter(apply_type=1, tea=tea)
         po.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
     serializer = ParentOrderSerializer(parentOrders, many=True)
-    return Response(serializer.data)
+    result = serializer.data
+    getParentOrderObj(result, many=True)
+    print result
+    return Response(result)
 
 @login_required()
 @api_view(['POST'])
@@ -317,7 +318,7 @@ def applyParent(request):
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def inviteTeacher(request):
     """
-    家长邀请老师
+    家长邀请老师,取消邀请
     :param request:
     {
         "tea_id"：2
@@ -327,32 +328,67 @@ def inviteTeacher(request):
     #TODO:消息提醒
     #获取老师id
     tea_id = request.data.get("tea_id", None)
+    type = request.data.get("type", None)
     user = AuthUser.objects.get(username=request.user.username)
     #查找家长订单
     #TODO： 每个家长是否只有一个需求
     parentorder = user.parentorder_set.all()[0]
     #查找教师
     teacher = Teacher.objects.get(tea_id=tea_id)
+    if type == 1 :
+        #家长邀请老师
+        #事务
+        try:
+            with transaction.atomic():
+                #新建订单
+                order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
+                                   pass_not=1,update_time=timezone.now())
+                order.save()
+                message_title = parentorder.name + u"向您发起了邀请!"
+                message_content = parentorder.name + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
+                #新建消息
+                message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
+                message.save()
+                #TODO:推送到微信端
 
-    #事务
-    try:
-        with transaction.atomic():
-            #新建订单
-            order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
-                               pass_not=1,update_time=timezone.now())
-            order.save()
-            message_title = parentorder.name + u"向您发起了邀请!"
-            message_content = parentorder.name + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
-            #新建消息
-            message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
-            message.save()
-            #TODO:推送到微信端
+        except Exception,e:
+            print e
+            return JsonError(e.message)
+        return JsonResponse()
+    elif type == 0 :
+        try:
+            with transaction.atomic():
+                #新建订单
+                order = OrderApply.objects.get(apply_type=2, pd=parentorder,tea=teacher)
+                order.delete()
+                message_title = parentorder.name + u"取消了邀请!"
+                message_content = parentorder.name + u"取消了邀请!"
+                #新建消息
+                message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
+                message.save()
+                #TODO:推送到微信端
 
-    except Exception,e:
-        print e
-        return JsonError(e.message)
-    return JsonResponse()
+        except Exception,e:
+            print e
+            return JsonError(e.message)
+        return JsonResponse()
 
+
+
+
+
+@login_required()
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def cancelInvite(request):
+    """
+    取消邀请老师
+    :param request:
+    {
+        "tea_id"：2
+    }
+    :return:
+    """
 def judge(teach_willing,result):
     if teach_willing == 2:
         result = u"愿意"
@@ -456,7 +492,10 @@ def getMsg(request):
     for msg in msgs:
         msg.isDetailed = False
     serializer = MessageSerializer(msgs, many=True)
-    return Response(serializer.data)
+    result = serializer.data
+    for r in result:
+        r["status"] = True if r["status"] else False
+    return Response(result)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))

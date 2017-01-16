@@ -1,0 +1,237 @@
+###家长推荐老师页面（推荐老师）###
+
+一、get获取数据（老师列表）：（url参数不一样）
+1.当params是params: {
+    'id': id //用户id
+	'selected': 'recommend'  //‘为您推荐’
+}  
+返回的是‘为您推荐’的列表，和是否已经邀请了老师(若邀请了invited=1，or invited =0)（因为每次只能邀请一位老师）
+if(res.json().invited == 1){
+  this.status.isInvited == '已邀请';
+}
+样式如下：
+
+2. 当params是
+form: {
+    'id': id //用户id
+	'selected': 'recommend',  //‘全部老师’
+	'subject': 'subject',  //'科目'
+    'grade': 'grade', //'年级'
+    'popular': 'popular' //‘最热门’
+}
+返回的是‘全部老师’的列表和是否已经邀请了老师(若邀请了invited=1，or invited =0) //这个是数据库所对应的status的状态
+
+3. 
+下面是对应的value.tag-->value.key ,传参的是对应的value.tag,样式同
+form: {
+    'id': id //用户id
+	'selected': 'recommend',  //‘全部老师’
+	'subject': '科目',  //'科目' ，传的都是中文文字
+    'grade': 'grade', //'年级'  同上
+    'popular': 'popular' //‘最热门’ 同上 'newest'
+}
+当subject:'othersubject'(其他)时，grade对应的是‘大学辅导’和‘成人辅导’
+
+formGroup: [{
+  value: [
+    {"tag":"科目"},
+    {"tag":"数学"},
+    {"tag":"语文"},
+    {"tag":"英语"},
+    {"tag":"物理"},
+    {"tag":"化学"},
+    {"tag":"生物"},
+    {"tag":"奥数"},
+    {"tag":"音乐"},
+    {"tag":"美术"},
+    {"tag":"全科"},
+    {"tag":"其他"}
+  ]
+},{
+  value:[//key忽略
+    {"tag":"年级","key":"grade"},
+    {"tag":"小学1年级","key":"pri1"},
+    {"tag":"小学2年级","key":"pri2"},
+    {"tag":"小学3年级","key":"pri3"},
+    {"tag":"小学4年级","key":"pri4"},
+    {"tag":"小学5年级","key":"pri5"},
+    {"tag":"小学6年级","key":"pri6"},
+    {"tag":"初中1年级","key":"jun1"},
+    {"tag":"初中2年级","key":"jun2"},
+    {"tag":"初中3年级","key":"jun3"},
+    {"tag":"高中1年级","key":"sen1"},
+    {"tag":"高中2年级","key":"sen2"},
+    {"tag":"高中3年级","key":"sen3"}              
+  ]
+},{
+  value:[//key忽略
+    {"tag":"大学辅导","key":"unitutor"},
+    {"tag":"成人辅导","key":"adulttutor"}
+  ]
+},{
+  value:[ //key忽略
+    {"tag":"最热门","key":"popular"},
+    {"tag":"最新","key":"newest"}
+  ]
+}],
+
+返回的列表和是否已经邀请了老师(若邀请了invited=1，or invited =0)//这个是数据库所对应的status的状态
+返回的列表如下：
+recommendList:[
+     {
+     id: '', //该老师列表的id
+     img:'../img/user02.png', //头像的路径
+     tutor:'张先生', //姓名
+     isInvited:'', //是否邀请(已邀请，'')
+     subject:'数学', //科目
+     grade:'高一',  //年级
+     distance:0.6,  //距离
+     address:"天河", //老师地址
+     time:"周六上午",//上课时间
+     classAddress:"家长家",  //这个是可接受地点 (这里之前拼写的时候少了个d)
+     char:"nice,细心",   //是“教学方法”
+     expect:"上课要耐心细致",  //上课期望
+     sex:'男',  //性别
+     hprice:'20/h',  //价格
+     achieve: "",  //相关成绩
+     introduce: '', //个人简介
+     major: '', //专业
+     image:[]  //家教秀的图片
+    },
+     
+  ],
+
+
+二、get获取轮播图片，还需要返回点击该图片跳转的路径
+  （最多5张图片），返回样式
+    [{
+        href:"",
+        imgSrc:""
+    },{
+        href:"",
+        imgSrc:""
+    }],
+
+
+三、邀请老师和取消邀请
+1.邀请老师
+  post传参：
+  {
+	'id': id, //用户的id
+	'index': this.recommendList[index].id, //邀请老师的那个列表的Id
+	'invited': 'invited'  //代表邀请老师
+  }
+
+  2.取消邀请：
+   （同上）
+   {
+	'id': id, //同上
+	'index': this.recommendList[index].id, //同上
+	'invited': 'cancel'  //代表取消邀请
+  }
+
+
+###家长个人主页（我的）###
+
+1.get该用户是否有信息提醒
+  url上传了id
+  当返回的result为0时，则表示没有信息提醒（有信息提醒则表示有信息时会有消息提醒）
+  result为1时，为true(默认为true)
+
+ 2.当信息提醒改变是，post：
+  {
+	'id':id, //用户id
+	'remindInfo' : res  //(res为true or false)
+  }
+  应该不用返回信息
+
+
+ ###我的消息（家长个人主页之我的消息）
+ 1.get我的消息
+   url传的参数是用户的id
+   返回的列表如下：
+    msgList:[
+      {'text':'张先生已接受您的报名', //用户的简短信息
+      'detailed':'张先生已接受您的报名,请到“我的老师”处查看详细信息',  //展开的详细信息
+      'strong':true, //用户还没看过这条信息（false为用户已经看过这条信息)
+      'isDetailed':false  //(是否展开来看该简短信息的详细信息，全部为false就好)
+      'id':'' //信息的Id
+      },
+      
+  	]
+  注意：get返回的信息中还包括：
+  {'id':'','text':'好学吧家教服务平台邀请您填写反馈意见啦','strong':true} //在后台管理处有一处‘提醒家长’，提醒家长就是提醒家长填写反馈意见
+
+ 2.post提交用户看过这条信息
+
+   参数为：
+   {
+      'id': id, //用户id
+      'index': this.msgList[index].id  //该信息的id
+   }
+
+3.post提交信息反馈
+  参数为：
+  form:{
+	'tutorService': '', //家教服务内容
+	'appService': '', //平台服务内容
+	'xing': '' //反馈的星，内容为（1,2,3,4,5，1表示1颗星）
+  },
+  
+  成功返回result为1.
+
+
+###我的老师（家长个人主页之我的老师）###
+1.get我的老师
+   url传的参数是用户的id
+   (1)返回列表
+   (2)返回是否已经邀请或接受了老师(若邀请了invited=1，or invited =0;若接受了accept = 1, or 0)
+
+   返回的列表如下： (同parentPage里面的recommendList（这里的某些字段可能不一样），只是多了一个isRed:当isInvited:'拒绝邀请'--->isRed: true,其他为false)
+
+   tutorList:[
+       {
+       'id': ''//该老师列表的id
+       img:'../img/user02.png',
+       tutor:'张先生',
+       isInvited:'已邀请',
+       isRed:false, //当isInvited:'拒绝邀请'--->isRed: true,其他为false
+
+       subject:'数学',
+       grade:'高一',
+       distance:0.6,
+       address:"天河",
+       time:"周六上午",
+       classAdress:"家长家",
+       char:"nice,细心",
+       expect:"上课要耐心细致",
+       sex:'男',
+       hprice:'20/h',
+       stuStudy:'学习成绩进步很大',
+       otherMsg:'特别受学生喜欢',
+       image:[]},
+       
+	],
+
+ 2.post提交信息：
+   （1）"再次邀请老师"
+   参数为：
+   {
+    'id': id, //用户id
+	'index': this.tutorList[index].id, //该列表的id
+	'invited': 'invited' //邀请老师
+   }
+   (2)'选择该老师'
+   参数为：(只是'invited': 'selected'，其他同)
+   {
+    'id': id, //用户id
+	'index': this.tutorList[index].id, //该列表的id
+	'invited': 'selected' //邀请老师
+   }
+   （3）'取消选择'：
+   参数为：(只是'invited': 'cancelInvite/cancelSelected'，其他同)
+   {
+    'id': id, //用户id
+	'index': this.tutorList[index].id, //该列表的id
+	'invited': 'cancelInvite/cancelSelected' //cancelInvite：取消邀请，cancelSelected：取消选择
+   }
