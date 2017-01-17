@@ -142,7 +142,7 @@ def changeObejct(obj):
 def getParentOrderObj(objs,many=False):
 
     """
-    将对象转换为前端所需对象
+    将parentOrder对象转换为前端所需对象
     :param obj:
     :return:
     """
@@ -151,16 +151,42 @@ def getParentOrderObj(objs,many=False):
             changeParentOrderObj(obj)
     else:
         changeParentOrderObj(objs)
+
+def getTeacherObj(objs, many=False):
+    """
+    将teacher对象转换为前端所需对象
+    :param objs:
+    :param many:
+    :return:
+    """
+    if many:
+        for obj in objs:
+            changeTeacherObj(obj)
+    else:
+        changeTeacherObj(objs)
+
 def changeParentOrderObj(obj):
-    pw = obj.get('parent_willing', None)
-    obj["isInvited"] = ''
-    if pw:
-        if pw == 1:
-            obj["isInvited"] = u"已报名"
-        elif pw == 2:
-            obj["isInvited"] = u"已接受"
-        elif pw == 0:
-            obj["isInvited"] = u"已拒绝"
+    """
+    改变单个parentOrderObj对象
+    :param obj:
+    :return:
+    """
+    changeParentWilling(obj)
+    changeTeacherSex(obj)
+    changeWeekToRange(obj, week)
+    changeWeekEndToRange(obj, weekend)
+
+def changeTeacherObj(obj):
+    """
+    改变单个teacher对象
+    :param obj:
+    :return:
+    """
+    changeQualification(obj)
+    changeSex(obj)
+    changeWeekToRange(obj, week)
+    changeWeekEndToRange(obj, weekend)
+def changeTeacherSex(obj):
     #性别
     teacher_sex = obj.get('teacher_sex', 0)
     if teacher_sex == 0 or teacher_sex == None:
@@ -170,12 +196,46 @@ def changeParentOrderObj(obj):
     elif teacher_sex == 2:
         obj["teacher_sex"] = u"女"
 
+def changeSex(obj):
+    sex = obj.get('sex', 0)
+    if sex == 0 or sex == None:
+        obj["sex"] = u"不限"
+    elif sex == 1:
+        obj["sex"] = u"男"
+    elif sex == 2:
+        obj["sex"] = u"女"
 
-
-    changeWeekToRange(obj, week)
-    changeWeekEndToRange(obj, weekend)
+def changeQualification(obj):
+    #学历状态: 1-本科生 2-研究生 3-毕业生
+    qualification = obj.get('qualification', None)
+    if qualification:
+        if qualification == 1:
+            obj["qualification"] = u"本科生"
+        elif qualification == 2:
+            obj["qualification"] = u"研究生"
+        if qualification == 3:
+            obj["qualification"] = u"毕业生"
+    else:
+        obj["qualification"] = u""
+def changeParentWilling(obj):
+    #家长的意愿:2-愿意 1-待处理 0-拒绝 (老师主动申请的默认为待处理，邀请老师的默认为愿意)
+    pw = obj.get('parent_willing', None)
+    obj["isInvited"] = ''
+    if pw:
+        if pw == 1:
+            obj["isInvited"] = u"已报名"
+        elif pw == 2:
+            obj["isInvited"] = u"已接受"
+        elif pw == 0:
+            obj["isInvited"] = u"已拒绝"
 
 def changeWeek(obj, times):
+    """
+    兼容接受到的对象如果为空的字符串则删除
+    :param obj:
+    :param times:
+    :return:
+    """
     for time in times:
         if obj.has_key(time):
             m = obj.get(time, None)
@@ -186,10 +246,16 @@ def changeWeek(obj, times):
 
 
 def changeWeekToRange(obj, time):
+    """
+    将星期一到星期五的字段返回前端所要求的数就
+    :param obj:
+    :param time:
+    :return:
+    """
     obj["time"]  = ""
     for index in range(0, len(time),2):
         field_name = time[index]
-        if obj[field_name] != None:
+        if obj[field_name]:
             if field_name.startswith("mon"):
                 date = u"一"
             if field_name.startswith("tues"):
@@ -205,9 +271,15 @@ def changeWeekToRange(obj, time):
             obj["time"] = obj["time"] + u"星期" + date + str(start) + u"点到" + str(end) + u"点 "
 
 def changeWeekEndToRange(obj, time):
+    """
+    将周末的字段返回前端所要求的数就
+    :param obj:
+    :param time:
+    :return:
+    """
     obj["time"] = obj.get("time", "")
     for field_name in time:
-        if obj[field_name] != None:
+        if obj[field_name]:
             if field_name == "sat_morning":
                 date = u"星期六早上 "
             if field_name == "sat_afternoon":
