@@ -216,10 +216,13 @@ def changeTime(obj):
     """
     update_time = obj.get('update_time', None)
     create_time = obj.get('create_time', None)
+    deadline = obj.get('deadline', None)
     if update_time:
         obj["update_time"] = update_time[:10]
     if create_time:
         obj["create_time"] = create_time[:10]
+    if deadline:
+        obj["deadline"] = deadline[:10]
 
 def changeTeacherSex(obj):
     #性别
