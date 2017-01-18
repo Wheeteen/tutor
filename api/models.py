@@ -163,6 +163,7 @@ class OrderApply(models.Model):
     screenshot_path = models.TextField(blank=True, null=True)
     pass_not = models.IntegerField()
     expectation = models.TextField(blank=True, null=True)
+    finished = models.IntegerField(default=0)
 
     class Meta:
         managed = False
