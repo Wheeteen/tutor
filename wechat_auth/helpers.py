@@ -130,8 +130,8 @@ def changeObejct(obj):
     :param obj:
     :return:
     """
-    w = week + weekend
-    changeWeek(obj,w)
+    changeWeek(obj,week)
+    changeWeekend(obj,weekend)
     print obj
     if obj.has_key('salary'):
         obj['salary'] = float('%.2f' % float(obj['salary'])) if obj['salary'] != "" else 0.00
@@ -175,7 +175,8 @@ def changeParentOrderObj(obj):
     changeTeacherSex(obj)
     changeWeekToRange(obj, week)
     changeWeekEndToRange(obj, weekend)
-
+    changeTime(obj)
+    changeLearningPhase(obj)
 def changeTeacherObj(obj):
     """
     改变单个teacher对象
@@ -186,6 +187,40 @@ def changeTeacherObj(obj):
     changeSex(obj)
     changeWeekToRange(obj, week)
     changeWeekEndToRange(obj, weekend)
+    changeTime(obj)
+
+def changeLearningPhase(obj):
+    """
+    学习阶段(0-其他 1-幼升小 2-小学 3-初中 4-高中)
+    :param obj:
+    :return:
+    """
+    learning_phase = obj.get('learning_phase', None)
+    obj["learning_phase"] = u''
+    if learning_phase == 0 :
+        obj["learning_phase"] = u'其他'
+    if learning_phase == 1:
+        obj["learning_phase"] = u'幼升小'
+    if learning_phase == 2:
+        obj["learning_phase"] = u'小学'
+    if learning_phase == 3:
+        obj["learning_phase"] = u'初中'
+    if learning_phase == 4:
+        obj["learning_phase"] = u'高中'
+
+def changeTime(obj):
+    """
+    将时间格式转换为前端所需，2017-01-18T10:58:11改成2017-01-18这
+    :param obj:
+    :return:
+    """
+    update_time = obj.get('update_time', None)
+    create_time = obj.get('create_time', None)
+    if update_time:
+        obj["update_time"] = update_time[:10]
+    if create_time:
+        obj["create_time"] = create_time[:10]
+
 def changeTeacherSex(obj):
     #性别
     teacher_sex = obj.get('teacher_sex', 0)
@@ -244,7 +279,20 @@ def changeWeek(obj, times):
             else:
                 del obj[time]
 
-
+def changeWeekend(obj, weekend):
+    """
+    兼容接受到的对象, weekend true/false change 1/0
+    :param obj:
+    :param weekend:
+    :return:
+    """
+    for time in weekend:
+        if obj.has_key(time):
+            m = obj.get(time, False)
+            if m and m != "":
+                obj[time] = 1
+            else:
+                obj[time] = 0
 def changeWeekToRange(obj, time):
     """
     将星期一到星期五的字段返回前端所要求的数就

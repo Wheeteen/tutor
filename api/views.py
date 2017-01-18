@@ -276,8 +276,10 @@ def getParentOrder(request):
         return JsonError("家长不存在！请重新填问卷")
     parentOrders = ParentOrder.objects.all()[start:start + size]
     for po in parentOrders:
+        #老师主动申请
         orderApply = po.orderapply_set.filter(apply_type=1, tea=tea)
         po.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
+        #家长主动报名
     serializer = ParentOrderSerializer(parentOrders, many=True)
     result = serializer.data
     getParentOrderObj(result, many=True)
