@@ -61,7 +61,7 @@ def getTeacherInfo(request):
     if len(teacher):
         serializer = TeacherSerializer(teacher[0])
         result = serializer.data
-        getTeacherObj(result)
+        # getTeacherObj(result)
         return Response(result)
     return JsonError("not found")
 @login_required()
@@ -78,7 +78,7 @@ def getParentInfo(request):
     if len(parent):
         serializer = ParentOrderSerializer(parent[0])
         po = serializer.data
-        getParentOrderObj(po)
+        # getParentOrderObj(po)
         return Response(po)
     return JsonError("not found")
 @login_required()
@@ -122,10 +122,12 @@ def updateTeacher(request):
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
         teacher = user.teacher_set.update(**temp)
-        serializer = TeacherSerializer(user.teacher_set.all()[0])
-        result = serializer.data
-        getTeacherObj(result)
-        return Response(result)
+        return JsonResponse()
+        # 返回更新后的对象
+        # serializer = TeacherSerializer(user.teacher_set.all()[0])
+        # result = serializer.data
+        # getTeacherObj(result)
+        # return Response(result)
     return JsonError("not found")
 
 @login_required()
@@ -186,10 +188,11 @@ def updateParentOrder(request):
         changeObejct(temp)
         temp['update_time']= now
         po = user.parentorder_set.update(**temp)
-        serializer = ParentOrderSerializer(user.parentorder_set.all()[0])
-        result = serializer.data
-        getParentOrderObj(result)
-        return Response(result)
+        return JsonResponse()
+        # serializer = ParentOrderSerializer(user.parentorder_set.all()[0])
+        # result = serializer.data
+        # getParentOrderObj(result)
+        # return Response(result)
     return JsonError("not found")
 
 @login_required()
@@ -254,11 +257,20 @@ def getTeachers(request):
         return JsonError("家长不存在！请重新填问卷")
     serializer = TeacherSerializer(teachers, many=True)
     teachersData = serializer.data
-
+    #获取到老师的数据，需要判断是不是报名或者被邀请
     for t in teachersData:
         #家长主动
         orderApplyA = OrderApply.objects.filter(apply_type=2, pd=pd,tea= t)
         if len(orderApplyA):
+            orderApply = orderApplyA[0]
+            #完成
+            if orderApply.finished and orderApply.teacher_willing == 1:
+                t.isInvited = u'已完成'
+            elif orderApply.teacher_willing == 0:
+                t.isInvited = u'已拒绝'
+            elif orderApply.teacher_willing == 1:
+                t.isInvited = u'已完成'
+
             t.teacher_willing = orderApplyA[0].teacher_willing
         else:
             #老师主动
@@ -319,29 +331,31 @@ def applyParent(request):
     expectation = request.data.get("expectation", None)
     user = AuthUser.objects.get(username=request.user.username)
     #查找教师
-    teacher = user.teacher_set.all()[0]
+    teachers = user.teacher_set.all()
     #查找家长订单
     pd = ParentOrder.objects.filter(pd_id=pd_id)
-    if len(pd):
+    if len(pd) and len(teachers):
+        teacher = teachers[0]
         if type == 1:
-                #老师报名家长
-                #如果老师可以报名多个家长
-                #事务
-                try:
-                    with transaction.atomic():
-                        #新建订单
-                        order = OrderApply(apply_type=1, pd=pd[0],tea=teacher,parent_willing=1,teacher_willing=2,
-                                           pass_not=1,update_time=timezone.now(),expectation=expectation,finished=0)
-                        order.save()
-                        message_content = teacher.name + u"向您报名!"
-                        #新建消息
-                        message = Message(sender=user, receiver=pd[0].wechat, message_content=message_content,status=0)
-                        message.save()
-                        #TODO:推送到微信端
+            #老师报名家长
+            #老师可以报名多个家长!!
+            #事务
+            try:
+                with transaction.atomic():
+                    #新建订单
+                    order = OrderApply(apply_type=1, pd=pd[0],tea=teacher,parent_willing=1,teacher_willing=2,
+                                       pass_not=1,update_time=timezone.now(),expectation=expectation,finished=0)
+                    order.save()
+                    message_title = teacher.name + u"向您报名!"
+                    message_content = teacher.name + u"向您报名!请到“我的老师”处查看详细信息!"
+                    #新建消息
+                    message = Message(sender=user, receiver=pd[0].wechat,message_title=message_title, message_content=message_content,status=0)
+                    message.save()
+                    #TODO:推送到微信端
 
-                except Exception,e:
-                    return JsonError(e.message)
-                return JsonResponse()
+            except Exception,e:
+                return JsonError(e.message)
+            return JsonResponse()
 
         elif type == 0 :
             #老师取消报名家长
@@ -349,7 +363,8 @@ def applyParent(request):
                 with transaction.atomic():
                     #删除订单
                     order = OrderApply.objects.get(apply_type=1, pd=pd[0],tea=teacher)
-                    order.delete()
+                    order.finished = 1
+                    order.save()
                     message_title = teacher.name + u"取消了报名!"
                     message_content = teacher.name + u"取消了报名!"
                     #新建消息
@@ -358,11 +373,10 @@ def applyParent(request):
                     #TODO:推送到微信端
 
             except Exception,e:
-                print e
                 return JsonError(e.message)
             return JsonResponse()
     else:
-            return JsonError(u"不存在家长订单!")
+        return JsonError(u"不存在家长订单或老师!")
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -383,50 +397,52 @@ def inviteTeacher(request):
     user = AuthUser.objects.get(username=request.user.username)
     #查找家长订单
     #TODO： 每个家长是否只有一个需求
-    parentorder = user.parentorder_set.all()[0]
+    parentorders = user.parentorder_set.all()
     #查找教师
-    teacher = Teacher.objects.get(tea_id=tea_id)
-    if type == 1 :
-        #家长邀请老师
-        #如果家长已经邀请了老师，返回错误
-        oa = OrderApply.objects.filter(apply_type=2, pd=parentorder)
-        if len(oa) != 0:
-            return JsonError("已经邀请了老师")
-        #事务
-        try:
-            with transaction.atomic():
-                #新建订单
-                order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
-                                   pass_not=1,update_time=timezone.now(),finished=0)
-                order.save()
-                message_title = parentorder.name + u"向您发起了邀请!"
-                message_content = parentorder.name + u"向您发起了邀请!请到“我的老师”处查看详细信息!"
-                #新建消息
-                message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
-                message.save()
-                #TODO:推送到微信端
+    teachers = Teacher.objects.filter(tea_id=tea_id)
+    if len(parentorders) and len(teachers):
+        parentorder = parentorders[0]
+        teacher = teachers[0]
+        if type == 1 :
+            #家长邀请老师
+            #如果家长已经邀请了老师，返回错误
+            oa = OrderApply.objects.filter(apply_type=2, pd=parentorder)
+            if len(oa) != 0:
+                return JsonError("已经邀请了老师")
+            #事务
+            try:
+                with transaction.atomic():
+                    #新建订单
+                    order = OrderApply(apply_type=2, pd=parentorder,tea=teacher,parent_willing=2,teacher_willing=1,
+                                       pass_not=1,update_time=timezone.now(),finished=0)
+                    order.save()
+                    message_title = parentorder.name + u"向您发起了邀请!"
+                    message_content = parentorder.name + u"向您发起了邀请!请到“我的家长”处查看详细信息!"
+                    #新建消息
+                    message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
+                    message.save()
+                    #TODO:推送到微信端
 
-        except Exception,e:
-            print e
-            return JsonError(e.message)
-        return JsonResponse()
-    elif type == 0 :
-        try:
-            with transaction.atomic():
-                #新建订单
-                order = OrderApply.objects.get(apply_type=2, pd=parentorder,tea=teacher)
-                order.delete()
-                message_title = parentorder.name + u"取消了邀请!"
-                message_content = parentorder.name + u"取消了邀请!"
-                #新建消息
-                message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
-                message.save()
-                #TODO:推送到微信端
+            except Exception,e:
+                return JsonError(e.message)
+            return JsonResponse()
+        elif type == 0 :
+            try:
+                with transaction.atomic():
+                    #取消订单
+                    order = OrderApply.objects.get(apply_type=2, pd=parentorder,tea=teacher)
+                    order.finished = 1
+                    order.save()
+                    message_title = parentorder.name + u"取消了邀请!"
+                    message_content = parentorder.name + u"取消了邀请!"
+                    #新建消息
+                    message = Message(sender=user, receiver=teacher.wechat, message_title=message_title, message_content=message_content,status=0)
+                    message.save()
+                    #TODO:推送到微信端
 
-        except Exception,e:
-            print e
-            return JsonError(e.message)
-        return JsonResponse()
+            except Exception,e:
+                return JsonError(e.message)
+            return JsonResponse()
 
 def judge(teach_willing,result):
     if teach_willing == 2:
@@ -438,7 +454,6 @@ def judge(teach_willing,result):
 @login_required()
 @api_view(['GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
-
 def getOrder(request):
     user = AuthUser.objects.get(username=request.user.username)
     t = user.teacher_set.all()
