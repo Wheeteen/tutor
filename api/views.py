@@ -64,6 +64,7 @@ def getTeacherInfo(request):
         # getTeacherObj(result)
         return Response(result)
     return JsonError("not found")
+
 @login_required()
 @api_view(['GET'])
 @csrf_exempt
@@ -81,6 +82,7 @@ def getParentInfo(request):
         # getParentOrderObj(po)
         return Response(po)
     return JsonError("not found")
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -241,10 +243,12 @@ def getTeachers(request):
     hot = request.data.get("hot",1)
     where = []
     order = '-hot_not'
+    print hot
     if hot == 2:
         order = '-create_time'
     if subject:
         where = ['FIND_IN_SET("'+subject+'",subject)']
+    print order
     #年级,如果里面是字符串，需要加引号
     if grade:
         where = ['FIND_IN_SET("'+grade+'",grade)']
@@ -255,20 +259,21 @@ def getTeachers(request):
         pd = pds[0]
     else:
         return JsonError("家长不存在！请重新填问卷")
-    serializer = TeacherSerializer(teachers, many=True)
-    teachersData = serializer.data
+
     #获取到老师的数据，需要判断是不是报名或者被邀请
-    for t in teachersData:
+    for t in teachers:
+        t.isInvited = ''
         #家长主动
         orderApplyA = OrderApply.objects.filter(apply_type=2, pd=pd,tea= t)
+        print len(orderApplyA)
         if len(orderApplyA):
             orderApply = orderApplyA[0]
             #完成
-            if orderApply.finished and orderApply.teacher_willing == 1:
-                t.isInvited = u'已完成'
+            if orderApply.teacher_willing == 1:
+                t.isInvited = u'已邀请'
             elif orderApply.teacher_willing == 0:
                 t.isInvited = u'已拒绝'
-            elif orderApply.teacher_willing == 1:
+            elif orderApply.teacher_willing == 2:
                 t.isInvited = u'已完成'
 
             t.teacher_willing = orderApplyA[0].teacher_willing
@@ -276,9 +281,17 @@ def getTeachers(request):
             #老师主动
             orderApplyB = OrderApply.objects.filter(apply_type=1, pd=pd,tea= t)
             if len(orderApplyB):
-                t.parent_willing = orderApplyB[0].parent_willing
+                # t.parent_willing = orderApplyB[0].parent_willing
+                orderApply = orderApplyB[0]
+                if orderApply.parent_willing == 1:
+                    t.isInvited = u'已报名'
+                elif orderApply.parent_willing == 0:
+                    t.isInvited = u'已拒绝'
+                elif orderApply.parent_willing == 2:
+                    t.isInvited = u'已完成'
 
-
+    serializer = TeacherSerializer(teachers, many=True)
+    teachersData = serializer.data
     getTeacherObj(teachersData,many=True)
     return Response(teachersData)
 
@@ -302,12 +315,36 @@ def getParentOrder(request):
         return JsonError("家长不存在！请重新填问卷")
     parentOrders = ParentOrder.objects.all()[start:start + size]
     for po in parentOrders:
-        #老师主动申请
-        orderApply = po.orderapply_set.filter(apply_type=1, tea=tea)
-        po.parent_willing = orderApply[0].parent_willing if len(orderApply) else None
-        #家长主动报名
+        po.isInvited = ''
+        #老师主动报名
+        orderApplyA = po.orderapply_set.filter(apply_type=1, tea=tea)
+        if len(orderApplyA):
+            orderApply = orderApplyA[0]
+            #完成
+            if orderApply.parent_willing == 1:
+                po.isInvited = u'已报名'
+            elif orderApply.parent_willing == 0:
+                po.isInvited = u'已拒绝'
+            elif orderApply.parent_willing == 2:
+                po.isInvited = u'已完成'
+        else:
+            #家长主动邀请
+            orderApplyB = po.orderapply_set.filter(apply_type=2, tea= tea)
+            if len(orderApplyB):
+                # t.parent_willing = orderApplyB[0].parent_willing
+                orderApply = orderApplyB[0]
+                print orderApply.teacher_willing
+                if orderApply.teacher_willing == 1:
+                    print '---=-'
+                    po.isInvited = u'已邀请'
+                elif orderApply.teacher_willing == 0:
+                    po.isInvited = u'已拒绝'
+                elif orderApply.teacher_willing == 2:
+                    po.isInvited = u'已完成'
+
     serializer = ParentOrderSerializer(parentOrders, many=True)
     result = serializer.data
+    print result
     getParentOrderObj(result, many=True)
     return Response(result)
 
@@ -363,8 +400,9 @@ def applyParent(request):
                 with transaction.atomic():
                     #删除订单
                     order = OrderApply.objects.get(apply_type=1, pd=pd[0],tea=teacher)
-                    order.finished = 1
-                    order.save()
+                    # order.finished = 1
+                    # order.save()
+                    order.delete()
                     message_title = teacher.name + u"取消了报名!"
                     message_content = teacher.name + u"取消了报名!"
                     #新建消息
@@ -377,6 +415,7 @@ def applyParent(request):
             return JsonResponse()
     else:
         return JsonError(u"不存在家长订单或老师!")
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -385,7 +424,7 @@ def inviteTeacher(request):
     家长邀请老师,取消邀请
     :param request:
     {
-        "tea_id"：2,
+        "tea_id":2,
         "type":1/0
     }
     :return:
@@ -431,8 +470,9 @@ def inviteTeacher(request):
                 with transaction.atomic():
                     #取消订单
                     order = OrderApply.objects.get(apply_type=2, pd=parentorder,tea=teacher)
-                    order.finished = 1
-                    order.save()
+                    order.delete()
+                    # order.finished = 1
+                    # order.save()
                     message_title = parentorder.name + u"取消了邀请!"
                     message_content = parentorder.name + u"取消了邀请!"
                     #新建消息
@@ -443,6 +483,8 @@ def inviteTeacher(request):
             except Exception,e:
                 return JsonError(e.message)
             return JsonResponse()
+    else:
+        return JsonError(u"不存在家长订单或老师!")
 
 def judge(teach_willing,result):
     if teach_willing == 2:

@@ -171,7 +171,7 @@ def changeParentOrderObj(obj):
     :param obj:
     :return:
     """
-    changeParentWilling(obj)
+    # changeParentWilling(obj)
     changeTeacherSex(obj)
     changeWeekToRange(obj, week)
     changeWeekEndToRange(obj, weekend)
@@ -277,7 +277,7 @@ def changeWeek(obj, times):
     for time in times:
         if obj.has_key(time):
             m = obj.get(time, None)
-            if m != "":
+            if m != "" and m:
                 obj[time] = int(m)
             else:
                 del obj[time]
