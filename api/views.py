@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
 from django.db import transaction
-from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj
+from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class CsrfExemptSessionAuthentication(SessionAuthentication):
 
@@ -48,7 +48,7 @@ def getInfo(request):
     return Response(serializer.data)
 
 @login_required()
-@api_view(['GET'])
+@api_view(['GET','POST'])
 @csrf_exempt
 def getTeacherInfo(request):
     """
@@ -57,16 +57,26 @@ def getTeacherInfo(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
-    teacher = user.teacher_set.all()
-    if len(teacher):
-        serializer = TeacherSerializer(teacher[0])
-        result = serializer.data
-        # getTeacherObj(result)
-        return Response(result)
-    return JsonError("not found")
+    if request.method == "GET":
+        teacher = user.teacher_set.all()
+        if len(teacher):
+            serializer = TeacherSerializer(teacher[0])
+            result = serializer.data
+            # getTeacherObj(result)
+        else:
+            return JsonError("not found")
+    elif request.method == "POST":
+        tea_id = request.data.get('tea_id',None)
+        teas = Teacher.objects.filter(tea_id = tea_id)
+        if len(teas):
+            serializer = TeacherSerializer(teas[0])
+            result = serializer.data
+    changeTime(result)
+    return Response(result)
+
 
 @login_required()
-@api_view(['GET'])
+@api_view(['GET','POST'])
 @csrf_exempt
 def getParentInfo(request):
     """
@@ -75,14 +85,21 @@ def getParentInfo(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
-    parent =  user.parentorder_set.all()
-    if len(parent):
-        serializer = ParentOrderSerializer(parent[0])
-        po = serializer.data
-        # getParentOrderObj(po)
-        return Response(po)
-    return JsonError("not found")
-
+    if request.method == "GET":
+        parents =  user.parentorder_set.all()
+        if len(parents):
+            serializer = ParentOrderSerializer(parents[0])
+            po = serializer.data
+        else:
+            return JsonError("not found")
+    elif request.method == "POST":
+        pd_id = request.data.get('pd_id',None)
+        pds = ParentOrder.objects.filter(pd_id = pd_id)
+        if len(pds):
+            serializer = ParentOrderSerializer(pds[0])
+            result = serializer.data
+    changeTime(result)
+    return Response(result)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -357,9 +374,11 @@ def applyParent(request):
     :return:
     """
     #获取家长id
-    pd_id = request.data.get("pd_id", None)
-    type = request.data.get("type", None)
-    expectation = request.data.get("expectation", None)
+    temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+    pd_id = int(temp.get("pd_id", -1))
+    method = int(temp.get("type", -1))
+    expectation = temp.get("expectation", None)
+
     user = AuthUser.objects.get(username=request.user.username)
     #查找教师
     teachers = user.teacher_set.all()
@@ -367,7 +386,7 @@ def applyParent(request):
     pd = ParentOrder.objects.filter(pd_id=pd_id)
     if len(pd) and len(teachers):
         teacher = teachers[0]
-        if type == 1:
+        if method == 1:
             #老师报名家长
             #老师可以报名多个家长!!
             #事务
@@ -388,7 +407,7 @@ def applyParent(request):
                 return JsonError(e.message)
             return JsonResponse()
 
-        elif type == 0 :
+        elif method == 0 :
             #老师取消报名家长
             try:
                 with transaction.atomic():
@@ -502,6 +521,7 @@ def handleOrder(request):
 
     else:
         return JsonError(u"发送的数据有误！")
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -651,7 +671,6 @@ def getOrder(request):
 
     if not oas:
         return Response({"info":"没有订单！"})
-
 
 @login_required()
 @api_view(['POST'])
