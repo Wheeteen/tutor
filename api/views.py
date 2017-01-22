@@ -243,12 +243,10 @@ def getTeachers(request):
     hot = request.data.get("hot",1)
     where = []
     order = '-hot_not'
-    print hot
     if hot == 2:
         order = '-create_time'
     if subject:
         where = ['FIND_IN_SET("'+subject+'",subject)']
-    print order
     #年级,如果里面是字符串，需要加引号
     if grade:
         where = ['FIND_IN_SET("'+grade+'",grade)']
@@ -265,7 +263,6 @@ def getTeachers(request):
         t.isInvited = ''
         #家长主动
         orderApplyA = OrderApply.objects.filter(apply_type=2, pd=pd,tea= t)
-        print len(orderApplyA)
         if len(orderApplyA):
             orderApply = orderApplyA[0]
             #完成
@@ -333,9 +330,7 @@ def getParentOrder(request):
             if len(orderApplyB):
                 # t.parent_willing = orderApplyB[0].parent_willing
                 orderApply = orderApplyB[0]
-                print orderApply.teacher_willing
                 if orderApply.teacher_willing == 1:
-                    print '---=-'
                     po.isInvited = u'已邀请'
                 elif orderApply.teacher_willing == 0:
                     po.isInvited = u'已拒绝'
@@ -344,7 +339,6 @@ def getParentOrder(request):
 
     serializer = ParentOrderSerializer(parentOrders, many=True)
     result = serializer.data
-    print result
     getParentOrderObj(result, many=True)
     return Response(result)
 
@@ -579,7 +573,6 @@ def judge(teach_willing,result):
         result = u"愿意"
     elif teach_willing == 0:
         result = u"拒绝"
-    print result
     return result
 @login_required()
 @api_view(['GET'])
@@ -594,10 +587,9 @@ def getOrder(request):
         oas = OrderApply.objects.filter(tea=t[0])
         results = []
         for oa in oas:
-            temp = {}
-            oa.type = "teacher"
-            oa.name= str(oa.pd.name)
+            oa.name= oa.pd.name
             if oa.apply_type == 2:
+                oa.type = "parent"
                 #家长主动
                 oa.result= judge(oa.teacher_willing,u"已邀请") #默认是待处理
                 #是否接受邀请
@@ -611,6 +603,7 @@ def getOrder(request):
                     pass
 
             elif oa.apply_type == 1:
+                oa.type = "teacher"
                 #教师主动
                 oa.result= judge(oa.parent_willing,u"已报名")
                 #是否取消报名
@@ -627,10 +620,9 @@ def getOrder(request):
         oas = OrderApply.objects.filter(pd=pd[0])
         results = []
         for oa in oas:
-            temp = {}
-            oa.type = "parent"
-            oa.name= str(oa.tea.name)
+            oa.name= oa.tea.name
             if oa.apply_type == 2:
+                oa.type = "parent"
                 #家长主动
                 oa.result= judge(oa.teacher_willing,u"已邀请")
                 #是否取消邀请
@@ -641,9 +633,9 @@ def getOrder(request):
                     #老师已经处理，则直接返回结果。
                     oa.finish = 1
             elif oa.apply_type == 1:
+                oa.type = "teacher"
                 #教师主动
                 oa.result= judge(oa.parent_willing,u"已报名")
-                print '-----------'
                 #是否接受报名
                 if oa.parent_willing == 1:
                     #教师主动，并且家长待处理，应该弹出取消报名
