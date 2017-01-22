@@ -317,7 +317,7 @@ def getParentOrder(request):
     for po in parentOrders:
         po.isInvited = ''
         #老师主动报名
-        orderApplyA = po.orderapply_set.filter(apply_type=1, tea=tea)
+        orderApplyA = OrderApply.objects.filter(apply_type=1, pd=po,tea= tea)
         if len(orderApplyA):
             orderApply = orderApplyA[0]
             #完成
@@ -329,7 +329,7 @@ def getParentOrder(request):
                 po.isInvited = u'已完成'
         else:
             #家长主动邀请
-            orderApplyB = po.orderapply_set.filter(apply_type=2, tea= tea)
+            orderApplyB = OrderApply.objects.filter(apply_type=2, pd=po,tea= tea)
             if len(orderApplyB):
                 # t.parent_willing = orderApplyB[0].parent_willing
                 orderApply = orderApplyB[0]
@@ -416,6 +416,94 @@ def applyParent(request):
     else:
         return JsonError(u"不存在家长订单或老师!")
 
+@login_required()
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def handleOrder(request):
+    """
+    处理订单的各种情况，接受或者拒绝老师的报名或者家长的邀请
+    :param request:
+     {
+     "type": 0/1        0：老师处理家长 1：家长处理老师
+     "id":1,            如果是老师处理家长，则填对应的pd_id，如果家长处理老师，则填对应的tea_id
+     "accept": 0/1      0/1  0：拒绝 1：接受
+     }
+    :return:
+    """
+    type = request.data.get('type', None)
+    id = request.data.get('id', None)
+    accept = request.data.get('accept', None)
+    if (type != None and id != None and accept != None):
+        user = AuthUser.objects.get(username=request.user.username)
+        #家长处理老师
+        if (type):
+            parentorders = user.parentorder_set.all()
+            teas = Teacher.objects.filter(tea_id = id)
+            if ( len(parentorders ) and  len(teas) ):
+                pd = parentorders[0]
+                tea = teas[0]
+                orders = OrderApply.objects.filter(apply_type=1, tea=tea, pd=pd)
+                if len(orders) :
+                    order = orders[0]
+                    #对订单进行处理
+                    if (accept):
+                        order.parent_willing = 2
+                        message_title = pd.name + u"接受了你的报名！"
+                        message_content = pd.name + u"接受了你的报名！请到“我的家长”处查看详细信息!"
+                    else:
+                        order.parent_willing = 0
+                        message_title = pd.name + u"拒绝了你的报名！"
+                        message_content = pd.name + u"拒绝了你的报名！请到“我的家长”处查看详细信息!"
+                    #新建消息
+                    message = Message(sender=user, receiver=tea.wechat, message_title=message_title, message_content=message_content,status=0)
+                    try:
+                        with transaction.atomic():
+                            message.save()
+                            order.finished = 1
+                            order.save()
+                        #TODO:消息推送到微信端
+                    except Exception,e:
+                        return JsonError(e.message)
+                    return JsonResponse()
+            else:
+                return JsonError(u"处理错误，请确定数据无误！")
+        else:
+        #老师处理家长
+            teas = user.teacher_set.all()
+            parentorders = ParentOrder.objects.filter(pd_id = id)
+            if ( len(parentorders ) and  len(teas) ):
+                pd = parentorders[0]
+                tea = teas[0]
+                orders = OrderApply.objects.filter(apply_type=2, tea=tea, pd=pd)
+                if len(orders) :
+                    order = orders[0]
+                    #对订单进行处理
+                    if (accept):
+                        order.teacher_willing = 2
+                        message_title = tea.name + u"接受了你的邀请！"
+                        message_content = tea.name + u"接受了你的邀请！请到“我的老师”处查看详细信息!"
+                    else:
+                        order.teacher_willing = 0
+                        message_title = tea.name + u"拒绝了你的邀请！"
+                        message_content = tea.name + u"拒绝了你的邀请！请到“我的老师”处查看详细信息!"
+                    message = Message(sender=user, receiver=pd.wechat, message_title=message_title, message_content=message_content,status=0)
+                    try:
+                        with transaction.atomic():
+                            message.save()
+                            order.finished = 1
+                            order.save()
+                        #消息推送到微信端
+                    except Exception,e:
+                        return JsonError(e.message)
+                    return JsonResponse()
+                    #TODO:消息推送到微信端
+            else:
+                return JsonError(u"处理错误，请确定数据无误！")
+
+        pass
+
+    else:
+        return JsonError(u"发送的数据有误！")
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
