@@ -459,6 +459,8 @@ def handleOrder(request):
                     except Exception,e:
                         return JsonError(e.message)
                     return JsonResponse()
+                else:
+                    return JsonError(u"处理错误，请确定数据无误！")
             else:
                 return JsonError(u"处理错误，请确定数据无误！")
         else:
@@ -491,6 +493,8 @@ def handleOrder(request):
                         return JsonError(e.message)
                     return JsonResponse()
                     #TODO:消息推送到微信端
+                else:
+                    return JsonError(u"处理错误，请确定数据无误！")
             else:
                 return JsonError(u"处理错误，请确定数据无误！")
 
