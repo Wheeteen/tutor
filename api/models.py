@@ -87,6 +87,16 @@ class Banner(models.Model):
         db_table = 'banner'
 
 
+class Config(models.Model):
+    id = models.IntegerField(primary_key=True)
+    key = models.CharField(max_length=45, blank=True, null=True)
+    value = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'config'
+
+
 class CorsheadersCorsmodel(models.Model):
     cors = models.CharField(max_length=255)
 

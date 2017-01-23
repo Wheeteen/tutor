@@ -292,6 +292,7 @@ def changeWeekend(obj, weekend):
     for time in weekend:
         if obj.has_key(time):
             m = obj.get(time, False)
+            print m
             if m and m != "":
                 obj[time] = 1
             else:

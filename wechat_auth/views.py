@@ -178,10 +178,14 @@ def authorization(request):
     return HttpResponse('success<a herf= "/loginSuc">测试</a>')
 @csrf_exempt
 def login_from_pwd(request, id=2):
-    print str(id)
     openid = 'odE4WwK3g05pesjOYGbwcbmOWTnc' + str(id)
-    user = authenticate(username=openid,password=openid)
+    try:
+        user = User.objects.get(username=openid)
+    except User.DoesNotExist,e:
+        print "user not exist"
+        user = User.objects.create_user(openid,password=openid)
     if user and user.is_active:
+        user = authenticate(username=openid, password=openid)
         login(request,user)
         request.session['info'] = {
             'province': 'Guangdong',

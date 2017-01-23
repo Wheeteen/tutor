@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^getWechatInfo', csrf_exempt(views.getWechatInfo)),
     url(r'^getOrder', csrf_exempt(views.getOrder)),
     url(r'^handleOrder', csrf_exempt(views.handleOrder)),
+    url(r'^handleSalary', csrf_exempt(views.handleSalary)),
 ]

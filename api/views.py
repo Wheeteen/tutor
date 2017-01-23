@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
-from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message
+from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message,Config
 from django.db import transaction
 from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -21,6 +21,7 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 
     def enforce_csrf(self, request):
         return  # To not perform the csrf check previously happening
+
 @login_required()
 @api_view(['GET'])
 def loginSuc(request):
@@ -719,3 +720,21 @@ def readMessage(request):
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getWechatInfo(request):
     return Response(request.session.get("info",None))
+
+@login_required()
+@api_view(['GET','POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def handleSalary(request):
+    if request.method == "GET":
+        salary = Config.objects.get(key='salary')
+        result = {'value': salary.value}
+        return JsonResponse(result)
+    elif request.method == "POST":
+        salary = Config.objects.get(key='salary')
+        value = request.data.get('value', None)
+        print value
+        if value:
+            salary.value = value
+            salary.save()
+            return JsonResponse()
+    return JsonError('出错了！')
