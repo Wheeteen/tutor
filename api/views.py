@@ -63,16 +63,23 @@ def getTeacherInfo(request):
         if len(teacher):
             serializer = TeacherSerializer(teacher[0])
             result = serializer.data
-            # getTeacherObj(result)
         else:
             return JsonError("not found")
     elif request.method == "POST":
         tea_id = request.data.get('tea_id',None)
-        teas = Teacher.objects.filter(tea_id = tea_id)
-        if len(teas):
-            serializer = TeacherSerializer(teas[0])
-            result = serializer.data
-    changeTime(result)
+        format = request.data.get('format',None)
+        if not tea_id:
+            teacher = user.teacher_set.all()
+            if len(teacher):
+                serializer = TeacherSerializer(teacher[0])
+                result = serializer.data
+        else:
+            teas = Teacher.objects.filter(tea_id = tea_id)
+            if len(teas):
+                serializer = TeacherSerializer(teas[0])
+                result = serializer.data
+        if format:
+            changeTime(result)
     return Response(result)
 
 
@@ -90,16 +97,28 @@ def getParentInfo(request):
         parents =  user.parentorder_set.all()
         if len(parents):
             serializer = ParentOrderSerializer(parents[0])
-            po = serializer.data
+            result = serializer.data
         else:
             return JsonError("not found")
     elif request.method == "POST":
         pd_id = request.data.get('pd_id',None)
-        pds = ParentOrder.objects.filter(pd_id = pd_id)
-        if len(pds):
-            serializer = ParentOrderSerializer(pds[0])
-            result = serializer.data
-    changeTime(result)
+        format = request.data.get('format',None)
+        if not pd_id:
+            parents =  user.parentorder_set.all()
+            if len(parents):
+                serializer = ParentOrderSerializer(parents[0])
+                result = serializer.data
+            else:
+                return JsonError("not found")
+        else:
+            pds = ParentOrder.objects.filter(pd_id = pd_id)
+            if len(pds):
+                serializer = ParentOrderSerializer(pds[0])
+                result = serializer.data
+            else:
+                return JsonError("not found")
+        if format:
+            changeTime(result)
     return Response(result)
 @login_required()
 @api_view(['POST'])
