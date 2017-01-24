@@ -82,7 +82,6 @@ def getTeacherInfo(request):
             changeTime(result)
     return Response(result)
 
-
 @login_required()
 @api_view(['GET','POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -120,6 +119,7 @@ def getParentInfo(request):
         if format:
             changeTime(result)
     return Response(result)
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -144,7 +144,6 @@ def createTeacher(request):
         teacher.wechat = user
         teacher.save()
     return JsonResponse({"wechat_id":teacher.wechat_id})
-
 
 @login_required()
 @api_view(['POST'])
