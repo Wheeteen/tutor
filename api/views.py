@@ -50,7 +50,7 @@ def getInfo(request):
 
 @login_required()
 @api_view(['GET','POST'])
-@csrf_exempt
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getTeacherInfo(request):
     """
     获取个人信息
@@ -85,7 +85,7 @@ def getTeacherInfo(request):
 
 @login_required()
 @api_view(['GET','POST'])
-@csrf_exempt
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getParentInfo(request):
     """
     获取个人信息
