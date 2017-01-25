@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^getOrder', csrf_exempt(views.getOrder)),
     url(r'^handleOrder', csrf_exempt(views.handleOrder)),
     url(r'^handleSalary', csrf_exempt(views.handleSalary)),
+    url(r'^uploadScreenshot', csrf_exempt(views.uploadScreenshot)),
 ]

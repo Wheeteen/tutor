@@ -105,24 +105,29 @@ conf = WechatConf(
 # print jt['jsapi_ticket']
 # print WechatBasic().generate_jsapi_signature(1482652615,"yinzishao","http://www.yinzishao.cn/testjs",jt['jsapi_ticket'])
 # # sendTemplateMessage()
+dir = settings.BASE_DIR + '/api/static/'
+
 import base64
 import re
 import time
 def changeBaseToImg(data):
-    dir = settings.BASE_DIR + '/api/static/'
     result = []
     for imgData in data:
-        p = r"image/(.*?);base64,(.*)"
-        r = re.search(p,imgData["img"])
-        type = r.group(1)
-        base64Data = r.group(2)
-        name = str(int(time.time() * 1000000)) + '.' + type
-        path = dir+name
-        print path
-        with open(path, "wb") as fh:
-            fh.write(base64.decodestring(base64Data))
-            result.append('/static/'+name)
+        pic_data = imgData["img"]
+        name = changeSingleBaseToImg(pic_data)
+        result.append('/static/'+name)
     return ','.join(result)
+
+def changeSingleBaseToImg(pic_data):
+    p = r"image/(.*?);base64,(.*)"
+    r = re.search(p,pic_data)
+    type = r.group(1)
+    base64Data = r.group(2)
+    name = str(int(time.time() * 1000000)) + '.' + type
+    path = dir+name
+    with open(path, "wb") as fh:
+        fh.write(base64.decodestring(base64Data))
+    return name
 
 def changeObejct(obj):
     """
