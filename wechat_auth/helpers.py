@@ -295,12 +295,17 @@ def changeWeekend(obj, weekend):
     :return:
     """
     for time in weekend:
+        print '-------------------'
+        print time
         if obj.has_key(time):
             m = obj.get(time, False)
             if m and m != "":
                 obj[time] = 1
             else:
                 obj[time] = 0
+        print obj[time]
+        print '-------------------'
+
 def changeWeekToRange(obj, time):
     """
     将星期一到星期五的字段返回前端所要求的数就

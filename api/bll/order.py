@@ -181,9 +181,11 @@ def getOrder(request):
             oa.name= oa.pd.name
             if oa.apply_type == 2:
                 oa.type = "parent"
-                #家长主动
+                #家长主动,finish为0,老师端订单显示为“已邀请”
+                #finished为1,老师端接受：未上传截图，“待处理”
+                #finished为2，
                 oa.result= judge(oa.teacher_willing,u"已邀请") #默认是待处理
-                #是否接受邀请
+                #是否接受邀请,
                 if oa.teacher_willing == 1:
                     #家长主动，并且教师待处理，应该弹出接受或者拒绝
                     oa.finish = 0
