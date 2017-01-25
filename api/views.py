@@ -225,6 +225,7 @@ def updateParentOrder(request):
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
         temp['update_time']= now
+        print temp
         po = user.parentorder_set.update(**temp)
         return JsonResponse()
         # serializer = ParentOrderSerializer(user.parentorder_set.all()[0])
@@ -272,19 +273,19 @@ def getTeachers(request):
     size = int(request.data.get("size",0))
     start = int(request.data.get("start",0)) * size
     #根据学科排序
-    subject = request.data.get("subject", 0)
+    subject = request.data.get("subject", '')
     #根据年级排序
-    grade = request.data.get("grade", 0)
+    grade = request.data.get("grade", '')
     #根据最新最热排序,两个参数是最热门和最新，默认为最热门（参数为1），然后是最新（参数为2）
     hot = request.data.get("hot",1)
     where = []
     order = '-hot_not'
     if hot == 2:
         order = '-create_time'
-    if subject:
+    if subject and subject != '':
         where = ['FIND_IN_SET("'+subject+'",subject)']
     #年级,如果里面是字符串，需要加引号
-    if grade:
+    if grade and grade != '':
         where = ['FIND_IN_SET("'+grade+'",grade)']
     teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
     user = AuthUser.objects.get(username=request.user.username)
@@ -556,8 +557,8 @@ def inviteTeacher(request):
     """
     #TODO:消息提醒
     #获取老师id
-    tea_id = request.data.get("tea_id", None)
-    type = request.data.get("type", None)
+    tea_id = int(request.data.get("tea_id", -1))
+    method = int(request.data.get("type", -1))
     user = AuthUser.objects.get(username=request.user.username)
     #查找家长订单
     #TODO： 每个家长是否只有一个需求
@@ -567,7 +568,7 @@ def inviteTeacher(request):
     if len(parentorders) and len(teachers):
         parentorder = parentorders[0]
         teacher = teachers[0]
-        if type == 1 :
+        if method == 1 :
             #家长邀请老师
             #如果家长已经邀请了老师，返回错误
             oa = OrderApply.objects.filter(apply_type=2, pd=parentorder)
@@ -590,7 +591,7 @@ def inviteTeacher(request):
             except Exception,e:
                 return JsonError(e.message)
             return JsonResponse()
-        elif type == 0 :
+        elif method == 0 :
             try:
                 with transaction.atomic():
                     #取消订单
