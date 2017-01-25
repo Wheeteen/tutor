@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from django.utils import timezone
+
 __author__ = 'yinzishao'
 
 from rest_framework.decorators import api_view,authentication_classes
@@ -339,15 +341,21 @@ def uploadScreenshot(request):
     :param request:
     :return:
     """
+    user = AuthUser.objects.get(username=request.user.username)
+    teas = user.teacher_set.all()
     pic = request.data.get('pic',None)
     oa_id = int(request.data.get('oa_id', -1))
-    name = changeSingleBaseToImg(pic)
-    order_applys = OrderApply.objects.filter(oa_id=oa_id)
-    if len(order_applys):
-        order_apply = order_applys[0]
-        order_apply.screenshot_path = '/static/' + name
-        order_apply.finished = 2
-        order_apply.save()
-        return  JsonResponse()
+    if len(teas):
+        tea = teas[0]
+        order_applys = OrderApply.objects.filter(oa_id=oa_id,tea=tea)
+        if len(order_applys):
+            name = changeSingleBaseToImg(pic)
+            order_apply = order_applys[0]
+            order_apply.screenshot_path = '/static/' + name
+            order_apply.finished = 2
+            order_apply.save()
+            return  JsonResponse()
+        else:
+            return JsonError(u"找不到该订单")
     else:
-        return JsonError("找不到该订单")
+        return JsonError(u"出错，你的老师信息不存在，请重新调调查问卷！")

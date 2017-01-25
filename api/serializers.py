@@ -28,7 +28,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class OrderApplySerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderApply
-        fields = ['oa_id','pd','tea','name','content','result','finish','type']
+        fields = ['oa_id','pd','tea','name','content','result','finish','type','screenshot_path']
     name = serializers.CharField(read_only=True)
     content = serializers.CharField(read_only=True)
     result = serializers.CharField(read_only=True)

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import time
+
 __author__ = 'yinzishao'
 
 from rest_framework.decorators import api_view,authentication_classes
@@ -26,7 +28,7 @@ def getParentInfo(request):
     """
     user = AuthUser.objects.get(username=request.user.username)
     if request.method == "GET":
-        parents =  user.parentorder_set.all()
+        parents = user.parentorder_set.all()
         if len(parents):
             serializer = ParentOrderSerializer(parents[0])
             result = serializer.data
