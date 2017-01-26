@@ -137,7 +137,7 @@ def changeObejct(obj):
     """
     changeWeek(obj,week)
     changeWeekend(obj,weekend)
-    print obj
+    if obj.has_key('salary'):
     if obj.has_key('salary'):
         obj['salary'] = float('%.2f' % float(obj['salary'])) if obj['salary'] != "" else 0.00
     if obj.has_key('deadline') and obj['deadline'] == "":
@@ -295,16 +295,12 @@ def changeWeekend(obj, weekend):
     :return:
     """
     for time in weekend:
-        print '-------------------'
-        print time
         if obj.has_key(time):
             m = obj.get(time, False)
             if m and m != "":
                 obj[time] = 1
             else:
                 obj[time] = 0
-        print obj[time]
-        print '-------------------'
 
 def changeWeekToRange(obj, time):
     """

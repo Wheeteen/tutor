@@ -27,6 +27,7 @@ def getParentInfo(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
+    format = None
     if request.method == "GET":
         parents = user.parentorder_set.all()
         if len(parents):
@@ -51,8 +52,10 @@ def getParentInfo(request):
                 result = serializer.data
             else:
                 return JsonError("not found")
-        if format:
-            changeTime(result)
+    if format:
+        getParentOrderObj(result)
+    else:
+        changeTime(result)
     return Response(result)
 
 

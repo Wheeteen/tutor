@@ -1,0 +1,40 @@
+nohup: 忽略输入
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+January 26, 2017 - 17:08:49
+Django version 1.8.8, using settings 'tutor.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+/usr/local/lib/python2.7/dist-packages/wechat_sdk/context/framework/django/models.py:19: RemovedInDjango19Warning: Model class wechat_sdk.context.framework.django.models.Context doesn't declare an explicit app_label and either isn't in an application in INSTALLED_APPS or else was imported before its application was loaded. This will no longer be supported in Django 1.9.
+  class Context(models.Model):
+
+[26/Jan/2017 17:08:55] "GET /getTeacherInfo/ HTTP/1.1" 200 8009
+[26/Jan/2017 17:08:56] "GET /favicon.ico HTTP/1.1" 404 5815
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+January 26, 2017 - 17:09:51
+Django version 1.8.8, using settings 'tutor.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+/usr/local/lib/python2.7/dist-packages/wechat_sdk/context/framework/django/models.py:19: RemovedInDjango19Warning: Model class wechat_sdk.context.framework.django.models.Context doesn't declare an explicit app_label and either isn't in an application in INSTALLED_APPS or else was imported before its application was loaded. This will no longer be supported in Django 1.9.
+  class Context(models.Model):
+
+[26/Jan/2017 17:09:54] "GET /getTeacherInfo/ HTTP/1.1" 200 8000
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+January 26, 2017 - 17:10:16
+Django version 1.8.8, using settings 'tutor.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.

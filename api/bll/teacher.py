@@ -28,6 +28,7 @@ def getTeacherInfo(request):
     :return:
     """
     user = AuthUser.objects.get(username=request.user.username)
+    format = None
     if request.method == "GET":
         teacher = user.teacher_set.all()
         if len(teacher):
@@ -48,8 +49,10 @@ def getTeacherInfo(request):
             if len(teas):
                 serializer = TeacherSerializer(teas[0])
                 result = serializer.data
-        if format:
-            changeTime(result)
+    if format:
+        getTeacherObj(result)
+    else:
+        changeTime(result)
     return Response(result)
 
 
