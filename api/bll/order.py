@@ -4,7 +4,7 @@ from django.utils import timezone
 
 __author__ = 'yinzishao'
 
-from rest_framework.decorators import api_view,authentication_classes
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from api.serializers import OrderApplySerializer
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
@@ -211,23 +211,48 @@ def getOrder(request):
             oa.name= oa.pd.name
             if oa.apply_type == 2:
                 oa.type = "parent"
-                #家长主动,finish为0,老师端订单显示为“已邀请”
-                #finished为1,老师端接受：未上传截图，“待处理”
-                #finished为2，
-                oa.result= judge(oa.teacher_willing,u"已邀请") #默认是待处理
-                #是否接受邀请,
-                if oa.teacher_willing == 1:
-                    #家长主动，并且教师待处理，应该弹出接受或者拒绝
-                    oa.finish = 0
-                    pass
-                else:
-                    #教师已经处理，则直接返回结果。
-                    oa.finish = 1
-                    pass
+                #家长主动,finished为0
+                #1. 老师意愿为1，老师端订单显示为“已邀请”
+                #2. 老师意愿为2，老师正在上传截图
+                #finished为1
+                #1. 老师意愿为0，老师拒绝/老师未上传截图
+                #2. 老师意愿为2，老师上传截图，完成订单
+                if oa.finished == 0:
+                    if oa.teacher_willing == 1:
+                        oa.result = u"已邀请"
+                    elif oa.teacher_willing == 2:
+                        oa.result = u"请上传截图"
+                if oa.finished ==1:
+                    if oa.teacher_willing == 0:
+                        oa.result = u"已拒绝"
+                    if oa.teacher_willing == 2:
+                        oa.result = u"已成交"
 
             elif oa.apply_type == 1:
+
                 oa.type = "teacher"
-                #教师主动
+                #教师主动,finished为0
+                #1. 家长意愿为1，老师端订单显示为“已报名”
+                #2. 家长意愿为2和老师意愿为1，家长同意
+                #3. 家长意愿为2和老师意愿为2，老师正在上传截图
+                #finished为1
+                #1. 家长意愿为0，老师意愿为1，老师拒绝
+                #2. 家长意愿为2，老师上传截图，完成订单
+                #3. 家长意愿为2，老师意愿为0，代表未按时上传截图
+                if oa.finished == 0:
+                    if oa.parent_willing == 1:
+                        oa.result = u"已报名"
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 1:
+                        oa.result = u"已同意"
+                    elif oa.parent_willing == 2 and oa.teacher_willing ==2:
+                        oa.result = u"请上传截图"
+                if oa.finished == 1:
+                    if oa.parent_willing == 0:
+                        oa.result = u"已拒绝"
+                    elif oa.parent_willing == 2:
+                        oa.result = u"已成交"
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 0:
+                        oa.result = u"未按时上传截图"
                 oa.result= judge(oa.parent_willing,u"已报名")
                 #是否取消报名
                 if oa.parent_willing == 1:
@@ -315,6 +340,7 @@ def handleOrder(request):
                     try:
                         with transaction.atomic():
                             message.save()
+                            order.update_time = timezone.now()
                             order.save()
                         #TODO:消息推送到微信端
                     except Exception,e:
@@ -333,14 +359,22 @@ def handleOrder(request):
             if ( len(parentorders ) and  len(teas) ):
                 pd = parentorders[0]
                 tea = teas[0]
-                orders = OrderApply.objects.filter(apply_type=2, tea=tea, pd=pd,finished=0)
+                orders = OrderApply.objects.filter(tea=tea, pd=pd,finished=0)
                 if len(orders) :
                     order = orders[0]
+                    result = {}
                     #对订单进行处理
                     if (accept):
+                        #老师同意，不应该设为2，应该在获取支付信息的时候改变？？
                         order.teacher_willing = 2
                         message_title = tea.name + u"接受了你的邀请！"
                         message_content = tea.name + u"接受了你的邀请！请到“我的老师”处查看详细信息!"
+                        payAmount = 50              #支付金额
+                        payAccount = 18812341235    #支付账号
+                        result = {
+                            payAccount: payAccount,
+                            payAmount:payAmount
+                        }
                     else:
                         order.teacher_willing = 0
                         order.finished = 1
@@ -350,11 +384,12 @@ def handleOrder(request):
                     try:
                         with transaction.atomic():
                             message.save()
+                            order.update_time = timezone.now()
                             order.save()
                         #消息推送到微信端
                     except Exception,e:
                         return JsonError(e.message)
-                    return JsonResponse()
+                    return JsonResponse(result)
                     #TODO:消息推送到微信端
                 else:
                     return JsonError(u"处理错误，请确定数据无误！")
@@ -387,9 +422,44 @@ def uploadScreenshot(request):
             order_apply = order_applys[0]
             order_apply.screenshot_path = '/static/' + name
             order_apply.finished = 2
+            order_apply.update_time = timezone.now()
             order_apply.save()
             return  JsonResponse()
         else:
             return JsonError(u"找不到该订单")
     else:
         return JsonError(u"出错，你的老师信息不存在，请重新调调查问卷！")
+
+from rest_framework.permissions import IsAdminUser
+
+@login_required()
+@api_view(['GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+@permission_classes((IsAdminUser,))
+def getPayInfo(request):
+    """
+    获取订单的支付信息,订单开始计时
+    :param request:
+    :return:
+    """
+    payAmount = 50              #支付金额
+    payAccount = 18812341235    #支付账号
+    user = AuthUser.objects.get(username=request.user.username)
+    teas = user.teacher_set.all()
+    if len(teas):
+        tea = teas[0]
+        oa_id = request.data.get('oa_id',None)
+        oas = OrderApply.objects.filter(oa_id=oa_id,tea=tea,finished=0,teacher_willing=1)
+        print oas
+        # if len(oas):
+        #     oa = oas[0]
+        #     oa.teacher_willing = 2
+        #     oa.update_time = timezone.now()
+        #     oa.save()
+    else:
+        return JsonError(u"你的信息不存在！")
+
+    return JsonResponse({
+        payAccount: payAccount,
+        payAmount:payAmount
+    })
