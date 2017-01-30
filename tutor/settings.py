@@ -41,8 +41,11 @@ INSTALLED_APPS = (
     'rest_framework',
     'api',
     'wechat_auth',
+    'django_crontab',
 )
-
+CRONJOBS = [
+    ('*/5 * * * *', 'api.cron.my_scheduled_job')
+]
 MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
