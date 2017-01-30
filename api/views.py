@@ -10,6 +10,7 @@ from api.bll.teacher import *
 from api.bll.parent import *
 from api.bll.order import *
 from api.bll.message import *
+from api.bll.admin import *
 from rest_framework.decorators import api_view,authentication_classes
 from api.serializers import TeacherSerializer,ParentOrderSerializer,MessageSerializer,OrderApplySerializer
 from django.contrib.auth.decorators import login_required

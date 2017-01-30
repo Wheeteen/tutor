@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^handleSalary', csrf_exempt(views.handleSalary)),
     url(r'^uploadScreenshot', csrf_exempt(views.uploadScreenshot)),
     url(r'^getPayInfo', csrf_exempt(views.getPayInfo)),
+    url(r'^getNum', csrf_exempt(views.getNum)),
 ]
