@@ -219,12 +219,12 @@ def getOrder(request):
                 #2. 老师意愿为2，老师上传截图，完成订单
                 if oa.finished == 0:
                     if oa.teacher_willing == 1:
-                        oa.result = u"已邀请"
+                        oa.result = u"对方已邀请"
                     elif oa.teacher_willing == 2:
-                        oa.result = u"请上传截图"
+                        oa.result = u"请您上传截图"
                 if oa.finished ==1:
                     if oa.teacher_willing == 0:
-                        oa.result = u"已拒绝"
+                        oa.result = u"您已拒绝"
                     if oa.teacher_willing == 2:
                         oa.result = u"已成交"
 
@@ -241,26 +241,19 @@ def getOrder(request):
                 #3. 家长意愿为2，老师意愿为0，代表未按时上传截图
                 if oa.finished == 0:
                     if oa.parent_willing == 1:
-                        oa.result = u"已报名"
+                        oa.result = u"您已报名"
                     elif oa.parent_willing == 2 and oa.teacher_willing == 1:
-                        oa.result = u"已同意"
+                        oa.result = u"对方已同意"
                     elif oa.parent_willing == 2 and oa.teacher_willing ==2:
-                        oa.result = u"请上传截图"
+                        oa.result = u"请您上传截图"
                 if oa.finished == 1:
                     if oa.parent_willing == 0:
-                        oa.result = u"已拒绝"
+                        oa.result = u"对方已拒绝"
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 0:
+                        oa.result = u"您未按时上传截图"
                     elif oa.parent_willing == 2:
                         oa.result = u"已成交"
-                    elif oa.parent_willing == 2 and oa.teacher_willing == 0:
-                        oa.result = u"未按时上传截图"
-                oa.result= judge(oa.parent_willing,u"已报名")
-                #是否取消报名
-                if oa.parent_willing == 1:
-                    #教师主动，并且家长待处理，应该弹出取消报名
-                    oa.finish = 0
-                else:
-                    #家长已经处理，则直接返回结果。
-                    oa.finish = 1
+
         return Response(OrderApplySerializer(oas,many=True).data)
 
     elif len(pd) > 0:
@@ -271,26 +264,45 @@ def getOrder(request):
             oa.name= oa.tea.name
             if oa.apply_type == 2:
                 oa.type = "parent"
-                #家长主动
+                #家长主动，finished为0
+                #1.老师意愿为1，家长端订单显示为“已邀请”
+                #2.老师意愿为2，老师正在上传截图
+                #finished为1
+                #1. 老师意愿为0，家长意愿为2，老师拒绝
+                #2. 老师意愿为2，已成交
+                #意愿第一判断可以更简洁
+                if oa.finished == 0:
+                    if oa.teacher_willing == 1:
+                        oa.result = u"您已邀请"
+                    elif oa.teacher_willing == 2:
+                        oa.result = u"管理员审核中"
+                if oa.finished == 1:
+                    if oa.teacher_willing == 0:
+                        oa.result = u"您已拒绝"
+                    if oa.teacher_willing == 2:
+                        oa.result = u"已成交"
                 oa.result= judge(oa.teacher_willing,u"已邀请")
-                #是否取消邀请
-                if oa.teacher_willing == 1:
-                    #家长主动，并且老师待处理，应该弹出取消邀请
-                    oa.finish = 0
-                else:
-                    #老师已经处理，则直接返回结果。
-                    oa.finish = 1
             elif oa.apply_type == 1:
                 oa.type = "teacher"
-                #教师主动
-                oa.result= judge(oa.parent_willing,u"已报名")
-                #是否接受报名
-                if oa.parent_willing == 1:
-                    #教师主动，并且家长待处理，应该弹出取消报名
-                    oa.finish = 0
-                else:
-                    #家长已经处理，则直接返回结果。
-                    oa.finish = 1
+                #教师主动，finished为0
+                #家长意愿为1，老师向其报名
+                #家长意愿为2，老师意愿为1，家长同意
+                #家长意愿为2，老师意愿为2，老师正在上传截图
+                #finished为1
+                #家长意愿为2，老师意愿为2，已成交
+                #家长意愿为0，已拒绝
+                if oa.finished == 0:
+                    if oa.parent_willing == 1:
+                        oa.result = u"向您报名"
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 1:
+                        oa.result = u"您已同意"
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 2:
+                        oa.result = u"管理员审核中"
+                if oa.finished == 1:
+                    if oa.parent_willing == 0:
+                        oa.result = u"已拒绝"
+                    elif oa.parent_willing == 2:
+                        oa.result = u"已成交"
         return Response(OrderApplySerializer(oas,many=True).data)
 
     if not oas:
