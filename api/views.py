@@ -60,19 +60,13 @@ def getWechatInfo(request):
     return Response(request.session.get("info",None))
 
 @login_required()
-@api_view(['GET','POST'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
-def handleSalary(request):
-    if request.method == "GET":
-        salary = Config.objects.get(key='salary')
+def getText(request):
+    key = request.data.get('key',None)
+    try:
+        salary = Config.objects.get(key=key)
         result = {'value': salary.value}
         return JsonResponse(result)
-    elif request.method == "POST":
-        salary = Config.objects.get(key='salary')
-        value = request.data.get('value', None)
-        print value
-        if value:
-            salary.value = value
-            salary.save()
-            return JsonResponse()
-    return JsonError('出错了！')
+    except Exception,e:
+        return JsonError(e.message)

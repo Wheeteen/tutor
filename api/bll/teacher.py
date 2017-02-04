@@ -67,7 +67,7 @@ def createTeacher(request):
     """
     user = AuthUser.objects.get(username=request.user.username)
     teachers = user.teacher_set.all()
-    if len(teachers) > 0:
+    if not user.is_superuser and len(teachers) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data

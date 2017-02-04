@@ -141,6 +141,12 @@ def changeObejct(obj):
         obj['salary'] = float('%.2f' % float(obj['salary'])) if obj['salary'] != "" else 0.00
     if obj.has_key('deadline') and obj['deadline'] == "":
         del obj['deadline']
+    #禁止自己设置为热门老师
+    if obj.has_key('hot_not'):
+        del obj['hot_not']
+    #禁止自己审核
+    if obj.has_key('pass_not'):
+        del obj['pass_not']
     return obj
 
 def getParentOrderObj(objs,many=False):

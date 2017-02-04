@@ -70,7 +70,7 @@ def createParentOrder(request):
     """
     user = AuthUser.objects.get(username=request.user.username)
     parentorder = user.parentorder_set.all()
-    if len(parentorder) > 0:
+    if not user.is_superuser and len(parentorder) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data

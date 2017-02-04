@@ -221,7 +221,7 @@ def getOrder(request):
                     if oa.teacher_willing == 1:
                         oa.result = u"对方已邀请"
                     elif oa.teacher_willing == 2:
-                        oa.result = u"请您上传截图"
+                        oa.result = u"请上传截图"
                 if oa.finished ==1:
                     if oa.teacher_willing == 0:
                         oa.result = u"您已拒绝"
@@ -245,10 +245,10 @@ def getOrder(request):
                     elif oa.parent_willing == 2 and oa.teacher_willing == 1:
                         oa.result = u"对方已同意"
                     elif oa.parent_willing == 2 and oa.teacher_willing ==2:
-                        oa.result = u"请您上传截图"
+                        oa.result = u"请上传截图"
                 if oa.finished == 1:
                     if oa.parent_willing == 0:
-                        oa.result = u"对方已拒绝"
+                        oa.result = u"家长已拒绝"
                     elif oa.parent_willing == 2 and oa.teacher_willing == 0:
                         oa.result = u"您未按时上传截图"
                     elif oa.parent_willing == 2:
@@ -278,10 +278,9 @@ def getOrder(request):
                         oa.result = u"管理员审核中"
                 if oa.finished == 1:
                     if oa.teacher_willing == 0:
-                        oa.result = u"您已拒绝"
+                        oa.result = u"老师已拒绝"
                     if oa.teacher_willing == 2:
                         oa.result = u"已成交"
-                oa.result= judge(oa.teacher_willing,u"已邀请")
             elif oa.apply_type == 1:
                 oa.type = "teacher"
                 #教师主动，finished为0
