@@ -35,23 +35,6 @@ def loginSuc(request):
     serializer = TeacherSerializer(teachers, many=True)
     return Response(serializer.data)
 
-@login_required()
-@api_view(['GET'])
-@csrf_exempt
-def getInfo(request):
-    """
-    获取个人信息
-    :param request:
-    :return:
-    """
-    user = AuthUser.objects.get(username=request.user.username)
-    teacher = user.teacher_set.all()
-    parent =  user.parentorder_set.all()
-    if len(parent):
-        serializer = ParentOrderSerializer(parent[0])
-    if len(teacher):
-        serializer = TeacherSerializer(teacher[0])
-    return Response(serializer.data)
 
 @login_required()
 @api_view(['GET'])

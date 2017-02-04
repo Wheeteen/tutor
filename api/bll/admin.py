@@ -70,6 +70,11 @@ def getInfo(request):
     """
     获取某个家长或者老师的信息
     :param request:
+    {
+      "id":1,
+      "format":true/false,
+      "user":"parent/teacher"
+    }
     :return:
     """
     id = request.data.get('id',None)
@@ -109,6 +114,11 @@ def updateInfo(request):
     """
     更新某个家长或者老师用户信息
     :param request:
+    {
+      "id":1,
+      "userInfo":{"name":"管理员修改过"},
+      "user":"parent/teacher"
+    }
     :return:
     """
     id = request.data.get('id',None)
@@ -121,6 +131,8 @@ def updateInfo(request):
         resNum = ParentOrder.objects.filter(pd_id = id).update(**temp)
     elif userType == "teacher":
         resNum = Teacher.objects.filter(tea_id = id).update(**temp)
+    else:
+        return JsonError(u"输入数据的user值不对")
     if resNum == 1:
         return JsonResponse()
     else:
@@ -133,13 +145,15 @@ def updateInfo(request):
 def getOrders(request):
     """
     获取某个家长或者老师用户订单信息
-    :param request:
+    :param request:{"id":1,"user":"parent/teacher","start":0,"size":6}
     :return:
     """
     id = request.data.get('id',None)
     userType = request.data.get('user',None)
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
     if userType == "parent":
-        oas = OrderApply.objects.filter(pd_id=id)
+        oas = OrderApply.objects.filter(pd_id=id)[start:start+size]
         #家长的订单详情
         results = []
         for oa in oas:
@@ -172,7 +186,7 @@ def getOrders(request):
                         oa.result = u"已成交"
         return Response(OrderApplySerializer(oas,many=True).data)
     elif userType == "teacher":
-        oas = OrderApply.objects.filter(tea_id=id)
+        oas = OrderApply.objects.filter(tea_id=id)[start:start+size]
         results = []
         for oa in oas:
             oa.name= oa.pd.name
@@ -233,6 +247,8 @@ def setHot(request):
             resNum = Teacher.objects.filter(tea_id = id).update(hot_not=1)
         else:
             resNum = Teacher.objects.filter(tea_id = id).update(hot_not=0)
+    else:
+        return JsonError(u"输入数据的user值不对")
     if resNum == 1:
         return JsonResponse()
     else:
@@ -244,17 +260,30 @@ def setHot(request):
 @permission_classes((IsAdminUser,))
 def setPass(request):
     """
-    审核某个老师简历，是否通过
+    审核某个家长或老师简历，是否通过
     :param request:
+    {
+      "id":1,
+      "type":0,
+      "user":"parent"
+    }
     :return:
     """
-    tea_id = request.date.get('tea_id',None)
+    id = request.data.get('id',None)
     method = request.data.get('type',None)
-    #TODO:消息通知？
-    if method:
-        resNum = Teacher.objects.filter(tea_id = tea_id).update(pass_not=2)
-    else:
-        resNum = Teacher.objects.filter(tea_id = tea_id).update(pass_not=0)
+    userType = request.data.get('user',None)
+    if userType == "parent":
+        if method:
+            resNum = ParentOrder.objects.filter(pd_id = id).update(pass_not=2)
+        else:
+            resNum = ParentOrder.objects.filter(pd_id = id).update(pass_not=0)
+    elif userType == "teacher":
+
+        #TODO:消息通知？
+        if method:
+            resNum = Teacher.objects.filter(tea_id = id).update(pass_not=2)
+        else:
+            resNum = Teacher.objects.filter(tea_id = id).update(pass_not=0)
     if resNum == 1:
         return JsonResponse()
     else:
@@ -270,27 +299,30 @@ def getCheckList(request):
     :param request:
     :return:
     """
-    selected = request.date.get('selected',None)    #当为1时：简历投递, 2：家长需求  3：简历修改
+    selected = request.data.get('selected',None)    #当为1时：简历投递, 2：家长需求  3：简历修改
+    format = request.data.get('format',None)
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
     if selected == 1:
-        pds = ParentOrder.objects.filter(pass_not = 1)
+        pds = ParentOrder.objects.filter(pass_not = 1)[start:start+size]
         serializer = ParentOrderSerializer(pds,many=True)
         result = serializer.data
         if format:
-            getParentOrderObj(result)
+            getParentOrderObj(result,many=True)
         else:
             for res in result:
                 changeTime(res)
     elif selected == 2:
-        teas = Teacher.objects.filter(pass_not = 1)
+        teas = Teacher.objects.filter(pass_not = 1)[start:start+size]
         serializer = TeacherSerializer(teas,many=True)
         result = serializer.data
         if format:
-            getTeacherObj(result)
+            getTeacherObj(result,many=True)
         else:
             for res in result:
                 changeTime(res)
     elif selected == 3:
-        pds = ParentOrder.objects.filter(pass_not = 2)
+        pds = ParentOrder.objects.filter(pass_not = 2)[start:start+size]
         serializer = ParentOrderSerializer(pds,many=True)
         result = serializer.data
         if format:
@@ -298,7 +330,9 @@ def getCheckList(request):
         else:
             for res in result:
                 changeTime(res)
-
+    else:
+        return JsonError(u"传入的数据有误")
+    return JsonResponse(result)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -318,7 +352,7 @@ def changeText(request):
     return JsonResponse()
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 @permission_classes((IsAdminUser,))
 def getDoneList(request):
@@ -327,7 +361,9 @@ def getDoneList(request):
     :param request:
     :return:
     """
-    oas = OrderApply.objects.filter(teacher_willing=2,parent_willing=2)
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
+    oas = OrderApply.objects.filter(teacher_willing=2,parent_willing=2)[start:start+size]
     for oa in oas:
         oa.name= oa.tea.name
         oa.pd_name= oa.pd.name
@@ -403,9 +439,9 @@ def submitFeedBack(request):
     提交反馈
     :param request:
     {
-        "tutorService":"tutorService",
-        "appService":"appService",
-        "rate":"rate"
+        "tutorservice":"tutorService",
+        "appservice":"appService",
+        "rate":4
     }
     :return:
     """
@@ -421,16 +457,22 @@ def submitFeedBack(request):
     return JsonResponse()
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 @permission_classes((IsAdminUser,))
 def getFeedBack(request):
     """
     查看反馈
     :param request:
+    {
+        "start":0,
+        "size":6
+    }
     :return:
     """
-    fbs = Feedback.objects.all()
+    size = int(request.data.get("size",0))
+    start = int(request.data.get("start",0)) * size
+    fbs = Feedback.objects.all()[start : start + size]
     rating = ['one','two','three','four','five']
     for fb in fbs:
         user = fb.wechat

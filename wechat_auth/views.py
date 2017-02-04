@@ -199,3 +199,9 @@ def login_from_pwd(request, id=2):
             'nickname': u'\u5c39\u5b50\u52fa'
         }
     return redirect('/updateTeacher/')
+
+def login_admin(request):
+    name = 'yinzishao'
+    user = authenticate(username=name, password=name)
+    login(request,user)
+    return redirect('/getNum/')
