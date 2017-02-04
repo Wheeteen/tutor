@@ -35,6 +35,10 @@ urlpatterns = [
     url(r'^setHot/+$', csrf_exempt(views.setHot)),
     url(r'^changeText/+$', csrf_exempt(views.changeText)),
     url(r'^getDoneList/+$', csrf_exempt(views.getDoneList)),
+    url(r'^sendPhone/+$', csrf_exempt(views.sendPhone)),
+    url(r'^remindFeedBack/+$', csrf_exempt(views.remindFeedBack)),
+    url(r'^submitFeedBack/+$', csrf_exempt(views.submitFeedBack)),
+    url(r'^getFeedBack/+$', csrf_exempt(views.getFeedBack)),
 ]
 
 

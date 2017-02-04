@@ -107,7 +107,7 @@ def updateTeacher(request):
 
 @login_required()
 @api_view(['GET'])
-@csrf_exempt
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def deleteTeacher(request):
     """
     删除

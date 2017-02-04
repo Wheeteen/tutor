@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 __author__ = 'youmi'
 from rest_framework import serializers
-from api.models import Teacher,ParentOrder,OrderApply,Message
+from api.models import Teacher,ParentOrder,OrderApply,Message,Feedback
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +24,19 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = '__all__'
-    isDetailed = serializers.BooleanField(read_only=True, default='false')
+    isDetailed = serializers.BooleanField(read_only=True)
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = '__all__'
+    name = serializers.CharField(read_only=True)
+    one = serializers.BooleanField(read_only=True)
+    two = serializers.BooleanField(read_only=True)
+    three = serializers.BooleanField(read_only=True)
+    four = serializers.BooleanField(read_only=True)
+    five = serializers.BooleanField(read_only=True)
+
 class OrderApplySerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderApply

@@ -5,11 +5,11 @@ import time
 __author__ = 'yinzishao'
 
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
-from api.serializers import OrderApplySerializer,ParentOrderSerializer,TeacherSerializer
+from api.serializers import OrderApplySerializer,ParentOrderSerializer,TeacherSerializer,FeedbackSerializer
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
-from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message,Config
+from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message,Config,Feedback
 from django.db import transaction
 from wechat_auth.helpers import changeSingleBaseToImg,getParentOrderObj,changeTime,getTeacherObj
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -338,19 +338,36 @@ def getDoneList(request):
     return Response(OrderApplySerializer(oas,many=True).data)
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 @permission_classes((IsAdminUser,))
 def sendPhone(request):
     """
     发送联系方式给某个老师
-    :param request:
+    :param request:{"tea_id":1,"tel":18812345678,"oa_id":3}
     :return:
     """
-    pass
+    tea_id = request.data.get('tea_id',None)
+    oa_id = request.data.get('oa_id',None)
+    tel = request.data.get('tel',None)
+    teas = Teacher.objects.filter(tea_id=tea_id)
+    oas = OrderApply.objects.filter(oa_id=oa_id)
+    user = AuthUser.objects.get(username=request.user.username)
+    if len(teas) and len(oas):
+        tea = teas[0]
+        oa = oas[0]
+        message_title = u"向您发送了XX家长的联系方式！"
+        message_content = u"XX家长的联系方式的" + str(tel)
+        message = Message(sender=user, receiver=tea.wechat, message_title=message_title, message_content=message_content,status=0)
+        message.save()
+        oa.finished = 1
+        oa.save()
+        return JsonResponse()
+    else:
+        return JsonError(u"输入数据有误")
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 @permission_classes((IsAdminUser,))
 def remindFeedBack(request):
@@ -359,28 +376,75 @@ def remindFeedBack(request):
     :param request:
     :return:
     """
-    pass
+    id = request.data.get('id',None)
+    userType = request.data.get('user',None)
+    user = AuthUser.objects.get(username=request.user.username)
+    message_title = u"XX家教邀请您填写反馈意见！"
+    message_content = u"XX家教邀请您填写反馈意见！"
+    if userType == "parent":
+        objs = ParentOrder.objects.filter(pd_id = id)
+    elif userType == "teacher":
+        objs = Teacher.objects.filter(tea_id = id)
+    else:
+        return JsonError(u"输入数据的user值不对")
+    if len(objs):
+        obj = objs[0]
+        message = Message(sender=user, receiver=obj.wechat, message_title=message_title, message_content=message_content,status=0)
+        message.save()
+        return JsonResponse()
+    else:
+        return JsonError(u"找不到用户！")
 
 @login_required()
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
-@permission_classes((IsAdminUser,))
-def submitFeadBack(request):
+def submitFeedBack(request):
     """
     提交反馈
     :param request:
+    {
+        "tutorService":"tutorService",
+        "appService":"appService",
+        "rate":"rate"
+    }
     :return:
     """
-    pass
+    try:
+        user = AuthUser.objects.get(username=request.user.username)
+        data = request.data
+        data['create_time'] = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        data['wechat'] = user
+        fb = Feedback(**data)
+        fb.save()
+    except Exception,e:
+        return JsonError(e.message)
+    return JsonResponse()
 
 @login_required()
 @api_view(['GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 @permission_classes((IsAdminUser,))
-def getFeadBacj(request):
+def getFeedBack(request):
     """
     查看反馈
     :param request:
     :return:
     """
-    pass
+    fbs = Feedback.objects.all()
+    rating = ['one','two','three','four','five']
+    for fb in fbs:
+        user = fb.wechat
+        teacher = user.teacher_set.all()
+        parent =  user.parentorder_set.all()
+        if len(parent):
+            fb.name = parent[0].name
+        if len(teacher):
+            fb.name = teacher[0].name
+        rate = int(fb.rate)
+        for i,v in enumerate(rating):
+            if i < rate:
+                setattr(fb,v,True)
+            else:
+                setattr(fb,v,False)
+    serializer = FeedbackSerializer(fbs,many=True)
+    return JsonResponse(serializer.data)
