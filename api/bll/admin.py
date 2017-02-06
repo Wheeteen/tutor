@@ -51,7 +51,7 @@ def deleteUser(request):
     userType = request.data.get('user',None)
     id = request.data.get('id',None)
     if userType == "parent":
-        obj = ParentOrder.objects.filter(pa_id=id)
+        obj = ParentOrder.objects.filter(pd_id=id)
     elif userType == "teacher":
         obj = Teacher.objects.filter(tea_id=id)
     else:
