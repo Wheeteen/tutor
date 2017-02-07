@@ -147,9 +147,11 @@ def getTeachers(request):
     subject = request.data.get("subject", '')
     #根据年级排序
     grade = request.data.get("grade", '')
+    keyword = request.data.get("keyword", '')
     #根据最新最热排序,两个参数是最热门和最新，默认为最热门（参数为1），然后是最新（参数为2）
     hot = request.data.get("hot",1)
     where = []
+    filter = {}
     order = '-hot_not'
     if hot == 2:
         order = '-create_time'
@@ -158,7 +160,9 @@ def getTeachers(request):
     #年级,如果里面是字符串，需要加引号
     if grade and grade != '':
         where = ['FIND_IN_SET("'+grade+'",grade)']
-    teachers = Teacher.objects.extra(where=where).order_by(order)[start:start + size]
+    if keyword and keyword != '':
+        filter["name__contains"] = keyword
+    teachers = Teacher.objects.extra(where=where).filter(**filter).order_by(order)[start:start + size]
     user = AuthUser.objects.get(username=request.user.username)
     pds = user.parentorder_set.all()
     if len(pds) > 0:
