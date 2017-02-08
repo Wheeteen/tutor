@@ -356,6 +356,12 @@ def changeWeekEndToRange(obj, time):
                 date = u"星期日晚上 "
             obj["time"] = obj["time"] + date
 
-
-
-
+def changePassnot(obj):
+    if obj.has_key("pass_not"):
+        pass_not = obj["pass_not"]
+        if pass_not == 0:
+            obj["pass_not"] = u"未通过"
+        if pass_not == 1:
+            obj["pass_not"] = u""
+        if pass_not == 2:
+            obj["pass_not"] = u"已通过"

@@ -99,7 +99,7 @@ def updateParentOrder(request):
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
         temp['update_time']= now
-        print temp
+        temp['pass_not'] =1
         po = user.parentorder_set.update(**temp)
         return JsonResponse()
         # serializer = ParentOrderSerializer(user.parentorder_set.all()[0])

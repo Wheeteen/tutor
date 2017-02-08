@@ -96,6 +96,7 @@ def updateTeacher(request):
     if request.method == 'POST' and len(teachers) > 0:
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
+        temp['pass_not'] =1
         teacher = user.teacher_set.update(**temp)
         return JsonResponse()
         # 返回更新后的对象

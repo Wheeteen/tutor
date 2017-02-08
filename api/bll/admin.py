@@ -296,43 +296,41 @@ def setPass(request):
 def getCheckList(request):
     """
     获取审核页面的信息
-    :param request:
+    :param request:{"selected":1,"start":0,"size":6}
     :return:
     """
-    selected = request.data.get('selected',None)    #当为1时：简历投递, 2：家长需求  3：简历修改
+
+    selected = request.data.get('selected',None)    #当为1时：简历投递, 2：家长需求
     format = request.data.get('format',None)
     size = int(request.data.get("size",0))
     start = int(request.data.get("start",0)) * size
+    res = []
     if selected == 1:
         pds = ParentOrder.objects.filter(pass_not = 1)[start:start+size]
         serializer = ParentOrderSerializer(pds,many=True)
         result = serializer.data
-        if format:
-            getParentOrderObj(result,many=True)
-        else:
-            for res in result:
-                changeTime(res)
+
+        for r in result:
+            temp = {
+                "name": r['name'],
+                "create_time":r['create_time'],
+                "pd_id": r["pd_id"]
+            }
+            res.append(temp)
     elif selected == 2:
         teas = Teacher.objects.filter(pass_not = 1)[start:start+size]
         serializer = TeacherSerializer(teas,many=True)
         result = serializer.data
-        if format:
-            getTeacherObj(result,many=True)
-        else:
-            for res in result:
-                changeTime(res)
-    elif selected == 3:
-        pds = ParentOrder.objects.filter(pass_not = 2)[start:start+size]
-        serializer = ParentOrderSerializer(pds,many=True)
-        result = serializer.data
-        if format:
-            getParentOrderObj(result)
-        else:
-            for res in result:
-                changeTime(res)
-    else:
-        return JsonError(u"传入的数据有误")
-    return JsonResponse(result)
+        for r in result:
+            temp = {
+                "name": r['name'],
+                "create_time":r['create_time'],
+                "tea_id": r["tea_id"]
+            }
+            res.append(temp)
+
+    return JsonResponse(res)
+
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
