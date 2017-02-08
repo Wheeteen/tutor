@@ -490,3 +490,17 @@ def getFeedBack(request):
                 setattr(fb,v,False)
     serializer = FeedbackSerializer(fbs,many=True)
     return JsonResponse(serializer.data)
+
+@login_required()
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+@permission_classes((IsAdminUser,))
+def deleteOrder(request):
+    oa_id = int(request.data.get('oa_id',0))
+    oas = OrderApply.objects.filter(oa_id=oa_id)
+    if len(oas):
+        oa = oas[0]
+        oa.delete()
+        return JsonResponse()
+    else:
+        return JsonError(u"not found")
