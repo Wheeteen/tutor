@@ -306,6 +306,17 @@ def getCheckList(request):
     start = int(request.data.get("start",0)) * size
     res = []
     if selected == 1:
+        teas = Teacher.objects.filter(pass_not = 1)[start:start+size]
+        serializer = TeacherSerializer(teas,many=True)
+        result = serializer.data
+        for r in result:
+            temp = {
+                "name": r['name'],
+                "create_time":r['create_time'],
+                "tea_id": r["tea_id"]
+            }
+            res.append(temp)
+    elif selected == 2:
         pds = ParentOrder.objects.filter(pass_not = 1)[start:start+size]
         serializer = ParentOrderSerializer(pds,many=True)
         result = serializer.data
@@ -317,17 +328,7 @@ def getCheckList(request):
                 "pd_id": r["pd_id"]
             }
             res.append(temp)
-    elif selected == 2:
-        teas = Teacher.objects.filter(pass_not = 1)[start:start+size]
-        serializer = TeacherSerializer(teas,many=True)
-        result = serializer.data
-        for r in result:
-            temp = {
-                "name": r['name'],
-                "create_time":r['create_time'],
-                "tea_id": r["tea_id"]
-            }
-            res.append(temp)
+
 
     return JsonResponse(res)
 
@@ -394,6 +395,7 @@ def sendPhone(request):
         message_content = u"XX家长的联系方式的" + str(tel)
         message = Message(sender=user, receiver=tea.wechat, message_title=message_title, message_content=message_content,status=0)
         message.save()
+        oa.tel = str(tel)
         oa.finished = 1
         oa.save()
         return JsonResponse()
