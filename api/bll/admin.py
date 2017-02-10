@@ -342,6 +342,9 @@ def changeText(request):
     :return:
     """
     data = request.data
+    #将照片的base64转换成路径，然后保存在数据库上
+    if data.has_keys('image'):
+        data['image'] = changeSingleBaseToImg(data['image'])
     try:
         with transaction.atomic():
             for k in data.keys():
@@ -391,8 +394,9 @@ def sendPhone(request):
     if len(teas) and len(oas):
         tea = teas[0]
         oa = oas[0]
-        message_title = u"向您发送了XX家长的联系方式！"
-        message_content = u"XX家长的联系方式的" + str(tel)
+        pd_name  = oa.pd.name
+        message_title = u"向您发送了" + pd_name +u"家长的联系方式！"
+        message_content = pd_name + u"家长的联系方式是" + str(tel)
         message = Message(sender=user, receiver=tea.wechat, message_title=message_title, message_content=message_content,status=0)
         message.save()
         oa.tel = str(tel)
@@ -415,8 +419,8 @@ def remindFeedBack(request):
     id = request.data.get('id',None)
     userType = request.data.get('user',None)
     user = AuthUser.objects.get(username=request.user.username)
-    message_title = u"XX家教邀请您填写反馈意见！"
-    message_content = u"XX家教邀请您填写反馈意见！"
+    message_title = u"好学吧家教邀请您填写反馈意见！"
+    message_content = u"好学吧家教邀请您填写反馈意见！"
     if userType == "parent":
         objs = ParentOrder.objects.filter(pd_id = id)
     elif userType == "teacher":

@@ -137,13 +137,17 @@ def getParentOrder(request):
     """
     size = int(request.data.get("size",0))
     start = int(request.data.get("start",0)) * size
+    keyword = request.data.get("keyword", '')
+    filter = {}
+    if keyword and keyword != '':
+        filter["name__contains"] = keyword
     user = AuthUser.objects.get(username=request.user.username)
     teas = user.teacher_set.all()
     if len(teas) > 0:
         tea = teas[0]
     else:
         return JsonError("家长不存在！请重新填问卷")
-    parentOrders = ParentOrder.objects.all()[start:start + size]
+    parentOrders = ParentOrder.objects.filter(**filter)[start:start + size]
     for po in parentOrders:
         po.isInvited = ''
         #老师主动报名

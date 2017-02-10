@@ -47,9 +47,11 @@ def getWechatInfo(request):
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def getText(request):
     key = request.data.get('key',None)
+    result = {}
     try:
-        salary = Config.objects.get(key=key)
-        result = {'value': salary.value}
+        for k in key:
+            value = Config.objects.get(key=k).value
+            result[k] = value
         return JsonResponse(result)
     except Exception,e:
         return JsonError(e.message)
