@@ -343,8 +343,8 @@ def changeText(request):
     """
     data = request.data
     #将照片的base64转换成路径，然后保存在数据库上
-    if data.has_keys('image'):
-        data['image'] = changeSingleBaseToImg(data['image'])
+    if data.has_key('image'):
+        data['image'] = '/static/' + changeSingleBaseToImg(data['image'])
     try:
         with transaction.atomic():
             for k in data.keys():
