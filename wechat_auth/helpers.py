@@ -115,19 +115,25 @@ def changeBaseToImg(data):
     for imgData in data:
         pic_data = imgData["img"]
         name = changeSingleBaseToImg(pic_data)
-        result.append('/static/'+name)
+        if name:
+            result.append('/static/'+name)
+        else:
+            return None
     return ','.join(result)
 
 def changeSingleBaseToImg(pic_data):
     p = r"image/(.*?);base64,(.*)"
     r = re.search(p,pic_data)
-    type = r.group(1)
-    base64Data = r.group(2)
-    name = str(int(time.time() * 1000000)) + '.' + type
-    path = dir+name
-    with open(path, "wb") as fh:
-        fh.write(base64.decodestring(base64Data))
-    return name
+    if r:
+        type = r.group(1)
+        base64Data = r.group(2)
+        name = str(int(time.time() * 1000000)) + '.' + type
+        path = dir+name
+        with open(path, "wb") as fh:
+            fh.write(base64.decodestring(base64Data))
+        return name
+    else:
+        return None
 
 def changeObejct(obj):
     """

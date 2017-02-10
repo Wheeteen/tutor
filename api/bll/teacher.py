@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message,Config
-from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime
+from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime,changeSingleBaseToImg
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -75,6 +75,9 @@ def createTeacher(request):
         photos = temp.get('teach_show_photo',None)
         if photos:
             temp['teach_show_photo'] = changeBaseToImg(photos)
+        certificate_photo = temp.get('certificate_photo',None)
+        if certificate_photo:
+            temp['certificate_photo'] = "/static/" + changeSingleBaseToImg(certificate_photo)
         temp['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         teacher = Teacher(**temp)
         teacher.wechat = user
@@ -97,6 +100,16 @@ def updateTeacher(request):
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
         temp['pass_not'] =1
+        photos = temp.get('teach_show_photo',None)
+        if photos:
+            res = changeBaseToImg(photos)
+            if res:
+                temp['teach_show_photo'] = res
+        certificate_photo = temp.get('certificate_photo',None)
+        if certificate_photo:
+            res = changeSingleBaseToImg(certificate_photo)
+            if res:
+                temp['certificate_photo'] = "/static/" + res
         teacher = user.teacher_set.update(**temp)
         return JsonResponse()
         # 返回更新后的对象
