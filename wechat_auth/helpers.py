@@ -155,6 +155,7 @@ def changeObejct(obj):
         del obj['pass_not']
     return obj
 
+
 def getParentOrderObj(objs,many=False):
 
     """
@@ -204,7 +205,16 @@ def changeTeacherObj(obj):
     changeWeekToRange(obj, week)
     changeWeekEndToRange(obj, weekend)
     changeTime(obj)
+    changeTeachShowPhoto(obj)
 
+def changeTeachShowPhoto(obj):
+    teach_show_photo = obj.get('teach_show_photo',None)
+    img = []
+    print teach_show_photo.split(',')
+    if teach_show_photo and teach_show_photo !='':
+        for t in teach_show_photo.split(','):
+            img.append({"img":t})
+    obj['teach_show_photo'] = img
 def changeLearningPhase(obj):
     """
     学习阶段(0-其他 1-幼升小 2-小学 3-初中 4-高中)
