@@ -98,26 +98,31 @@ def updateTeacher(request):
     :param request:
     :return:
     """
-    user = AuthUser.objects.get(username=request.user.username)
-    teachers = user.teacher_set.all()
-    if request.method == 'POST' and len(teachers) > 0:
-        temp = request.data.dict()  if (type(request.data) != type({})) else request.data
-        changeObejct(temp)
-        temp['pass_not'] =1
-        photos = temp.get('teach_show_photo',None)
-        if photos and photos != "":
-            temp['teach_show_photo'] = changeBaseToImg(photos)
-        certificate_photo = temp.get('certificate_photo',None)
-        if certificate_photo and certificate_photo != "":
-            temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
-        teacher = user.teacher_set.update(**temp)
-        return JsonResponse()
-        # 返回更新后的对象
-        # serializer = TeacherSerializer(user.teacher_set.all()[0])
-        # result = serializer.data
-        # getTeacherObj(result)
-        # return Response(result)
-    return JsonError("not found")
+    try:
+        user = AuthUser.objects.get(username=request.user.username)
+        teachers = user.teacher_set.all()
+        if request.method == 'POST' and len(teachers) > 0:
+            temp = request.data.dict()  if (type(request.data) != type({})) else request.data
+            changeObejct(temp)
+            temp['pass_not'] =1
+            photos = temp.get('teach_show_photo',None)
+            if photos and photos != "":
+                temp['teach_show_photo'] = changeBaseToImg(photos)
+            certificate_photo = temp.get('certificate_photo',None)
+            if certificate_photo and certificate_photo != "":
+                temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
+            teacher = user.teacher_set.update(**temp)
+            return JsonResponse()
+            # 返回更新后的对象
+            # serializer = TeacherSerializer(user.teacher_set.all()[0])
+            # result = serializer.data
+            # getTeacherObj(result)
+            # return Response(result)
+        return JsonError("not found")
+    except Exception,e:
+        print e
+        return JsonError(e.message)
+
 
 @login_required()
 @api_view(['GET'])
