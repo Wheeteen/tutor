@@ -349,7 +349,7 @@ def changeText(request):
         image = Config.objects.filter(key='image')[0].value
         url = Config.objects.filter(key='url')[0].value
         imgs = image.split(',') if image != "" else []
-        urls = url.split(',') if image != "" else []
+        urls = url.split(',') if url != "" else []
         if len(imgs) > 4:
             return JsonError(u"只接受5个广告位")
         imgs.append(changeSingleBaseToImg(data['image']))
