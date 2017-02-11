@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^submitFeedBack', csrf_exempt(views.submitFeedBack)),
     url(r'^getFeedBack', csrf_exempt(views.getFeedBack)),
     url(r'^deleteOrder', csrf_exempt(views.deleteOrder)),
+    url(r'^deleteBanner', csrf_exempt(views.deleteBanner)),
 ]
 
 

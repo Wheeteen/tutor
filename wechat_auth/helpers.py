@@ -153,6 +153,10 @@ def changeObejct(obj):
     #禁止自己审核
     if obj.has_key('pass_not'):
         del obj['pass_not']
+    if obj.has_key('tea_id'):
+        del obj['tea_id']
+    if obj.has_key('pd_id'):
+        del obj['pd_id']
     return obj
 
 

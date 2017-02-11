@@ -345,13 +345,17 @@ def changeText(request):
     """
     data = request.data
     #将照片的base64转换成路径，然后保存在数据库上
-    if data.has_key('image'):
+    if data.has_key('image') and data.has_key('url'):
         image = Config.objects.filter(key='image')[0].value
-        imgs = image.split(',')
+        url = Config.objects.filter(key='url')[0].value
+        imgs = image.split(',') if image != "" else []
+        urls = url.split(',') if image != "" else []
         if len(imgs) > 4:
-            return JsonError(u"只接受5个banner")
+            return JsonError(u"只接受5个广告位")
         imgs.append(changeSingleBaseToImg(data['image']))
+        urls.append(data['url'])
         data['image'] = ",".join(imgs)
+        data['url'] = ",".join(urls)
     try:
         with transaction.atomic():
             for k in data.keys():
@@ -360,6 +364,28 @@ def changeText(request):
         return JsonError(e.message)
     return JsonResponse()
 
+@login_required()
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+@permission_classes((IsAdminUser,))
+def deleteBanner(request):
+    try:
+        image = request.data.get('image',None)
+        img = Config.objects.filter(key='image')[0]
+        imgs = img.value.split(',')
+        url = Config.objects.filter(key='url')[0]
+        urls = url.value.split(',')
+        idx = imgs.index(image)
+        del imgs[idx]
+        del urls[idx]
+        url.value = ",".join(urls)
+        img.value = ",".join(imgs)
+        url.save()
+        img.save()
+        return JsonResponse()
+    except Exception,e:
+        print e
+        return JsonError(e.message)
 @login_required()
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
