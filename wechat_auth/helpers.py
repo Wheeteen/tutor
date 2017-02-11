@@ -115,10 +115,7 @@ def changeBaseToImg(data):
     for imgData in data:
         pic_data = imgData["img"]
         name = changeSingleBaseToImg(pic_data)
-        if name:
-            result.append('/static/'+name)
-        else:
-            return None
+        result.append(name)
     return ','.join(result)
 
 def changeSingleBaseToImg(pic_data):
@@ -131,10 +128,10 @@ def changeSingleBaseToImg(pic_data):
         path = dir+name
         with open(path, "wb") as fh:
             fh.write(base64.decodestring(base64Data))
-        return name
+        return '/static/' + name
     else:
-        return None
-
+        idx = pic_data.index("static")
+        return pic_data[idx-1:]
 def changeObejct(obj):
     """
     兼容接受到的对象
@@ -208,6 +205,15 @@ def changeTeacherObj(obj):
     changeTeachShowPhoto(obj)
 
 def changeTeachShowPhoto(obj):
+    """
+    {"teach_show_photo": [
+          {"img":""},
+          {"img":""},
+          {"img":""}
+       ]}
+    :param obj:
+    :return:
+    """
     teach_show_photo = obj.get('teach_show_photo',None)
     img = []
     if teach_show_photo and teach_show_photo !='':
