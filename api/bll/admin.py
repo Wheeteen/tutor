@@ -14,7 +14,7 @@ from django.db import transaction
 from wechat_auth.helpers import changeSingleBaseToImg,getParentOrderObj,changeTime,getTeacherObj
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAdminUser
-from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime
+from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime,defaultChangeTeachShowPhoto
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     def enforce_csrf(self, request):
         return  # To not perform the csrf check previously happening
@@ -101,7 +101,9 @@ def getInfo(request):
         if format:
             getTeacherObj(result)
         else:
+            defaultChangeTeachShowPhoto(result)
             changeTime(result)
+
     else:
         return JsonError(u"输入数据的user值不对")
     return JsonResponse(result)
@@ -344,7 +346,12 @@ def changeText(request):
     data = request.data
     #将照片的base64转换成路径，然后保存在数据库上
     if data.has_key('image'):
-        data['image'] = '/static/' + changeSingleBaseToImg(data['image'])
+        image = Config.objects.filter(key='image')[0].value
+        imgs = image.split(',')
+        if len(imgs) > 4:
+            return JsonError(u"只接受5个banner")
+        imgs.append(changeSingleBaseToImg(data['image']))
+        data['image'] = ",".join(imgs)
     try:
         with transaction.atomic():
             for k in data.keys():

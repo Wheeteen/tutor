@@ -208,6 +208,10 @@ def changeTeacherObj(obj):
     changeTeachShowPhoto(obj)
 
 def changeTeachShowPhoto(obj):
+    teach_show_photo = obj.get('teach_show_photo',None)
+    if teach_show_photo and teach_show_photo !='':
+        obj['teach_show_photo'] =teach_show_photo.split(',')
+def defaultChangeTeachShowPhoto(obj):
     """
     {"teach_show_photo": [
           {"img":""},

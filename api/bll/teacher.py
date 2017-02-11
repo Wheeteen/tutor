@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import time
-
+import traceback
 __author__ = 'yinzishao'
 
 from rest_framework.decorators import api_view,authentication_classes
@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from tutor.http import JsonResponse,JsonError
 from api.models import Teacher,AuthUser,ParentOrder,OrderApply,Message,Config
-from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime,changeSingleBaseToImg
+from wechat_auth.helpers import changeBaseToImg,changeObejct,getParentOrderObj,getTeacherObj,changeTime,changeSingleBaseToImg,defaultChangeTeachShowPhoto
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -52,7 +52,9 @@ def getTeacherInfo(request):
     if format:
         getTeacherObj(result)
     else:
+        defaultChangeTeachShowPhoto(result)
         changeTime(result)
+
     return Response(result)
 
 
@@ -86,7 +88,7 @@ def createTeacher(request):
             teacher.save()
         return JsonResponse({"wechat_id":teacher.wechat_id})
     except Exception,e:
-        print e
+        print 'traceback.print_exc():'; traceback.print_exc()
         return JsonError(e.message)
 
 @login_required()
@@ -120,7 +122,7 @@ def updateTeacher(request):
             # return Response(result)
         return JsonError("not found")
     except Exception,e:
-        print e
+        print 'traceback.print_exc():'; traceback.print_exc()
         return JsonError(e.message)
 
 
