@@ -210,7 +210,6 @@ def changeTeacherObj(obj):
 def changeTeachShowPhoto(obj):
     teach_show_photo = obj.get('teach_show_photo',None)
     img = []
-    print teach_show_photo.split(',')
     if teach_show_photo and teach_show_photo !='':
         for t in teach_show_photo.split(','):
             img.append({"img":t})
