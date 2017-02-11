@@ -73,10 +73,10 @@ def createTeacher(request):
         temp = request.data.dict()  if (type(request.data) != type({})) else request.data
         changeObejct(temp)
         photos = temp.get('teach_show_photo',None)
-        if photos:
+        if photos and photos != "":
             temp['teach_show_photo'] = changeBaseToImg(photos)
         certificate_photo = temp.get('certificate_photo',None)
-        if certificate_photo:
+        if certificate_photo and certificate_photo != "":
             temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
         temp['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         teacher = Teacher(**temp)
@@ -101,10 +101,10 @@ def updateTeacher(request):
         changeObejct(temp)
         temp['pass_not'] =1
         photos = temp.get('teach_show_photo',None)
-        if photos:
+        if photos and photos != "":
             temp['teach_show_photo'] = changeBaseToImg(photos)
         certificate_photo = temp.get('certificate_photo',None)
-        if certificate_photo:
+        if certificate_photo and certificate_photo != "":
             temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
         teacher = user.teacher_set.update(**temp)
         return JsonResponse()

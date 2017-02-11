@@ -130,8 +130,11 @@ def changeSingleBaseToImg(pic_data):
             fh.write(base64.decodestring(base64Data))
         return '/static/' + name
     else:
-        idx = pic_data.index("static")
-        return pic_data[idx-1:]
+        try:
+            idx = pic_data.index("static")
+            return pic_data[idx-1:]
+        except :
+            return ''
 def changeObejct(obj):
     """
     兼容接受到的对象
