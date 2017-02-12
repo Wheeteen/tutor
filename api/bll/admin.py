@@ -344,6 +344,7 @@ def changeText(request):
     :return:
     """
     data = request.data
+    result = {}
     #将照片的base64转换成路径，然后保存在数据库上
     if data.has_key('image') and data.has_key('url'):
         image = Config.objects.filter(key='image')[0].value
@@ -352,7 +353,9 @@ def changeText(request):
         urls = url.split(',') if url != "" else []
         if len(imgs) > 4:
             return JsonError(u"只接受5个广告位")
-        imgs.append(changeSingleBaseToImg(data['image']))
+        banner = changeSingleBaseToImg(data['image'])
+        imgs.append(banner)
+        result['image'] = banner
         urls.append(data['url'])
         data['image'] = ",".join(imgs)
         data['url'] = ",".join(urls)
@@ -362,7 +365,7 @@ def changeText(request):
                 Config.objects.filter(key=k).update(value=data[k])
     except Exception,e:
         return JsonError(e.message)
-    return JsonResponse()
+    return JsonResponse(result)
 
 @login_required()
 @api_view(['POST'])
