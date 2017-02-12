@@ -70,6 +70,8 @@ def createParentOrder(request):
     """
     user = AuthUser.objects.get(username=request.user.username)
     parentorder = user.parentorder_set.all()
+    #TODO：管理员创建多个会有什么连锁反应
+    #TODO:这个以后会加个限制，不让同时创建老师和家长
     if not user.is_superuser and len(parentorder) > 0:
         return JsonError("already existed")
     if request.method == 'POST':
@@ -146,7 +148,7 @@ def getParentOrder(request):
     if len(teas) > 0:
         tea = teas[0]
     else:
-        return JsonError("家长不存在！请重新填问卷")
+        return JsonError(u"您不是老师！请重新填问卷")
     parentOrders = ParentOrder.objects.filter(**filter)[start:start + size]
     for po in parentOrders:
         po.isInvited = ''
