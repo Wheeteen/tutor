@@ -204,4 +204,15 @@ def login_admin(request):
     name = 'yinzishao'
     user = authenticate(username=name, password=name)
     login(request,user)
+    request.session['info'] = {
+            'province': 'Guangdong',
+            'openid': 'odE4WwK3g05pesjOYGbwcbmOWTnc',
+            'headimgurl': 'http://wx.qlogo.cn/mmopen/fR41VbicrntibxhNY3WfaKgHBTbe1d6Gz0tPjhHpicwJerJiaAictfHiaLiaqCcVIs5EKOzsD4yaiadyUIUHK2Lu07K9EqArtialVJd4b/0',
+            'language': 'zh_CN',
+            'city': 'Yunfu',
+            'country': 'CN',
+            'sex': 1,
+            'privilege': [],
+            'nickname': u'\u5c39\u5b50\u52fa'
+        }
     return redirect('/getNum/')
