@@ -127,9 +127,9 @@ def updateInfo(request):
     userType = request.data.get('user',None)
     temp = request.data.dict()  if (type(request.data.get('userInfo', {})) != type({})) else request.data.get('userInfo', {})
     now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    temp['update_time']= now
     changeObejct(temp)
     if userType == "parent":
-        temp['update_time']= now
         resNum = ParentOrder.objects.filter(pd_id = id).update(**temp)
     elif userType == "teacher":
         resNum = Teacher.objects.filter(tea_id = id).update(**temp)

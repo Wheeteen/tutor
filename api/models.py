@@ -259,6 +259,7 @@ class Teacher(models.Model):
     teach_show_photo = models.TextField(blank=True, null=True)
     massage_warn = models.IntegerField(blank=True, null=True, default=1)
     create_time = models.DateTimeField(blank=True, null=True)
+    update_time = models.DateTimeField(blank=True, null=True)
     pass_not = models.IntegerField(blank=True, null=True, default=1)
     mon_begin = models.IntegerField(blank=True, null=True)
     mon_end = models.IntegerField(blank=True, null=True)
