@@ -179,7 +179,7 @@ def getTeachers(request):
     filter = {}
     order = '-hot_not'
     if hot == 2:
-        order = '-create_time'
+        order = '-update_time'
     if subject and subject != '':
         where = ['FIND_IN_SET("'+subject+'",subject)']
     #年级,如果里面是字符串，需要加引号
