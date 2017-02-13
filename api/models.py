@@ -288,7 +288,7 @@ class Feedback(models.Model):
     wechat = models.ForeignKey(AuthUser, db_column='wechat', blank=True, null=True)
     tutorservice = models.TextField(db_column='tutorService', blank=True, null=True)  # Field name made lowercase.
     appservice = models.TextField(db_column='appService', blank=True, null=True)  # Field name made lowercase.
-    rate = models.FloatField(blank=True, null=True)
+    rate = models.FloatField(blank=True)
     create_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:

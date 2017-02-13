@@ -493,7 +493,7 @@ def submitFeedBack(request):
         fb = Feedback(**data)
         fb.save()
     except Exception,e:
-        return JsonError(e.message)
+        return JsonError(str(e))
     return JsonResponse()
 
 @login_required()

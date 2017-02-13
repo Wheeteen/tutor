@@ -204,7 +204,6 @@ def getOrder(request):
     pd = user.parentorder_set.all()
     size = int(request.data.get("size",0))
     start = int(request.data.get("start",0)) * size
-    oas = None
     if len(t) > 0:
         #老师的订单详情
         oas = OrderApply.objects.filter(tea=t[0])[start:size]
@@ -305,9 +304,8 @@ def getOrder(request):
                     elif oa.parent_willing == 2:
                         oa.result = u"已成交"
         return Response(OrderApplySerializer(oas,many=True).data)
-
-    if not oas:
-        return Response({"info":"没有订单！"})
+    else:
+        return JsonResponse([])
 
 @login_required()
 @api_view(['POST'])
