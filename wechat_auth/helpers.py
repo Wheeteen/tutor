@@ -115,8 +115,7 @@ def changeBaseToImg(data):
     for imgData in data:
         pic_data = imgData["img"]
         name = changeSingleBaseToImg(pic_data)
-        if name != '':
-            result.append(name)
+        result.append(name)
     return ','.join(result)
 
 def changeSingleBaseToImg(pic_data):
@@ -216,7 +215,9 @@ def changeTeachShowPhoto(obj):
     teach_show_photo = obj.get('teach_show_photo',None)
     if teach_show_photo:
         if teach_show_photo !='':
-            obj['teach_show_photo'] =teach_show_photo.split(',')
+            result = teach_show_photo.split(',')
+            res = [ i for i in result if i != '']
+            obj['teach_show_photo'] = res
         else:
             obj['teach_show_photo'] = []
 def defaultChangeTeachShowPhoto(obj):
