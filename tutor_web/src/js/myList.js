@@ -7,7 +7,7 @@
     el: 'body',
     data: {
       timer: null,
-      domain:'http://www.yinzishao.cn:8000/',
+      domain:'http://www.yinzishao.cn:8000',
  	    msgList: [
          // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "对方已邀请","finish": 0,"type": "parent"},//“接受邀请”，“拒绝邀请”
          // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "已拒绝","finish": 1,"type": "parent"},//老师拒绝(直接拒绝或者是没有在半小时内上传截图)，还可以“再次接受邀请”
@@ -64,6 +64,13 @@
       }else{
         return false;
       }
+    },
+    isOnSubmit: function(){
+      if(this.form.img != ''){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   ready: function(){
@@ -79,7 +86,7 @@
       }
     },
    	renderData: function(){
-      this.$http.post(this.domain+'getOrder', this.para,{
+      this.$http.post(this.domain+'/getOrder', this.para,{
         crossOrigin: true,
         headers:{
           'Content-Type':'application/json' 
@@ -92,11 +99,14 @@
           this.jsonData = res.json();
            var data = res.json();
            if(data.length!=0){
-            for(var i = 0;i<data.length;i++){
-              if(data[i].result == '已拒绝'||data[i].result == '家长已拒绝'){
+             for(var i = 0;i<data.length;i++){
+              if(data[i].result == '您已拒绝'||data[i].result == '家长已拒绝'){
                 data[i].isRed = true;
               }else{
                 data[i].isRed = false;
+              }
+              if(data[i].screenshot_path!=null||data[i].screenshot_path!=''){
+                data[i].screenshot_path = this.domain+data[i].screenshot_path;
               }
              }
              var json = this.msgList.concat(data);
@@ -139,11 +149,11 @@
         this.status.isAccount = true;
       }else if(list.result == '对方已同意'){
         this.onAccept(index);
-      }else if(list.result == '已成交'){
+      }else if(list.result == '管理员审核中'){
         this.status.isTutorInfo = false;
         this.status.isRemindTip = true;
       }else{
-        this.$http.post(this.domain+'getParentInfo',{
+        this.$http.post(this.domain+'/getParentInfo',{
           "pd_id": list.pd,
           "format": true,
         },{
@@ -164,8 +174,13 @@
         if(list.result == '对方已邀请'){
           this.status.isInvited = true;
           this.status.isReject = false;
-        }else if(list.result == '已拒绝'){
+        }else if(list.result == '您已拒绝'){
           this.status.text = '再次接受邀请';
+          this.status.isInvited = false;
+          this.status.isReject = true;
+        }
+        else if(list.result == '已成交'){
+          this.status.text = '双方已成交';
           this.status.isInvited = false;
           this.status.isReject = true;
         }else if(list.result == '家长已拒绝'){
@@ -182,6 +197,7 @@
   	},
     onStep: function(index){
       if(this.status.text=='再次接受邀请'){
+        this.msgList[index].finish = 0;
         this.onAccept(index);
       }else if(this.status.text=='再次报名该家长'){
         this.status.isTutorInfo = false;
@@ -190,12 +206,12 @@
         this.status.isTutorInfo = false;
         this.form.isMsg = '取消报名';
         this.status.isSureRefuse = true;
-      }else{
-        return false;
+      }else if(this.status.text == '双方已成交'){
+        this.status.isTutorInfo = false;
       }
     },
     onApply: function(index){
-      this.$http.post(this.domain+'applyParent',{
+      this.$http.post(this.domain+'/applyParent',{
         "pd_id": this.msgList[index].pd,
         "expectation": this.form.expection,
         "type": 1
@@ -220,7 +236,7 @@
        })
     },
 		onAccept: function(index){
-      this.$http.post(this.domain+'handleOrder',{
+      this.$http.post(this.domain+'/handleOrder',{
         'accept': 1,
         'id': this.msgList[index].pd,
         'type': 0
@@ -254,7 +270,7 @@
 		onSureRefuse: function(index){
       var msg = this.form.isMsg;
       if(msg == '取消报名'){
-        this.$http.post(this.domain+'applyParent',{
+        this.$http.post(this.domain+'/applyParent',{
           'pd_id': this.msgList[index].pd,
           'type': 0              
          },{
@@ -277,7 +293,7 @@
         })
       }else {
         //‘拒绝邀请’
-        this.$http.post(this.domain+'handleOrder',{
+        this.$http.post(this.domain+'/handleOrder',{
           'accept': 0,
           'id': this.msgList[index].pd,
           'type': 0
@@ -288,7 +304,7 @@
           }
         }).then(function(res){
           if(res.json().success == 1){
-              this.msgList[index].result= '已拒绝';
+              this.msgList[index].result= '您已拒绝';
               this.msgList[index].isRed = true;
               this.msgList[index].finish = 1;
               this.status.isSureRefuse = false;
@@ -299,6 +315,10 @@
         })
       }
 		},
+    onChangeImg: function(){
+      this.status.isRemindTip = false;
+      this.status.isAccount = true;
+    },
 		onCancel: function(){
 			this.status.isSureRefuse = false;
 		},
@@ -326,7 +346,7 @@
           });
 	    },
 	    onSubmitImg: function(index){
-	    	this.$http.post(this.domain+'uploadScreenshot',{
+	    	this.$http.post(this.domain+'/uploadScreenshot',{
           'oa_id': this.msgList[index].oa_id,
           'pic': this.form.img
         },{
@@ -340,9 +360,10 @@
           if(res.json().success == 1){
           	this.status.isAccount = false;
           	this.status.isRemindTip = true;
-            this.msgList[index].finish = 1;
             this.msgList[index].isRed = false;
-            this.msgList[index].result= '已成交';
+            this.msgList[index].screenshot_path = this.form.img;
+            this.form.img = '';
+            this.msgList[index].result= '管理员审核中';
           }else{
             console.log(res.json().error);
           }

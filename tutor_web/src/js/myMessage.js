@@ -29,6 +29,7 @@
           isParent: '',
           isMsg: true,
           isNoMsg: false,
+          selected: ''
       	},
         para:{
           'size': 22,
@@ -104,6 +105,7 @@
            return str;
         },
       	onShow:function(index){
+          this.status.selected = index;
           if(this.msgList[index].status == false){
             this.$http.post(this.domain+'readMessage',{
               'msg_id': this.msgList[index].msg_id
@@ -117,20 +119,23 @@
               console.log(res.json());
               if(res.json().success == 1){
                 this.msgList[index].status = true;
-                if(this.msgList[index].message_title=='好学吧家教服务平台邀请您填写反馈意见！'){
-                  console.log(1);
+                if(this.msgList[index].message_title=='好学吧家教邀请您填写反馈意见！'){
                   this.status.isFeedBack = true;
                 }else{
-                  console.log(2);
                   this.msgList[index].isDetailed = !this.msgList[index].isDetailed;
                 }
               }
             })
           }else{
-           if(this.msgList[index].message_title=='好学吧家教服务平台邀请您填写反馈意见！'){
-              this.status.isFeedBack = true;
+            if(this.msgList[index].message_title=='好学吧家教邀请您填写反馈意见！'){
+              if(this.msgList[index].isFeedBack == true){
+                this.msgList[index].message_content = '您已填写！';
+                this.msgList[index].isDetailed = true;
+              }else{
+                this.status.isFeedBack = true;
+              }             
             }else{
-              this.msgList[index].isDetailed = !this.msgList[index].isDetailed;
+              this.msgList[index].isDetailed = !this.msgList[index].isDetailed; 
             }
           }
       		
@@ -154,7 +159,7 @@
       		}
       	},
       	onFeedback: function(){
-          if(this.form.rate!== Number||this.form.tutorservice!=''||this.form.appservice!=''){
+          if(this.form.rate!== Number&&this.form.tutorservice!=''&&this.form.appservice!=''){
             this.status.isSubmit = true;
             this.$http.post(this.domain+'submitFeedBack', this.form, {
               crossOrigin:true,
@@ -165,6 +170,7 @@
               console.log(res.json());
               this.status.isSubmit = false;
               if (res.json().success == 1) {
+                this.msgList[this.status.selected].isFeedBack = true;
                 this.status.isFeedBack = false;
               }else {
                 console.log(res.json().error);

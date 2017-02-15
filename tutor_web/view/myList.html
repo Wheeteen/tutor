@@ -90,7 +90,7 @@
 	          <img :src="form.img" alt="">
     		</div>
     		<div class="submitBtn">
-    			<span v-on:touchstart="onSubmitImg(form.selected)" class='refuse bgreen'>确认上传截图</span>
+    			<span v-on:touchstart="onSubmitImg(form.selected)" class='refuse' v-bind:class="{'bgreen':isOnSubmit}">确认上传截图</span>
     		</div>
 		</div>
     </div>
@@ -102,10 +102,14 @@
 				<span>请耐心等待工作人员审核</span>
 				<span class='close' @touchstart="onSureSubmit">×</span>
 			</div>
+			<div class="infoImg">
+	          <img :src="msgList[form.selected].screenshot_path"alt="">
+    		</div>
 			<div class="infoTip">
     			<p>截图上传成功</p>
     			<p>请耐心等待工作人员的审核，</p>
     			<p>审核成功后工作人员会将家长的联系方式发送给您</p>
+    			<p class='u_img' @touchstart='onChangeImg'>想要重新上传截图？点击这里</p>
     		</div>
     		<div class="submitBtn">
     			<span v-on:touchstart="onSureSubmit(form.selected)" class='refuse bgreen'>确认</span>
