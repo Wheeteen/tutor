@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/tutorPage.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}"  >
+	<div class="bottomBtn">
+		<span class='active'@touchstart="onRecommend">推荐</span>
+		<span @touchstart="onMine">我的</span>
+	</div>
+	<div class="consult">
+		<a href="#">
+			<em>客服</em>
+			<em>咨询</em>
+		</a>
+	</div>
+	<!-- 重新获取定位 -->
+	<div class="changeLocation" v-on:touchstart='setLocation'>
+		<img src="../img/location.png" alt="">
+	</div>
+	<!-- 家教信息列表 -->
+	<ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isParent'>
+		<li v-for='item in msgList' v-on:touchstart="onTutorInfo($index)">
+			<div class="name">
+				<em v-text="item.name"></em>
+				<em v-text="item.create_time"></em>
+				<em v-text="item.isInvited"></em>
+			</div>
+			<div class="subject">
+				<em v-text="item.subject"></em>
+				<em>{{item.learning_phase}}{{item.grade}}</em>
+				<span>距您{{item.distance}}km</span>
+			</div>
+			<div class="address">
+				<em>家长位置</em>
+				<span v-text="item.address"></span>
+			</div>
+		</li>
+	</ul>
+	<!-- 当没有消息的时候，有提示 -->
+    <div class="noParent" v-if='status.isNoParent'>
+    	对不起，暂时还没有家长的信息，请耐心等待！
+    </div>	
+	<!-- 家教信息详情 -->
+	<div class="tutorInfo" v-if="status.isTutorInfo">
+	    <div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+				<span>{{detailedList.name}}</span>
+				<span class='close' @touchstart="onClose">×</span>
+			</div>
+			<div class="distance">
+				<span>距您{{detailedList.distance}}km</span>
+			</div>
+			<div class="info">
+				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
+				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
+				<p>上课时间：<em>{{detailedList.time}}</em></p>
+				<p>补课目的：<em>{{detailedList.aim}}</em></p>
+				<p v-if='detailedList.class_field!==""'>孩子班级排名：<em>{{detailedList.class_field}}</em></p>
+				<p>教学特点：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p v-if='detailedList.require!==""'>其他要求：<em>{{detailedList.require}}</em></p>
+				<p>时薪：<em>{{detailedList.salary}}</em></p>
+				<p v-if='detailedList.bonus!==""'>补贴：<em>{{detailedList.bonus}}</em></p>
+				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
+			</div>
+			<div class="submitBtn">
+				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" @touchstart="onRegister(form.selected)" >
+			</div>
+		</div>
+	</div>	
+	<!-- 提示位置获取 -->
+    <div class="getLocation" v-if='status.getLocation'>
+    	<div class="greyScreen"></div>
+    	<div class="locationCon">
+    		<div class="infoTip">
+    			<p>您是否需要重新获取定位，方便测量您与家长之间的距离？</p>
+    		</div>
+            <div class="infoBtn">
+                <span v-on:touchstart="onAllow">是</span>
+                <span v-on:touchstart="onCancel">否</span>
+            </div>
+    	</div>
+    </div>
+    <!-- 报名时填期望 -->
+    <div class="getLocation expection" v-if='status.expection'>
+      <div class="greyScreen"></div>
+      <form class="getExpection" v-on:submit.prevent="onApply(form.selected)">
+        <div class="fTitle">
+            <h3>请填写此次家教的教学设想</h3>
+            <span v-on:touchstart="onCloseExp">×</span>
+        </div>	      	
+	    <div class="content">
+	    	<textarea v-model='form.expection' required></textarea>
+	    </div>
+        <div class="submitBtn">
+	        <input type="submit"
+	        v-bind:class="{'btn-success':remindSubmit}" class="btn-default"  v-if="!status.isSubmit" value="提交">
+	        <input type="submit" v-else class="btn-success" value="已提交" disabled="disabled">
+	     </div>
+      </form>
+    </div>
+    <div class="InfoTipOne" v-if="status.isInfoTipOne">
+	    <p class='close' @touchstart="onClose">×</p>
+		<p class="infoTip" v-text='status.errorTip'></p>
+	</div>
+</div>
+<script src="../dist/js/wx.js"></script>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../dist/js/tutorPage.min.js"></script>
+
+</body>
+</html>

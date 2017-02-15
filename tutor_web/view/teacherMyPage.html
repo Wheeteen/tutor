@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/tutorMyPage.min.css">
+</head>
+<body>
+<div class="container" v-bind:class='{opacity:status.isLoading}'>
+	<div class="bottomBtn">
+		<span @touchstart="onRecommend">推荐</span>
+		<span class="active" @touchstart="onMine">我的</span>
+	</div>
+	<!-- "我的"详细内容 -->
+    <div class="myInfo">
+    	<figure>
+    		<img v-bind:src="form.myImg" alt="">
+    		<figcaption v-text='form.name'>张老师</figcaption>
+    	</figure>
+    	<div class="mainInfo">
+    		<div class="changeInfo" v-on:touchstart="onchangeInfo">
+	    		修改资料
+	    	</div>
+	    	<div class="myMsg" v-on:touchstart="onMsg">
+	    		我的消息
+	    	</div>
+	    	<div class="myList" v-on:touchstart="onTeacher">
+	    		我的单子
+	    	</div>
+	    	<div class="remindInfo">
+	    		消息提醒
+	    		<input type="checkbox" checked="checked">
+	    		<div class="remindBtn">	  
+	    			<span>
+	    				<em></em>
+	    			</span>
+	    		</div>
+
+	    	</div>
+    	</div>
+    </div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/tutorMyPage.min.js"></script>
+</body>
+</html>

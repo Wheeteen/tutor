@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/parentPage.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{'opacity': status.isLoading}">
+	<div class="bottomBtn">
+		<span class='active'@touchstart="onRecommend">推荐老师</span>
+		<span @touchstart="onMine">我的</span>
+	</div>
+	<div class="consult">
+		<a href="#">
+			<em>客服</em>
+			<em>咨询</em>
+		</a>
+	</div>
+	<!-- 重新获取定位 -->
+	<div class="changeLocation" v-on:touchstart='setLocation'>
+		<img src="../img/location.png" alt="">
+	</div>
+	<!-- 全部老师 -->
+    <div class="recommendTutor">
+    	<header>
+    		<p>提示：每次只能选择一名老师进行试课哦~</p>
+	    	<div class="recommendBtn">
+	    		<span class='active' @touchstart="onRecommend">为您推荐</span>
+			    <span @touchstart="onAllTutor">全部老师</span>
+	    	</div>
+    	</header>
+    	<!-- 家教信息列表 -->
+        <ul class="tutorList" v-scroll="down()" scroll-foot="30" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
+			<li v-for='item in recommendList' v-on:touchstart="onTutorInfo($index)">
+				<div class="image">
+			    	<img v-bind:src="item.certificate_photo">
+			    </div>
+				<div class="rightMsg">
+					<p class="name">
+						<em v-text="item.name"></em>
+						<em v-text="item.isInvited"></em>
+					</p>
+					<p class="subject">
+						<em v-text="item.subject"></em>
+						<em v-text="item.grade"></em>
+						<span>距您{{item.distance}}km</span>
+					</p>
+					<p class="address">
+						<em>老师位置</em>
+						<span v-text="item.native_place"></span>
+					</p>
+				</div>
+			</li>
+		</ul>	
+		<!-- 当没有消息的时候，有提示 -->
+        <div class="noTutor" v-if='status.isNoTutor'>
+        	对不起，暂时没有为您推荐的老师，请到“全部老师”里面查找您要找的老师！
+        </div>		
+    </div>
+
+    <!-- 家教信息详情 -->
+	<div class="tutorInfo" v-if="status.isTutorInfo">
+	    <div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+			    <div class="image">
+			    	<img v-bind:src="detailedList.certificate_photo" alt="">
+			    </div>
+				<div class="msgName">
+					<span> 
+					{{detailedList.name}}
+					</span>
+				    <span class='close' @touchstart="onClose">×</span>
+				</div>
+			</div>
+			<div class="distance">
+				<span>距您{{detailedList.distance}}
+				km</span>
+			</div>
+			<div class="info">
+				<p>性别：<em>
+				{{detailedList.sex}}
+				</em></p>
+				<p>专业：<em>
+				{{detailedList.campus_major}}
+				</em></p>
+				<p>可教年级：<em>{{detailedList.grade}}</em></p>
+				<p>可教科目：<em>
+				{{detailedList.subject}}{{detailedList.subject_other}}
+				</em></p>
+				<p>上课时间：<em>{{detailedList.time}}</em></p>
+				<p>可接受地点：<em>{{detailedList.place}}</em></p>
+				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p>相关成绩：<em>{{detailedList.score}}</em></p>
+				<p>个人简介：<em>{{detailedList.self_comment}}</em></p>
+				<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
+				<p>老师籍贯：<em>{{detailedList.native_place}}</em></p>
+			</div>
+			<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
+				<h3>家教秀</h3>
+				<ul class="showImage">
+                   <li v-for="item in detailedList.teach_show_photo">
+                   	<img v-bind:src="item" alt="">
+                   </li>             
+				</ul>
+			</div>
+			<div class="submitBtn">
+				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" @touchstart="onRegister1(status.selected)" >
+			</div>
+		</div>
+	</div>
+	<div class="InfoTipOne" v-if="status.isInfoTipOne">
+	    <p class='close' @touchstart="onClose">×</p>
+		<p class="infoTip" v-text='status.errorTip'></p>
+	</div>
+	<!-- 提示位置获取 -->
+    <div class="getLocation" v-if='status.getLocation'>
+    	<div class="greyScreen"></div>
+    	<div class="locationCon">
+    		<div class="infoTip">
+    			<p>您是否需要重新获取定位，方便测量您与老师之间的距离？</p>
+    		</div>
+            <div class="infoBtn">
+                <span v-on:touchstart="onAllow">是</span>
+                <span v-on:touchstart="onCancel">否</span>
+            </div>
+    	</div>
+    </div>
+</div>
+<script src="../dist/js/wx.js"></script>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script> 
+<script src="../src/js/parentPage.js"></script>
+</body>
+</html>

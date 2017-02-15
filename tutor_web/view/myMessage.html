@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/myMessage.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{'opacity':!status.isLoading}">
+    <header>
+        <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+        <h1 v-on:touchstart="onReturn">返回</h1>
+    </header>
+    <ul class='msgList' v-scroll="down()" scroll-foot="80" scroll-top="200" scroll-up="up()" v-show='status.isMsg'>
+        <li v-for='item in msgList'>
+            <p class='fontS' v-bind:class="{'strong':item.status}" @touchstart="onShow($index)">{{item.message_title}}</p>
+            <p v-show="item.isDetailed">{{item.message_content}}</p>
+        </li>
+    </ul>
+    <!-- 当没有消息的时候，有提示 -->
+    <div class="noMsg" v-if='status.isNoMsg'>
+        对不起，暂时您还没有消息，请耐心等待！
+    </div>  
+    <!-- 填写反馈 -->
+    <div class="feedback" v-if="status.isFeedBack">
+        <div class="greyScreen"></div>
+        <form class="feedbackCon" v-on:submit.prevent="onFeedback">
+            <div class="fTitle">
+                <h3>请填写反馈</h3>
+                <span v-on:touchstart="onClose">×</span>
+            </div>
+            <div class="fXing">
+                <p>为了产品能给您带来更好的服务体验，我们诚挚邀请您填写宝贵的意见和建议。</p>
+                <ul>
+                    <li v-for='item in xingList' v-bind:class="{'active':item.key}" v-on:touchstart="onXing($index)">       
+                    </li>
+                </ul>
+            </div>
+            <div class="tutorService">
+                <p>家教服务：</p>
+                <textarea placeholder="您觉得老师提供的家教服务怎么样呢？在这里写下您宝贵的意见吧" v-model="form.tutorservice"></textarea>
+            </div>
+            <div class="appService">
+                <p>平台服务：</p>
+                <textarea placeholder="您觉得我们提供的平台还有什么地方能够做的更好呢？在这里写下您宝贵的意见吧" v-model="form.appservice"></textarea>
+            </div>
+            <div class="submitBtn">
+                <input type="submit"
+                v-bind:class="{'btn-success':remindSubmit}" class="btn-default"  v-if="!status.isSubmit" value="提交">
+                <input type="submit" v-else class="btn-success" value="已提交" disabled="disabled">
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../src/js/myMessage.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+html,body,span,div,a,ul,li,em,p,figure,figcaption,img{
+	margin:0;
+	padding:0;
+}
+body{
+	font-family: 'Microsoft Yahei';
+	font-size: 12px;
+	width:100%;
+	background-color:#f1f1f1;
+}
+@color1:#23CD74;
+@color2:#999;
+a{
+	text-decoration: none;
+}
+@color1:#23CD74;
+em{
+	font-style: normal;
+}
+ul,ul li{
+	list-style-type: none;
+}
+.opacity{
+	opacity: 1 !important;
+}
+.bottomBtn{
+	position: fixed;
+	bottom:0;
+	height: 30px;
+	width:100%;
+	z-index: 9999;
+	span{
+		width:50%;
+		text-align: center;
+		font-size: 14px;
+		line-height: 30px;
+        display: inline-block;
+        float: left;
+        background-color: #fff;
+       
+	}
+	.active{
+		background: #53C778;
+		color:#fff;
+		border:0;
+	}
+	
+}
+.myInfo{
+	width:100%;
+	overflow: hidden;	
+	figure{
+		width:100%;
+		border-bottom: 1px solid #ccc;
+		text-align: center;
+		padding-bottom: 6px;
+		margin-top: 30px;
+		img{
+			width:20%;
+			margin:3px auto;
+			border-radius: 50%;
+		}
+	}
+	
+}
+@keyframes swipe
+{
+  0%   { left:0;}
+  100% { left:65%;}
+}
+@-webkit-keyframes swipe{
+  0%   {left:0;}
+  100% {left:65%;}
+}
+.mainInfo{
+	padding:20px 15%;
+	width:70%;
+	&>div{
+		width:100%;
+		border:1px solid #ccc;
+		height: 35px;
+		line-height: 35px;
+		text-align: center;
+		margin-bottom: 15px;
+		border-radius: 3px;
+		background: url(../../img/right.png) no-repeat 96% center;
+
+	}
+
+	.remindInfo{
+		background: none;
+		position: relative;
+		.remindBtn{
+			position: absolute;
+			left:80%;
+			top:8px;
+			width:14%;
+			height: 16px;
+			
+			
+		}
+		input{
+			position: absolute;
+			width:100%;
+			height: 100%;
+			opacity: 0;
+			outline: none;
+			top:0;
+			left:0;
+		}
+		span{
+			position: absolute;
+			width:100%;
+			height: 100%;
+			border-radius: 8px;
+			top:0;
+			left:0;
+			border: 1px solid #ccc;
+            transition:background .2s  ease 0.3;
+		    -webkit-transition: background .2s  ease 0.3;
+		}
+		em{
+			position: absolute;
+			width:16px;
+			height: 16px;
+			border-radius: 50%;
+			left:0;
+			top:0;
+			display: block;
+			z-index: 33;
+			border:1px solid #ccc;
+			box-sizing: border-box;
+			-webkit-box-sizing:border-box;
+			-o-box-sizing:border-box;
+		}
+		input:checked+div span{
+		  background: @color1;
+
+		}
+		input:checked+div em{
+		  background: #fff !important;
+          animation:swipe .3s forwards;
+          -webkit-animation: swipe .3s forwards;
+		}
+		
+	}
+}
+.tutorInfo{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	top:0;
+	
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		z-index: 13;
+	}
+	.InfoTipOne{
+		position: fixed;
+		width:80%;
+		height: 14%;
+		left:10%;
+		color: #666;
+		top:30%;
+		border:1px solid #999;
+		background: #fff;
+		z-index: 23;
+		.close{
+			float: right;
+			margin-right: 2%;
+			font-size: 20px;
+		}
+		.infoTip{
+			width:90%;
+            margin-left: 5%;
+            margin-top: 10%;
+            font-size: 14px;
+           
+		}
+	}
+	.InfoRequest{
+		width:70%;
+		left:15%;
+		height: 20%;
+		border-radius: 3px;
+		border:1px solid #666;
+		.infoTip{
+			margin-top: 5%;
+			padding-bottom: 10px;
+			p{
+				text-align: center;
+			}
+		}
+		.infoBtn{
+			position: absolute;
+			bottom:0;
+			width:100%;
+		}
+		.strong{
+			font-weight: bold;
+		}
+		span{
+			display: inline-block;
+			float: left;
+			width:50%;
+			color:#464;
+			height: 25px;
+			line-height: 25px;
+			text-align: center;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			border-top: 1px solid #ccc;
+			&:last-child{
+				background-color:#666;
+				color: #fff;
+			}
+		}
+	}
+}
+.btn-default{
+	background-color: @color2 !important;
+}
+.btn-success{
+	background-color: #23CD74 !important;
+}

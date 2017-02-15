@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/tutorResume.min.css">
+</head>
+<body>
+<div v-bind:clss="{opacity:status.isLoading}">
+  <!-- 提示老师是否允许获取位置 -->
+  <div class="getLocation" v-if='status.getLocation'>
+    <div class="greyScreen"></div>
+    <div class="locationCon">
+      <div class="infoTip">
+        <p>好学吧要对您进行定位，方便测量您与家长之间的距离，是否允许？</p>
+      </div>
+          <div class="infoBtn">
+              <span v-on:touchstart="onAllow">允许</span>
+              <span v-on:touchstart="onCancel">拒绝</span>
+          </div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>简历填写</h1>
+    <p class='msg'>请认真填写一下内容，谢谢。</p>
+    <form action="" v-on:submit.prevent="onSubmit"> 
+      <div class="group-form">
+        <label for="">姓名</label>
+        <input type="text" v-model.trim="form.name" required maxlength="16">
+      </div>
+      <div class="group-form">
+        <label for="">学历状态</label>
+        <ul class="subject qualification">
+          <li>
+            <input type="radio" name='student' value='1' v-model='form.qualification'>
+            <em>本科生</em>
+          </li>
+          <li>
+            <input type="radio" name='student' value='2' v-model='form.qualification'>
+            <em>研究生</em>
+          </li>
+          <li>
+            <input type="radio" name='student' value='3' v-model='form.qualification'>
+            <em>毕业生</em>
+          </li>
+        </ul>
+      </div>
+      <div class="group-form">
+        <label for="">填写学号</label>
+        <input type="text" v-model.trim="form.number" required maxlength="16">
+      </div>
+      <div class="group-form group1">
+        <label for="">性别</label>
+        <input type="radio" name="sex" value="1" v-model="form.sex" required>
+        <span class='man'>男</span>
+        <input type="radio" name="sex" value="2" v-model="form.sex" required >
+        <span>女</span>
+      </div>
+      <div class="group-form">
+        <label for="">籍贯</label>
+        <input type="text" v-model.trim="form.native_place" required maxlength="16">
+      </div>
+      <div class="group-form">
+        <label for="">学院专业</label>
+        <input type="text"  v-model.trim="form.campus_major" required maxlength="16">
+      </div>
+      <div class="group-form">
+        <label for="">联系电话</label>
+        <input type="tel" v-model.trim="form.tel" required>
+      </div>     
+      <div class="group-form groupTip">
+        <label for="">辅导科目</label>
+        <ul class="subject">
+          <li v-for='subject in formGroup[2].value'>
+            <input type="checkbox" v-bind:value="subject.tag" v-model="Arr.subjectArr">
+            <em>{{subject.tag}}</em>
+          </li>
+        </ul>
+        <div class="feature"  v-if='isOtherSubject'>
+          <input type="text" v-model.trim='form.subject_other' placeholder="20字以内">
+        </div>
+      </div>
+      <div class="form-form">
+        <label for="">可辅导年级</label>
+        <ul class="subject">
+          <li v-for='grade in formGroup[3].value'>
+            <input type="checkbox"  v-bind:value="grade.tag" v-model="Arr.gradeArr">
+            <em>{{grade.tag}}</em>
+          </li>
+        </ul>
+      </div>
+      <div class="group-form groupTip">
+        <label for="">可接受地点</label>
+        <input type="text" v-model.trim="form.place" required>
+        <p>不限；或者以区为单位，多区域用“，”分隔</p>
+      </div>
+      <div class="group-form groupTime">
+        <label for="" class='space'>空闲时间</label>      
+        <div class="tableSchedule">
+          <p class='concreteTime'>
+            <span>下午三点</span>
+            <span>晚上十点</span>
+          </p>
+          <div class="weekday" v-for="itemday in formGroup[0].value">
+            <label for="">{{itemday.tag}}</label>
+            <span class="background"></span>
+            <ul class="Monday">
+                <li v-for='i in 16'>
+                  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchstart="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
+                  <em></em>
+                </li>
+            </ul>
+          </div>
+          <div class="daytime">
+            <span>上午</span><span>下午</span><span>晚上</span>
+          </div>
+          <div class="weekend" v-for="item in formGroup[1].value">  
+            <label for="">{{item.tag}}</label>
+            <ul class="clock">
+              <li v-for='i in item.key'>
+                <input type="checkbox" :false-value="0" :true-value='1' v-model="form[i.tag]">
+                <em></em>
+              </li>
+            </ul>                 
+          </div>
+        </div>
+      </div>      
+      <div class="group-form">
+        <label for="">教学方法</label>
+        <ul class="subject">
+          <li>
+            <input type="checkbox" value='严厉要求' v-model='Arr.teacher_method_arr'>
+            <em>严厉要求</em>
+          </li>
+          <li>
+            <input type="checkbox" value='氛围轻松' v-model='Arr.teacher_method_arr'>
+            <em>氛围轻松</em>
+          </li>
+          <li>
+            <input type="checkbox" value='亲和力强' v-model='Arr.teacher_method_arr'>
+            <em>亲和力强</em>
+          </li>
+          <li>
+            <input type="checkbox" value='其他' v-model='Arr.teacher_method_arr'>
+            <em>其他</em>
+          </li>
+        </ul>
+        <div class="feature"  v-if='isOtherMethod'>
+          <input type="text" v-model.trim='form.teacher_method_other' placeholder="20字以内">
+        </div>
+      </div>
+      <div class="group-form groupIntro">
+        <label for="">相关成绩</label>
+        <textarea placeholder="大学中学获得的奖项等" required v-model='form.score'></textarea>
+      </div>
+      <div class="group-form groupIntro">
+        <label for="">自我简介</label>
+        <textarea placeholder="家教经验 辅导效果 性格等（300到350字，分点描述， 重点突出辅导效果，家教经验）；可参考热门老师简历填写" required v-model='form.self_comment'></textarea>
+      </div>
+      <div class="group-form groupPic">
+        <label for="">上传照片</label>
+        <span>最好是证件照</span>
+        <div class="uploadPic">
+          <div class="text" v-show='status.isUploadImg'>
+            <p>上传照片</p>
+            <p>（100M以内）</p>
+          </div>
+          <input type="file" accept="image/*" @change="uploadImg($event)">
+          <img :src="form.certificate_photo" alt="">
+        </div>
+      </div>
+      <div class="group-form groupWage">
+        <label for="">可接受的时薪</label>
+        <div class="salary">
+          <label for="">最低的时薪</label>
+          <input type="Number" required v-model='form.salary_bottom'>
+        </div>
+        <div class="salary">
+          <label for="">最高的时薪</label>
+          <input type="Number" required v-model='form.salary_top'>
+        </div>
+        <p><a href="javascript:void(0)" v-on:touchstart="onSalary">点击参考家教薪酬标准</a></p>
+      </div>
+      <div class="group-form groupShow">
+        <label for="">家教秀(选填)</label>
+        <p>上传家长评价截图成绩凭证，最多上传三张截图</p>
+        <div class="uploadImg" v-for='item in 3'>
+          <span>＋</span>
+          <input type="file" accept="image/*" @change="uploadPic($event,item)">
+          <img :src="form.teach_show_photo[item].img" alt="">
+        </div>
+      </div>
+      <div class="group-form submit">
+        <input type="submit" v-if="!status.isSubmit" value="登录">
+        <input type="submit" v-else class="btn-success" value="loading..." disabled="disabled">
+      </div>
+    </form>
+  </div>
+  <div class="thumbnail" v-if='hintData.status'>
+     <div class="text-error">
+         <span v-text="hintData.text"></span>
+         <span v-on:touchstart="offHint">×</span>
+     </div> 
+  </div>
+  <!-- 时薪参考标准 -->
+  <div class="price" v-if="status.isPrice">
+    <div class="greyScreen"></div>
+    <div class="priceDetailed">
+      <div class="ptitle">
+        <h3>时薪参考标准</h3>
+        <span v-on:touchstart="onClosePrice">×</span>
+      </div>
+      <div class="ptext">{{salary}}</div>
+    </div>
+  </div>
+  <!-- 接单须知 -->
+  <div class="price" v-if="status.isNotice">
+    <div class="greyScreen"></div>
+    <div class="priceDetailed">
+      <div class="ptitle">
+        <h3>接单须知</h3>
+        <!-- <span v-on:touchstart="onCloseNotice">×</span> -->
+      </div>
+      <div class="ptext">{{notice}}</div>
+      <div class='iKnow' v-on:touchstart='onNotice'>
+        我知道啦
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../dist/js/wx.js"></script>
+<script src="../dist/js/lrz.bundle.js"></script>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../src/js/tutorResume.js"></script>
+</body>
+</html>

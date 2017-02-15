@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台</title>
+	<link rel="stylesheet" href="../dist/css/myList.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{'opacity':!status.isLoading}">
+	<header>
+        <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+        <h1 v-on:touchstart="onReturn">返回</h1>
+    </header>
+    <ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isList'>
+		<li v-for='item in msgList' v-on:touchstart="onTutorInfo($index)">
+			<div class="name">
+				<em v-text="item.name"></em>
+				<em v-text="item.result" v-bind:class="{'red': item.isRed}"></em>
+			</div>
+		</li>
+	</ul>
+	<!-- 当没有消息的时候，有提示 -->
+    <div class="noList" v-if='status.isNoList'>
+    	对不起，暂时还没有您的订单！
+    </div>
+	<div class="tutorInfo" v-if="status.isTutorInfo">
+	    <div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+				<span>{{detailedList.name}}</span>
+				<span class='close' @touchstart="onClose">×</span>
+			</div>
+			<div class="distance">
+				<span>距您{{detailedList.distance}}km</span>
+			</div>
+			<div class="info">
+				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
+				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
+				<p>上课时间：<em>{{detailedList.time}}</em></p>
+				<p>补课目的：<em>{{detailedList.aim}}</em></p>
+				<p v-if='detailedList.class_field!==""'>孩子班级排名：<em>{{detailedList.class_field}}</em></p>
+				<p>教学特点：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p v-if='detailedList.detailed!==""'>其他要求：<em>{{detailedList.require}}</em></p>
+				<p>时薪：<em>{{detailedList.salary}}</em></p>
+				<p v-if='detailedList.bonus!==""'>补贴：<em>{{detailedList.bonus}}</em></p>
+				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
+			</div>
+			<div class="submitBtn" v-if="status.isInvited">
+				<span v-on:touchstart="onAccept(form.selected)">接受邀请</span>
+    			<span v-on:touchstart="onRefuse">拒绝邀请</span>
+			</div>
+			<div class="submitBtn" v-if="status.isReject">
+				<span class='refuse' @touchstart="onStep(form.selected)" v-bind:class="{'btn-success':status.isSuccess}">{{status.text}}</span>
+			</div>
+		</div>
+	</div>
+	<!-- 确定拒绝邀请的弹窗 -->
+	<div class="tutorInfo" v-if="status.isSureRefuse">
+    	<div class="greyScreen"></div>
+    	<div class="InfoRequest">
+    		<div class="infoTip">
+    			<p>确定{{form.isMsg}}吗？</p>
+    		</div>
+    		<div class="infoBtn">
+    			<span v-on:touchstart="onSureRefuse(form.selected)">确定</span>
+    			<span v-on:touchstart="onCancel">取消</span>
+    		</div>
+    	</div>
+    </div>
+    <!-- 提示支付宝账号和上传截图 -->
+    <div class="tutorInfo" v-if='status.isAccount'>
+    	<div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+				<span>请转账</span>
+				<span class='close' @touchstart="onCloseAccount(form.selected)">×</span>
+			</div>
+			<div class="infoTip tipUpload">
+    			<p>订单确认成功</p>
+    			<p>管理员正在与您联系定价，请根据管理员要求完成指定的转账，并上传转账成功的截图</p>
+    			<p>请在半小时内确认，管理员才会将家长联系方式发送给您，否则将删除订单</p>
+    		</div>
+    		<div class="client">
+				<span>请上传截图</span>
+			</div>
+			<div class="infoImg">
+    		  <span>＋</span>
+	          <input type="file" accept="image/*" @change="uploadPic">
+	          <img :src="form.img" alt="">
+    		</div>
+    		<div class="submitBtn">
+    			<span v-on:touchstart="onSubmitImg(form.selected)" class='refuse bgreen'>确认上传截图</span>
+    		</div>
+		</div>
+    </div>
+    <!-- 请耐心等待工作人员审核的弹窗 -->
+    <div class="tutorInfo" v-if='status.isRemindTip'>
+    	<div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+				<span>请耐心等待工作人员审核</span>
+				<span class='close' @touchstart="onSureSubmit">×</span>
+			</div>
+			<div class="infoTip">
+    			<p>截图上传成功</p>
+    			<p>请耐心等待工作人员的审核，</p>
+    			<p>审核成功后工作人员会将家长的联系方式发送给您</p>
+    		</div>
+    		<div class="submitBtn">
+    			<span v-on:touchstart="onSureSubmit(form.selected)" class='refuse bgreen'>确认</span>
+    		</div>
+		</div>
+    </div>
+    <!-- 再次报名家长填期望 -->
+    <div class="tutorInfo" v-if='status.expection'>
+    	<div class="greyScreen"></div>
+    	<form class="getExpection" v-on:submit.prevent="onApply(form.selected)">
+        <div class="fTitle">
+            <h3>请填写此次家教的教学设想</h3>
+            <span v-on:touchstart="onCloseExp">×</span>
+        </div>	      	
+	    <div class="content">
+	    	<textarea v-model='form.expection' required></textarea>
+	    </div>
+        <div class="submitButton">
+	        <input type="submit"
+	        v-bind:class="{'btn-success':remindSubmit}" class="btn-default"  v-if="!status.isSubmit" value="提交">
+	        <input type="submit" v-else class="btn-success" value="已提交" disabled="disabled">
+	     </div>
+      </form>
+    </div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/lrz.bundle.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../src/js/myList.js"></script>
+</body>
+</html>
