@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/deal.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<div class="bottomBtn">
+		<span v-on:touchstart="onUser">用户管理</span>
+		<span class='deal active' v-on:touchstart="onDeal">成交</span>
+		<span v-on:touchstart="onOther">其他</span>
+	</div>
+	<ul class="userList" v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-if='status.isList'>
+		<li v-for="item in mainData" v-on:touchstart="onDeal($index)">
+			<div><span>{{item.pd_name}}（家长）-{{item.name}}（老师）</span>
+            <span v-text ="item.result" v-bind:class="{isDeal: item.isDeal}"></span></div>
+		</li>
+	</ul>
+    <!-- 当没有消息的时候，有提示 -->
+    <div class="noList" v-if='status.isNoList'>
+        对不起，暂时还没有成交订单！
+    </div>
+	<div class="tutorInfo" v-if='status.isUploadImg'>
+    	<div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client">
+				<span>{{detailedList.pd_name}}（家长）-{{detailedList.name}}（老师）</span>
+				<span class='close' @touchstart="onClose">×</span>
+			</div>
+			<div class="infoImg">
+	          <img :src="detailedList.screenshot_path" alt="">
+    		</div>
+            <div class="client tel">
+                <span>该老师的联系方式：{{detailedList.tea_tel}}</span>
+            </div>
+    		<div class="submitBtn">
+    			<span v-on:touchstart="onSubmitMsg(status.selected)" class='refuse' v-bind:class="{bgreen: status.isGreen}">{{status.isSend}}</span>
+    		</div>
+		</div>
+    </div>
+    <!-- 信息费 -->
+	<!-- <div class="feeInfo" v-if="status.isFeeInfo">
+        <div class="greyScreen"></div>
+        <form class="InfoRequest" v-on:submit.prevent='onSubmit(status.selected)'>
+            <p class='close' v-on:touchstart='onClose'>×</p>
+            <div class="infoTip">
+                <p>信息费 <input type="Number" v-model.trim="form.fee" required> 元</p>
+            </div>
+            <div class="infoBtn">
+                <input type="submit" value='提交'>  
+            </div>
+        </form>
+    </div> -->
+    <!-- 已定价 -->
+    <!-- <div class="feeInfo" v-if="status.isFeeInfoTrue">
+        <div class="greyScreen"></div>
+        <div class="InfoRequest">
+            <div class="infoTip">
+                <p>信息费 {{mainData[status.selected].price}} 元</p>
+            </div>
+            <div class="infoBtn">
+                <p>已定价</p>  
+            </div>
+        </div>
+    </div> -->
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../dist/js/deal.min.js"></script>	
+</body>
+</html>

@@ -1,0 +1,344 @@
+body,html,header,h1,a,ul,li,p,h3,span{
+	margin:0;
+	padding: 0;
+}
+@color1:#23CD74;
+@color2:#999;
+body{
+	font-size: 12px;
+	width:100%;
+	font-family: 'Microsoft Yahei';
+}
+ul,ul li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+em{
+	font-style: normal;
+}
+.opacity{
+	opacity:1 !important;
+}
+.container{
+	padding-bottom: 50px;
+}
+header{
+	width:90%;   
+	margin:10px auto;
+	height: 10%;
+	.hs1{
+		float: left;
+		width: 8px;
+        height: 8px;
+        margin-top: 4px;
+        border-top: 1px solid @color1;
+        border-left: 1px solid @color1;
+        color: @color1;
+        -webkit-transform: rotateZ(-45deg);     
+        -moz-transform: rotateZ(-45deg);
+        -ms-transform: rotateZ(-45deg);
+        -o-transform: rotateZ(-45deg);    //上面均是兼容写法
+        transform: rotateZ(-45deg); 
+	}
+	h1{
+		color:@color1;
+		font-size: 12px;
+		margin-left: 16px;
+		font-weight: normal;
+		letter-spacing: 2px;
+	}
+
+}
+.bottomBtn{
+	position: fixed;
+	bottom:0;
+	width:100%;
+	.deal{
+		position: fixed;
+		left:50%;
+		width:50px;
+		bottom:0;
+		height: 50px;
+		line-height: 50px;
+		border-radius: 50%;
+		margin-left: -25px;
+		text-align: center;
+		background: #fff;
+		z-index: 99;
+		border: 1px solid #ccc;
+	}
+	span:first-child{
+		position: fixed;
+	     width:50%;
+	     bottom: 0;
+	     text-align: center;
+	     height: 35px;
+	     line-height: 35px;
+	     background: #fff;
+	     left:0;
+	}
+	span:last-child{
+		position: fixed;
+		left:50%;
+		width:50%;
+		text-align: center;
+		background: #fff;
+		height: 35px;
+		line-height: 35px;
+		bottom: 0;
+		border-top: 1px solid #ccc;
+	}
+	.active{
+		background: @color1 !important;
+		color:#fff;
+	}
+}
+.tutorDetailedInfo{
+    width:94%;
+    margin:5px auto;
+	.InfoList{
+		padding:4px 2%;
+		box-sizing: border-box;
+		-webkit-box-sizing:border-box;
+		border:1px solid @color1;
+		background: #fff;
+	}
+	.client{
+		width:96%;
+		padding:3px 2%;
+		margin:0 auto;
+		height: 20px;
+		line-height: 20px;
+		border-bottom: 1px solid @color1;
+		
+	}
+	.green{
+		float: right;
+		margin-right: 3px;
+		font-size: 14px;
+		color:@color1;
+	}
+	.client1{     
+		width:96%;
+		padding:3px 2%;
+		margin:0 auto;
+		overflow: hidden;
+		.image{
+          width:15%;
+          float: left;
+          margin-right: 2%;
+          img{
+          	width:100%;
+          	border-radius: 50%;
+          	border:1px solid #666;
+          }
+		}
+		.msgName{
+			height: 20px;
+			line-height: 20px;
+			border-bottom: 1px solid #53C778;
+		}
+		.close{
+			float: right;
+			margin-right: 3px;
+			font-size: 20px;
+		}
+	}
+	.info{
+		padding:3px 2%;
+
+		p{
+			margin-bottom: 2px;
+		}
+	}
+	.remindTeacher{
+		border-bottom: 0;
+	}
+	.showImg{
+		padding:0 2%;
+	}
+	.showImage{
+		overflow: hidden;
+		width:100%;
+		li{
+			float: left;
+			width:30%;
+			height: 80px;
+			margin-right: 3%;
+			&:last-child{
+				margin-right: 0;
+			}
+			img{
+              width:100%;
+              height: 100%;
+			}
+		}
+	}
+}
+.orderList{
+	width:94%;
+	margin:5px auto;
+	h1{
+		font-weight: normal;
+		font-size: 14px;
+		margin-bottom: 3px;
+	}
+}
+.noList{
+	width: 100%;
+	margin: 10px auto;
+	color: red;
+}
+.userList{
+	width:100%;
+	overflow: hidden;
+    li{
+    	padding:0 5%;
+    	box-sizing: border-box;
+		-webkit-box-sizing:border-box;
+		height: 30px;
+		line-height: 30px;
+		border:1px solid #bbb;
+		margin-bottom: 5px;
+		border-radius: 3px;
+		span:first-child{
+			// width:30%;
+			display: inline-block;
+			float: left;
+			
+		}
+		span:last-child{
+			float: right;
+			// width:22%;
+			text-align: right;
+			color: @color1;
+			font-size: 13px;
+
+		}
+		.red{
+			color: red !important;
+		}
+    }
+}
+.tutorInfo{
+	position: absolute;
+	width:100%;
+	height: 100%;
+	top:0;
+	z-index: 99999;
+	.InfoList{
+		position: absolute;
+		overflow-y: scroll;
+		width:90%;
+		left:5%;
+		// margin:0 auto;
+		top:5%;
+		border:1px solid #53C778;
+		background: #fff;
+		z-index: 20;
+	}
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		z-index: 13;
+	}
+	.client{     
+		width:96%;
+		padding:3px 2%;
+		margin:0 auto;
+		overflow: hidden;
+		.image{
+          width:15%;
+          float: left;
+          margin-right: 2%;
+          img{
+          	width:100%;
+          	border-radius: 50%;
+          }
+		}
+		.msgName{
+			height: 20px;
+			line-height: 20px;
+			border-bottom: 1px solid #53C778;
+		}
+		.close{
+			float: right;
+			margin-right: 3px;
+			font-size: 20px;
+		}
+	}
+	.client1{
+		border-bottom: 1px solid #53C778;
+		height: 20px;
+		line-height: 20px;
+	}
+	.distance{
+		overflow: hidden;
+		padding-right: 2%;
+		margin:3px 0;
+		span{
+			float: right;
+		}
+	}
+	.info{
+		padding:3px 2%;
+
+		p{
+			margin-bottom: 2px;
+		}
+	}
+	.showImg{
+		padding:0 2%;
+	}
+	.showImage{
+		overflow: hidden;
+		width:100%;
+		li{
+			float: left;
+			width:30%;
+			margin-right: 3%;
+			height: 80px;
+			&:last-child{
+				margin-right: 0;
+			}
+			img{
+              width:100%;
+              height: 100%;
+			}
+		}
+	}
+	.submitBtn{
+		width: 100%;
+		margin-top: 5px;
+		text-align: center;
+		color:#fff;
+		height: 28px;
+		line-height: 28px;
+		letter-spacing: 1px;
+		background-color: @color2;
+		span{
+			width:100%;
+		}
+
+	}
+}
+.remindInfo{
+	position: fixed;
+	width:70%;
+	left:15%;
+	top:30%;
+	height: 12%;
+	border:1px solid #aaa;
+	background: #fff;
+	z-index: 20;
+	text-align: center;
+	border-radius: 2px;
+	p{
+		margin-top: 13%;
+	}
+}

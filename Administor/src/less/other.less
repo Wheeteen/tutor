@@ -1,0 +1,93 @@
+html,body,h1,div,span,form,input,ul,li,em{
+	padding:0;
+	margin: 0;
+}
+body{
+	width:100%;
+	font-size: 12px;
+	font-family: 'Microsoft Yahei';
+}
+@color1:#23CD74;
+@color2:#999;
+::-webkit-input-placeholder{
+	color:#555;
+}
+::-moz-placeholder{
+	color:#555;
+}
+::-ms-input-placeholder{
+	color:#555;
+}
+ul,ul li{
+	list-style-type: none;
+}
+a{
+	text-decoration: none;
+}
+em{
+	font-style: normal;
+}
+.opacity {
+	opacity: 1!important;
+}
+.bottomBtn{
+	position: fixed;
+	bottom:0;
+	width:100%;
+	.deal{
+		position: fixed;
+		left:50%;
+		width:50px;
+		bottom:0;
+		height: 50px;
+		line-height: 50px;
+		border-radius: 50%;
+		margin-left: -25px;
+		text-align: center;
+		background: #fff;
+		z-index: 99;
+		border: 1px solid #ccc;
+	}
+	span:first-child{
+		position: fixed;
+	     width:50%;
+	     bottom: 0;
+	     text-align: center;
+	     height: 35px;
+	     line-height: 35px;
+	     background: #fff;
+	     left:0;
+	     border-top: 1px solid #ccc;
+	}
+	span:last-child{
+		position: fixed;
+		left:50%;
+		width:50%;
+		text-align: center;
+		background: #fff;
+		height: 35px;
+		line-height: 35px;
+		bottom: 0;
+	}
+	.active{
+		background: @color1 !important;
+		color:#fff;
+	}
+}
+.mainInfo{
+	padding:20px 15%;
+	width:70%;
+	&>div{
+		width:100%;
+		border:1px solid #ccc;
+		height: 38px;
+		line-height: 38px;
+		font-size: 14px;
+		text-align: center;
+		margin-bottom: 15px;
+		border-radius: 3px;
+		letter-spacing: 1px;
+		background: url(../../img/right.png) no-repeat 96% center;
+
+	}
+}

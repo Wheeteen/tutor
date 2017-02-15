@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/examineDetailed.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<header>
+	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+		<h1 v-on:touchstart="onReturn">返回</h1>
+	</header>
+	<div class="bottomBtn">
+		<span v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-on:touchstart="onDeal">成交</span>
+		<span class="active"  v-on:touchstart="onOther">其他</span>
+	</div>
+	<!-- 家长需求信息详情 -->
+	<div class="msgInfo" v-if='status.isParent'>
+		<div class="client">
+			<div class="msgName">
+				<span> 
+				家长 {{parentMsg.name}}
+				</span>
+			</div>
+		</div>
+		<div class="info">
+			<p>科目：<em>{{parentMsg.learning_phase}}{{parentMsg.grade}}{{parentMsg.subject}}{{parentMsg.subject_other}}</em></p>
+			<p>老师性别：<em>{{parentMsg.teacher_sex}}</em></p>
+			<p>上课时间：<em>{{parentMsg.time}}</em></p>
+			<p>补课目的：<em>{{parentMsg.aim}}</em></p>
+			<p>孩子班级排名：<em>{{parentMsg.class_field}}</em></p>
+			<p>教学特点：<em>{{parentMsg.teacher_method}} {{parentMsg.teacher_method_other}}</em></p>
+			<p v-if='parentMsg.require!==""'>其他要求：<em>{{parentMsg.require}}</em></p>
+			<p>时薪：<em>{{parentMsg.salary}}</em></p>
+			<p v-if='parentMsg.bonus!==""'>补贴：<em>{{parentMsg.bonus}}</em></p>
+			<p>找到家教的日期：<em>{{parentMsg.deadline}}</em>前</p>
+			<p>联系电话：<em>{{parentMsg.tel}}</em></p>
+			<p>住址：<em>{{parentMsg.address}}</em></p>
+		</div>
+	</div>
+	<!-- 老师简历信息详情 -->
+	<div class="msgInfo" v-if='status.isTeacher'>
+		<div class="client">
+			<div class="image">
+		    	<img v-bind:src="tutorMsg.certificate_photo" alt="">
+		    </div>
+			<div class="msgName">
+				<span> 
+				老师 {{tutorMsg.name}}
+				</span>
+			</div>
+		</div>
+		<div class="info">
+			<p>性别：<em>
+			{{tutorMsg.sex}}
+			</em></p>
+			<p>专业：<em>
+			{{tutorMsg.campus_major}}
+			</em></p>
+			<p>可教年级：<em>
+			{{tutorMsg.grade}}
+			</em></p>
+			<p>可教科目：<em>
+			{{tutorMsg.subject}}{{tutorMsg.subject_other}}
+			</em></p>
+			<p>上课时间：<em>{{tutorMsg.time}}</em></p>
+			<p>可接受地点：<em>{{tutorMsg.place}}</em></p>
+			<p>教学方法：<em>{{tutorMsg.teacher_method}}{{tutorMsg.teacher_method_other}}</em></p>
+			<p>相关成绩：<em>{{tutorMsg.score}}</em></p>
+			<p>个人简介：<em>{{tutorMsg.self_comment}}</em></p>
+			<p>时薪：<em>{{tutorMsg.salary_bottom}}~{{tutorMsg.salary_top}}</em></p>
+			<p>老师籍贯：<em>{{tutorMsg.native_place}}</em></p>
+			<p>联系电话：<em>
+			{{tutorMsg.tel}}
+			</em></p>
+		</div>
+		<div class="showImg" v-if='tutorMsg.teach_show_photo.length!==0'>
+			<h3>家教秀</h3>
+			<ul class="showImage">
+	           <li v-for="item in tutorMsg.teach_show_photo">
+	           	<img v-bind:src="item" alt="">
+	           </li>             
+			</ul>
+		</div>
+	</div>
+	<!-- 审核按钮 -->
+	<div class="assume">
+		<p class="bgreen" v-on:touchstart="YesExamine">通过审核</p>
+		<p v-on:touchstart="notExamine">未通过审核</p>
+	</div>
+	<!-- 信息费 -->
+	<!-- <div class="feeInfo" v-if="status.isFeeInfo">
+        <div class="greyScreen"></div>
+        <form class="InfoRequest" v-on:submit.prevent='onSubmit'>
+            <p class='close' v-on:touchstart='onClose'>×</p>
+            <div class="infoTip">
+                <p>信息费 <input type="Number" trim.v-model="fee" required> 元</p>
+            </div>
+            <div class="infoBtn">
+                <input type="submit" value='提交'>  
+            </div>
+        </form>
+    </div> -->
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/examineDetailed.min.js"></script>	
+</body>
+</html>

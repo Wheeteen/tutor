@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/textChange.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<header>
+	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+		<h1 v-on:touchstart="onReturn">返回</h1>
+	</header>
+	<div class="bottomBtn">
+		<span v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-on:touchstart="onDeal">成交</span>
+		<span class="active"  v-on:touchstart="onOther">其他</span>
+	</div>
+	<h1 class="title">文本更改</h1>
+	<form v-on:submit.prevent='onSubmit'>
+		<div class="changeText">
+			<div class="hPrice">
+				<h3>时薪参考标准</h3>
+				<textarea v-model="form.salary" required></textarea>
+			</div>
+			<div class="hPrice">
+				<h3>接单须知</h3>
+				<textarea v-model='form.notice' required></textarea>
+			</div>
+		</div>
+		<div class="submitBtn">
+			<input type="submit" value="提交">
+		</div>
+	</form>
+	<div class="remindSubmit" v-if='status.isSubmit'>
+		<p>提交成功</p>
+	</div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/textChange.min.js"></script>
+</body>
+</html>

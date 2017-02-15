@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/administor.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<div class="bottomBtn">
+		<span class="active" v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-on:touchstart="onDeal">成交</span>
+		<span v-on:touchstart="onOther">其他</span>
+	</div>
+	<!-- 用户管理 -->
+	<div class="userAdmin">
+		<div class="form-search">
+			<input type="text" placeholder="请输入关键词" v-model="form.keyword" >
+			<em v-on:touchstart="onSearch"></em>
+		</div>
+		<div class="userLabel">
+			<span v-bind:class="{select:status.isParent}" v-on:touchstart="onParent">家长（{{numData.parentNum}}）</span>
+			<span v-bind:class="{select:status.isTeacher}" v-on:touchstart="onTeacher">教师（{{numData.teacherNum}}）
+			</span>
+		</div>
+		<!-- 家长与教师用户列表 -->
+		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
+			<li v-for="item in mainData">
+				<span v-text="item.name" v-on:touchstart="onDetailedInfo($index)"></span>
+				<span class="delete" v-on:touchstart="onDelete($index)">删除用户</span>
+			</li>
+		</ul>
+		<!-- 当没有消息的时候，有提示 -->
+	    <div class="noList" v-if='status.isNoList'>
+	        对不起，暂时还没有您要搜索的{{status.key}}！
+	    </div>
+	</div>
+	<!-- 修改请求的弹窗 -->
+    <div class="tutorInfo" v-if="status.isDeleteInfo">
+        <div class="greyScreen"></div>
+        <div class="InfoRequest">
+            <div class="infoTip">
+                <p>确定删除该用户吗？</p>          
+            </div>
+            <div class="infoBtn">
+                <span v-on:touchstart="onSureDelete(status.selected)">确定</span>
+                <span v-on:touchstart="onCancel">取消</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../dist/js/userAdministor.min.js"></script>
+</body>
+</html>

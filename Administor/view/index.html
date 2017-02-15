@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/style.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<h1>管理员登录</h1>
+	<div class="text-error" v-if="hintData.status">
+		<span v-text="hintData.text"></span>
+		<span v-on:touchstart="offHint">×</span>
+	</div>
+	<form action="" v-on:submit.prevent="onSubmit">
+		<div class="username">
+			<input type="text" placeholder="用户名" required v-model.trim="form.username">
+		</div>
+		<div class="pwd">
+			<input type="password" placeholder="密码" required v-model.trim="form.pwd">
+		</div>
+		<div class="login">
+			<input type="submit" v-bind:class="{'btn-default':isBtn}" v-if="!status.isSubmit" value="确认登录">
+		    <input type="submit" v-else value="loading..." disabled="disabled">
+		</div>
+	</form>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/login.min.js"></script>
+</body>
+</html>

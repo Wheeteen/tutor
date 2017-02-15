@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/other.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<div class="bottomBtn">
+		<span v-bind:class="{active:status.isUser}" v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-bind:class="{active:status.isDeal}"  v-on:touchstart="onDeal">成交</span>
+		<span v-bind:class="{active:status.isOther}"  v-on:touchstart="onOther">其他</span>
+	</div>
+    <div class="mainInfo">
+        <div class="changeInfo" v-on:touchstart="onExamine">
+            审核
+        </div>
+        <div class="myMsg" v-on:touchstart="onPopularTeacher">
+            热门老师
+        </div>
+        <div class="myList" v-on:touchstart="onQuestion">
+            发布需求
+        </div>
+        <div class="changeInfo" v-on:touchstart="onFeedback">
+            查看反馈
+        </div>
+        <div class="myMsg" v-on:touchstart="onBanner">
+            修改banner
+        </div>
+        <div class="myList" v-on:touchstart="onText">
+            文本更改
+        </div>
+    </div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/other.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+html,body,h1,div,span,form,input,ul,li,em,p{
+	padding:0;
+	margin: 0;
+}
+body{
+	width:100%;
+	font-size: 12px;
+	background: #eee;
+	font-family: 'Microsoft Yahei';
+}
+@color1:#23CD74;
+@color2:#999;
+::-webkit-input-placeholder{
+	color:#555;
+}
+::-moz-placeholder{
+	color:#555;
+}
+::-ms-input-placeholder{
+	color:#555;
+}
+ul,ul li{
+	list-style-type: none;
+}
+a{
+	text-decoration: none;
+}
+em{
+	font-style: normal;
+}
+.opacity {
+	opacity: 1!important;
+}
+.container{
+	padding-bottom: 50px;
+}
+.bottomBtn{
+	position: fixed;
+	bottom:0;
+	width:100%;
+	z-index: 99;
+	.deal{
+		position: fixed;
+		left:50%;
+		width:50px;
+		bottom:0;
+		height: 50px;
+		line-height: 50px;
+		border-radius: 50%;
+		margin-left: -25px;
+		text-align: center;
+		background: #fff;
+		z-index: 99;
+	}
+	span:first-child{
+		position: fixed;
+	     width:50%;
+	     bottom: 0;
+	     text-align: center;
+	     height: 35px;
+	     line-height: 35px;
+	     background: #fff;
+	     left:0;
+	     border-top: 1px solid #ccc;
+	}
+	span:last-child{
+		position: fixed;
+		left:50%;
+		width:50%;
+		text-align: center;
+		background: #fff;
+		height: 35px;
+		line-height: 35px;
+		bottom: 0;
+		border-top: 1px solid #ccc;
+	}
+	.active{
+		background: @color1 !important;
+		color:#fff;
+	}
+}
+.noList{
+	width:80%;
+	margin:10px auto;
+	color: red;
+}
+.userList{
+	width:96%;
+	margin:5px auto;
+	overflow: hidden;
+
+    li{
+    	padding:5px 3%;
+    	box-sizing: border-box;
+		-webkit-box-sizing:border-box;
+		// height: 30px;
+		// line-height: 30px;
+		border:1px solid #bbb;
+		margin-bottom: 8px;
+		border-radius: 3px;
+		div{
+			overflow: hidden;
+		}
+		span:first-child{
+			// width:75%;
+			display: inline-block;
+			float: left;
+			
+		}
+		span:last-child{
+			float: right;
+			// width:22%;
+			text-align: right;
+
+		}
+		.isDeal{
+			color:@color1;
+		}
+    }
+}
+.tutorInfo{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	top:0;
+	z-index: 9999;
+	.InfoList{
+		position: fixed;
+		width:90%;
+		left:5%;
+		top:10%;
+		border:1px solid #53C778;
+		background: #fff;
+		z-index: 20;
+	}
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		// z-index: 13;
+	}
+	.client{
+		width:96%;
+		padding:3px 2%;
+		margin:0 auto;
+		height: 20px;
+		line-height: 20px;
+		border-bottom: 1px solid #53C778;
+		.close{
+			float: right;
+			margin-right: 3px;
+			font-size: 20px;
+		}
+	}
+	.tel{
+		border-bottom: 0 !important;
+	}
+	.submitBtn{
+		width:100%;
+		margin-top: 5px;
+		.refuse{
+			width:100%;
+			letter-spacing: 1px;
+			background-color: #666;
+			text-align: center;
+			height: 28px;
+			line-height: 28px;
+			display: block;
+		}
+		.bgreen{
+			background-color: @color1 !important;
+			color: #fff !important;
+		}
+	}
+	.infoImg{
+		width:70%;
+		margin: 14px auto;
+		// height: 130px;
+		
+		img{
+			width:100%;
+			border:1px solid #ccc;
+		    border-radius: 3px;
+		}
+	}
+
+}
+.feeInfo{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	top:0;
+	
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+	}
+	.InfoRequest{
+		position: fixed;
+		width:70%;
+		left:15%;
+		top: 20%;
+		border-radius: 3px;
+		border:1px solid #ccc;
+		background: #fff;
+		.close{
+			width:90%;
+			margin:3px auto;
+			text-align: right;
+			font-size: 25px;
+			color:#aaa;
+		}
+		.infoTip{
+			margin-top: 6%;
+			p{
+				text-align: center;
+			}
+			input{
+				display: inline-block;
+				margin: 0 3px;
+				width:30%;
+				outline: none;
+				height: 20px;
+				line-height: 20px;
+				border:1px solid #ccc;
+				text-indent: 3px;
+				border-radius: 2px;
+				&:focus{
+					border-color: @color1;
+				}
+			}
+		}
+		.infoBtn{
+			margin-top: 30px;
+			width:100%;
+			p{
+				width:100%;
+				height: 25px;
+				line-height: 25px;
+				text-align: center;
+				background: @color2;
+				color:#fff;
+				letter-spacing: 1px;
+			}
+		}
+		
+		input[type='submit']{
+			display: block;
+			width:100%;
+			color:#fff;
+			height: 25px;
+			line-height: 25px;
+			outline: none;
+			border:0;
+			text-align: center;
+			background: @color1;
+			letter-spacing: 1px;
+		}
+
+	}
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/popularTeacher.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity: status.isLoading}">
+	<header>
+	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+		<h1 v-on:touchstart="onReturn">返回</h1>
+	</header>
+	<h1 class="title">热门老师</h1>
+	<div class="form-search">
+		<input type="text" placeholder="请输入关键词" v-model="form.keyword" >
+		<em v-on:touchstart="onSearch"></em>
+	</div>
+	<ul class="msgList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
+		<li v-for="item in mainData">
+			<span v-text="item.name" v-on:touchstart="onDetailedInfo(item.tea_id)"></span>
+			<span v-text ="item.info" class="delete" v-on:touchstart="onPopular($index)"></span>
+		</li>
+	</ul>
+	<div class="noList" v-if='status.isNoList'>
+    	对不起，没有您要搜索的老师！
+    </div>
+	<div class="bottomBtn">
+		<span v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-on:touchstart="onDeal">成交</span>
+		<span class="active"  v-on:touchstart="onOther">其他</span>
+	</div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../dist/js/popularTeacher.min.js"></script>
+</body>
+</html>

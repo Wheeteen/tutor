@@ -1,0 +1,245 @@
+body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
+	margin:0;
+	padding: 0;
+}
+@color1:#23CD74;
+@color2:#999;
+body{
+	font-size: 12px;
+	width:100%;
+	font-family: 'Microsoft Yahei';
+}
+ul,ul li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+em{
+	font-style: normal;
+}
+.opacity{
+	opacity:1 !important;
+}
+.container{
+	padding-bottom: 50px;
+}
+header{
+	width:90%;   
+	margin:10px auto;
+	height: 10%;
+	.hs1{
+		float: left;
+		width: 8px;
+        height: 8px;
+        margin-top: 4px;
+        border-top: 1px solid @color1;
+        border-left: 1px solid @color1;
+        color: @color1;
+        -webkit-transform: rotateZ(-45deg);     
+        -moz-transform: rotateZ(-45deg);
+        -ms-transform: rotateZ(-45deg);
+        -o-transform: rotateZ(-45deg);    //上面均是兼容写法
+        transform: rotateZ(-45deg); 
+	}
+	h1{
+		color:@color1;
+		font-size: 12px;
+		margin-left: 16px;
+		font-weight: normal;
+		letter-spacing: 2px;
+	}
+
+}
+.bottomBtn{
+	position: fixed;
+	bottom:0;
+	width:100%;
+	z-index: 13;
+	.deal{
+		position: fixed;
+		left:50%;
+		width:50px;
+		bottom:0;
+		height: 50px;
+		line-height: 50px;
+		border-radius: 50%;
+		margin-left: -25px;
+		text-align: center;
+		background: #fff;
+		z-index: 99;
+		border: 1px solid #ccc;
+	}
+	span:first-child{
+		position: fixed;
+	     width:50%;
+	     bottom: 0;
+	     text-align: center;
+	     height: 35px;
+	     line-height: 35px;
+	     background: #fff;
+	     left:0;
+	     border-top: 1px solid #ccc;
+	}
+	span:last-child{
+		position: fixed;
+		left:50%;
+		width:50%;
+		text-align: center;
+		background: #fff;
+		height: 35px;
+		line-height: 35px;
+		bottom: 0;
+		border-top: 1px solid #ccc;
+	}
+	.active{
+		background: @color1 !important;
+		color:#fff;
+	}
+}
+.msgInfo{
+    width:94%;
+    margin:5px auto;
+	.client{     
+		width:96%;
+		padding:3px 2%;
+		margin:0 auto;
+		overflow: hidden;
+		.image{
+          width:12%;
+          float: left;
+          margin-right: 2%;
+          img{
+          	width:100%;
+          	border-radius: 50%;
+          	border:1px solid #666;
+          }
+		}
+		.msgName{
+			margin-left: 2%;
+			float: left;
+			width:83%;
+			height: 30px;
+			font-size: 14px;
+			font-weight: bold;
+			line-height: 30px;
+			font-family: Arial;
+			border-bottom: 1px solid #53C778;
+		}
+	}
+	.info{
+		padding:3px 2% 3px;
+
+		p{
+			margin-bottom: 2px;
+		}
+	}
+	.showImg{
+		padding:0 2%;
+	}
+	.showImage{
+		overflow: hidden;
+		width:100%;
+		li{
+			float: left;
+			width:30%;
+			height: 80px;
+			margin-right: 3%;
+			&:last-child{
+				margin-right: 0;
+			}
+			img{
+              width:100%;
+              height: 100%;
+			}
+		}
+	}
+}
+.assume{
+  width:70%;
+  margin: 10px auto 0;
+  p{
+  	width:100%;
+  	height: 28px;
+  	line-height: 26px;
+  	text-align: center;
+  	box-sizing: border-box;
+  	-webkit-box-sizing: border-box;
+  	border:1px solid #ccc;
+  	margin-bottom: 8px;
+  	letter-spacing: 1px;
+  }
+  .bgreen{
+  	background: @color1;
+  	color: #fff;
+  	border:0;
+  	line-height: 28px;
+  }
+}
+.feeInfo{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	top:0;
+	
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+	}
+	.InfoRequest{
+		position: fixed;
+		width:70%;
+		left:15%;
+		top: 20%;
+		border-radius: 3px;
+		border:1px solid #ccc;
+		background: #fff;
+		.close{
+			width:90%;
+			margin:3px auto;
+			text-align: right;
+			font-size: 25px;
+			color:#aaa;
+		}
+		.infoTip{
+			margin-top: 6%;
+			p{
+				text-align: center;
+			}
+			input{
+				display: inline-block;
+				margin: 0 3px;
+				width:30%;
+				outline: none;
+				height: 20px;
+				line-height: 20px;
+				border:1px solid #ccc;
+				text-indent: 3px;
+				border-radius: 2px;
+				&:focus{
+					border-color: @color1;
+				}
+			}
+		}
+		.infoBtn{
+			margin-top: 30px;
+			width:100%;
+		}
+		
+		input[type='submit']{
+			display: block;
+			width:100%;
+			color:#fff;
+			height: 25px;
+			line-height: 25px;
+			outline: none;
+			border:0;
+			text-align: center;
+			background: @color1;
+			letter-spacing: 1px;
+		}
+	}
+}

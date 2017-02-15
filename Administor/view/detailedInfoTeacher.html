@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>好学吧家教服务平台 后台</title>
+	<link rel="stylesheet" href="../dist/css/detailedInfo.min.css">
+</head>
+<body>
+<div class="container" v-bind:class="{opacity:status.Loading}">
+	<header>
+	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
+		<h1 v-on:touchstart="onReturn">返回</h1>
+	</header>
+	<!-- 列表详情 -->
+	<div class="tutorDetailedInfo">
+		<div class="InfoList">
+			<div class="client1">
+			    <div class="image">
+			    	<img :src="msgDetailedList.certificate_photo" alt="">
+			    </div>
+				<div class="msgName">
+					<span> 
+					{{msgDetailedList.name}}</span>
+					<span class='green' @touchstart="onPopular">{{status.hot_not}}</span>
+				</div>
+			</div>
+			<div class="info">
+				<p>性别：<em>
+				{{msgDetailedList.sex}}
+				</em></p>
+				<p>专业：<em>
+				{{msgDetailedList.campus_major}}
+				</em></p>
+				<p>可教科目：<em>
+				{{msgDetailedList.grade}}{{msgDetailedList.subject}}{{msgDetailedList.subject_other}}
+				</em></p>
+				<p>上课时间：<em>{{msgDetailedList.time}}</em></p>
+				<p>可接受地点：<em>{{msgDetailedList.place}}</em></p>
+				<p>教学方法：<em>{{msgDetailedList.teacher_method}}{{msgDetailedList.teacher_method_other}}</em></p>
+				<p>相关成绩：<em>{{msgDetailedList.score}}</em></p>
+				<p>个人简介：<em>{{msgDetailedList.self_comment}}</em></p>
+				<p>时薪：<em>{{msgDetailedList.salary_bottom}}~{{msgDetailedList.salary_top}}</em></p>
+				<p>老师籍贯：<em>{{msgDetailedList.native_place}}</em></p>
+				<p>联系电话：<em>
+				{{msgDetailedList.tel}}
+				</em></p>
+				
+			</div>
+			<div class="showImg" v-if='msgDetailedList.teach_show_photo.length!==0'>
+				<h3>家教秀</h3>
+				<ul class="showImage">
+                   <li v-for="item in msgDetailedList.teach_show_photo">
+                   	<img v-bind:src="item" alt="">
+                   </li>             
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- 订单列表 -->
+	<div class="orderList">
+		<h1>订单列表</h1>
+		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}"  v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
+			<li v-for="item in msgList" v-on:touchstart="onDetailedInfo($index)">
+				<span v-text="item.name"></span>
+				<span v-text="item.result" v-bind:class="{red:item.isRed}"></span>
+			</li>
+		</ul>
+		<!-- 当没有消息的时候，有提示 -->
+	    <div class="noList" v-if='status.isNoList'>
+	       该用户暂时还没有订单！
+	    </div>
+	</div>
+	<!-- 老师订单列表-》家长需求 -->
+    <div class="tutorInfo" v-if="status.isTutorInfo">
+	    <div class="greyScreen"></div>
+		<div class="InfoList">
+			<div class="client client1">
+				<span> {{detailedList.name}}</span>
+				<span class='close' @touchstart="onClose">×</span>
+			</div>
+			<div class="info">
+				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
+				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
+				<p>上课时间：<em>{{detailedList.time}}</em></p>
+				<p>补课目的：<em>{{detailedList.aim}}</em></p>
+				<p>孩子班级排名：<em>{{detailedList.class_field}}</em></p>
+				<p>教学特点：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p v-if='detailedList.require!==""'>其他要求：<em>{{detailedList.require}}</em></p>
+				<p>时薪：<em>{{detailedList.salary}}</em></p>
+				<p v-if='detailedList.bonus!==""'>补贴：<em>{{detailedList.bonus}}</em></p>
+				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
+				<p>住址：<em>{{detailedList.address}}</em></p>
+			</div>
+			<div class="submitBtn">
+				<span v-on:touchstart="onDelete(status.selected)">{{status.text}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="bottomBtn">
+		<span class="active" v-on:touchstart="onUser">用户管理</span>
+		<span class='deal' v-on:touchstart="onDeal">成交</span>
+		<span v-on:touchstart="onOther">其他</span>
+	</div>
+</div>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/vue-resource.min.js"></script>
+<script src="../dist/js/scroll.min.js"></script>
+<script src="../dist/js/detailedInfoTeacher.min.js"></script>	
+</body>
+</html>
