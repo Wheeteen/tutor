@@ -450,7 +450,7 @@ def uploadScreenshot(request):
         if len(order_applys):
             name = changeSingleBaseToImg(pic)
             order_apply = order_applys[0]
-            order_apply.screenshot_path = '/static/' + name
+            order_apply.screenshot_path = name
             order_apply.finished = 2
             order_apply.update_time = timezone.now()
             order_apply.save()
