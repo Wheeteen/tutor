@@ -213,8 +213,13 @@ def changeTeacherObj(obj):
 
 def changeTeachShowPhoto(obj):
     teach_show_photo = obj.get('teach_show_photo',None)
-    if teach_show_photo and teach_show_photo !='':
-        obj['teach_show_photo'] =teach_show_photo.split(',')
+    if teach_show_photo:
+        if teach_show_photo !='':
+            result = teach_show_photo.split(',')
+            res = [ i for i in result if i != '']
+            obj['teach_show_photo'] = res
+        else:
+            obj['teach_show_photo'] = []
 def defaultChangeTeachShowPhoto(obj):
     """
     {"teach_show_photo": [

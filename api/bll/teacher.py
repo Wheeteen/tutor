@@ -82,7 +82,9 @@ def createTeacher(request):
             certificate_photo = temp.get('certificate_photo',None)
             if certificate_photo and certificate_photo != "":
                 temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
-            temp['create_time']= time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            temp['create_time']= now
+            temp['update_time']= now
             teacher = Teacher(**temp)
             teacher.wechat = user
             teacher.save()
@@ -113,6 +115,8 @@ def updateTeacher(request):
             certificate_photo = temp.get('certificate_photo',None)
             if certificate_photo and certificate_photo != "":
                 temp['certificate_photo'] = changeSingleBaseToImg(certificate_photo)
+            now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            temp['update_time']= now
             teacher = user.teacher_set.update(**temp)
             return JsonResponse()
             # 返回更新后的对象
@@ -175,7 +179,7 @@ def getTeachers(request):
     filter = {}
     order = '-hot_not'
     if hot == 2:
-        order = '-create_time'
+        order = '-update_time'
     if subject and subject != '':
         where = ['FIND_IN_SET("'+subject+'",subject)']
     #年级,如果里面是字符串，需要加引号

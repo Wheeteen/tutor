@@ -216,8 +216,11 @@ def getOrder(request):
                 #1. 老师意愿为1，老师端订单显示为“已邀请”
                 #2. 老师意愿为2，老师正在上传截图
                 #finished为1
-                #1. 老师意愿为0，老师拒绝/老师未上传截图
-                #2. 老师意愿为2，老师上传截图，完成订单
+                #1. 老师意愿为0，老师拒绝/老师未按时上传截图
+                #2. 老师意愿为2，老师上传截图，管理员通过，完成订单
+                #finished为2
+                #1. 老师意愿为2,管理员审核中
+                #2. 老师意愿为0,管理员不通过（暂无）
                 if oa.finished == 0:
                     if oa.teacher_willing == 1:
                         oa.result = u"对方已邀请"
@@ -228,7 +231,8 @@ def getOrder(request):
                         oa.result = u"您已拒绝"
                     if oa.teacher_willing == 2:
                         oa.result = u"已成交"
-
+                if oa.finished == 2:
+                    oa.result = u"管理员审核中"
             elif oa.apply_type == 1:
 
                 oa.type = "teacher"
@@ -237,9 +241,12 @@ def getOrder(request):
                 #2. 家长意愿为2和老师意愿为1，家长同意
                 #3. 家长意愿为2和老师意愿为2，老师正在上传截图
                 #finished为1
-                #1. 家长意愿为0，老师意愿为1，老师拒绝
-                #2. 家长意愿为2，老师上传截图，完成订单
+                #1. 家长意愿为0，老师意愿为1，家长拒绝
+                #2. 家长意愿为2，老师意愿为2，老师上传截图，完成订单
                 #3. 家长意愿为2，老师意愿为0，代表未按时上传截图
+                #finished为2
+                #1. 老师意愿为2,管理员审核中
+                #2. 老师意愿为0,管理员不通过（暂无）
                 if oa.finished == 0:
                     if oa.parent_willing == 1:
                         oa.result = u"您已报名"
@@ -252,8 +259,10 @@ def getOrder(request):
                         oa.result = u"家长已拒绝"
                     elif oa.parent_willing == 2 and oa.teacher_willing == 0:
                         oa.result = u"您未按时上传截图"
-                    elif oa.parent_willing == 2:
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 2:
                         oa.result = u"已成交"
+                if oa.finished == 2:
+                    oa.result = u"管理员审核中"
 
         return Response(OrderApplySerializer(oas,many=True).data)
 
@@ -272,6 +281,9 @@ def getOrder(request):
                 #1. 老师意愿为0，家长意愿为2，老师拒绝
                 #2. 老师意愿为2，已成交
                 #意愿第一判断可以更简洁
+                #finished为2
+                #1. 老师意愿为2,管理员审核中
+                #2. 老师意愿为0,管理员不通过（暂无）
                 if oa.finished == 0:
                     if oa.teacher_willing == 1:
                         oa.result = u"您已邀请"
@@ -282,6 +294,8 @@ def getOrder(request):
                         oa.result = u"老师已拒绝"
                     if oa.teacher_willing == 2:
                         oa.result = u"已成交"
+                if oa.finished == 2:
+                    oa.result = u"管理员审核中"
             elif oa.apply_type == 1:
                 oa.type = "teacher"
                 #教师主动，finished为0
@@ -291,6 +305,9 @@ def getOrder(request):
                 #finished为1
                 #家长意愿为2，老师意愿为2，已成交
                 #家长意愿为0，已拒绝
+                #finished为2
+                #1. 老师意愿为2,管理员审核中
+                #2. 老师意愿为0,管理员不通过（暂无）
                 if oa.finished == 0:
                     if oa.parent_willing == 1:
                         oa.result = u"向您报名"
@@ -301,8 +318,10 @@ def getOrder(request):
                 if oa.finished == 1:
                     if oa.parent_willing == 0:
                         oa.result = u"已拒绝"
-                    elif oa.parent_willing == 2:
+                    elif oa.parent_willing == 2 and oa.teacher_willing == 2:
                         oa.result = u"已成交"
+                if oa.finished == 2:
+                    oa.result = u"管理员审核中"
         return Response(OrderApplySerializer(oas,many=True).data)
     else:
         return JsonResponse([])
