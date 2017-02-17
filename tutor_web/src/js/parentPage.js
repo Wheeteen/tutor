@@ -20,21 +20,13 @@
                 isTutor: true,
                 isNoTutor: false
 			},
-			recommendList:[
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已邀请',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已报名',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已拒绝',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已完成',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
-               {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},  
-			],
+			recommendList:[],
 			detailedList:[],
 			jsonData:[],
 			form: {
 			  'size':9,
-			  'start':0
+			  'start':0,
+			  'hot':1
 			},
 			location:{
 	          latitude:'',
@@ -50,13 +42,14 @@
 		},
 		methods:{
 			down: function(){
+			  this.form.size = 5;
               this.form.start++;
               if(this.jsonData.length!==0){
 	            this.renderData();
 	          }
 			},
 	        renderData: function(){
-	        	this.$http.post(this.domain+'/',this.form,{
+	        	this.$http.post(this.domain+'/getTeachers',this.form,{
 	               crossOrigin: true,
 	               headers:{
 	                  'Content-Type':'application/json' 
@@ -78,6 +71,11 @@
 		              		for(var j=0;j<len;j++){
 	                           teach_photo[j]=this.domain+teach_photo[j];
 		              		}
+		              		if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '老师已拒绝'){
+			          	   		data[i].isRed = true;
+			          	   	}else{
+			          	   		data[i].isRed = false;
+			          	   	}
 		              	}
 		              	var json=this.recommendList.concat(data);
 		                this.$set('recommendList',json);
@@ -166,28 +164,40 @@
 			onTutorInfo: function(index){
 				this.status.isTutorInfo = true;
 				this.status.selected = index; 
+				this.status.isDefault = false;
+				this.status.isSuccess = true;
 				this.detailedList = this.recommendList[index];
-				if(this.recommendList[index].isInvited=="已邀请"){
-					this.status.isDefault = true;
-	                this.status.isSuccess = false;
-	                this.status.isRegister = "取消邀请";
-				}else if(this.recommendList[index].isInvited == "已报名"){
-					this.status.isDefault = false;
-	              	this.status.isSuccess = true;
-					this.status.isRegister = "该老师已报名";
-				}else if(this.recommendList[index].isInvited == "已拒绝"){
-					this.status.isDefault = true;
-	              	this.status.isSuccess = false;
-					this.status.isRegister = "该老师已拒绝";
-				}else if(this.recommendList[index].isInvited == "已完成"){
-					this.status.isDefault = false;
-	              	this.status.isSuccess = true;
-					this.status.isRegister = "双方已成交";
-				}
-				else{					               
-	              	this.status.isDefault = false;
-	              	this.status.isSuccess = true;
-	              	this.status.isRegister = "邀请老师";
+				switch(this.detailedList.isInvited){
+					case '您已邀请':
+					  this.status.isDefault = true;
+	                  this.status.isSuccess = false;
+	                  this.status.isRegister = "取消邀请";
+	                  break;
+	                case '向您报名':
+	                  this.status.isRegister = "该老师已报名";
+	                  break;
+	                case '您已拒绝':
+	                  this.status.isDefault = true;
+	              	  this.status.isSuccess = false;
+					  this.status.isRegister = "您已拒绝该老师";
+					  break;
+					case '老师已拒绝':
+	                  this.status.isDefault = true;
+	              	  this.status.isSuccess = false;
+					  this.status.isRegister = "该老师已拒绝";
+					  break;
+                    case '您已同意':
+	                  this.status.isRegister = "您已接受该老师";
+	                  break;
+	                case '管理员审核中':
+	                  this.status.isRegister = "管理员审核中";
+	                  break; 
+	                case '已成交':
+	                  this.status.isRegister = "双方已成交";
+	                  break; 
+	                case '':
+	                  this.status.isRegister = "邀请老师";
+	                  break; 
 				}
 
 			},
@@ -196,7 +206,7 @@
 				var invited,invitedText,successText;
 				if(this.status.isRegister == "邀请老师"){
 					invited = 1;
-                    invitedText = '已邀请';
+                    invitedText = '您已邀请';
                     successText='邀请成功';
 				}
 				else if(this.status.isRegister == "取消邀请"){
@@ -204,15 +214,16 @@
                     invitedText = '';
                     successText='取消成功';
 				}else{
+					this.status.isTutorInfo = false;
 					return false;
 				}
 				this.$http.post(this.domain+'/inviteTeacher',{
-					'tea_id': this.recommendList[index].id,
+					'tea_id': this.recommendList[index].tea_id,
 					'type': invited
 				},{
 					emulateJSON:true,
 					headers:{
-						'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'	
+						'Content-Type':'application/json'	
 					}
 
 				}).then(function(res){
@@ -234,7 +245,7 @@
 						this.timer && clearTimeout(this.timer);
 						this.timer=setTimeout(function(){
                            self.status.isInfoTipOne = false;
-						},1000);
+						},2000);
 					}
 					
 				})

@@ -89,13 +89,13 @@
               var data = res.json();
               if(data.length!=0){
                 for(var i = 0;i<data.length;i++){
-                  if(data[i].result == '已拒绝'||data[i].result == '老师已拒绝'){
+                  if(data[i].result == '您已拒绝'||data[i].result == '老师已拒绝'){
                     data[i].isRed = true;
                   }else{
                     data[i].isRed = false;
                   }
                  }
-                var json=this.msgList.concat(res.json());
+                var json=this.msgList.concat(data);
                 this.$set('msgList',json);
                 this.status.isSelecting = false;
               }else{
@@ -107,6 +107,22 @@
             }
           });
 		    },
+        grade_level: function(key){
+          switch(key){
+            case 0:
+              return '';
+            case 1:
+              return '较为靠后';
+            case 2: 
+              return '中等偏下';
+            case 3:
+              return '中等水平';
+            case 4:
+              return '中上水平';
+            case 5: 
+              return '名列前茅';
+          }
+        },
 		    getParam: function(param) {   //获取url上的参数
           var str = location.search;
           if (str.indexOf("?") == -1) return '';
@@ -115,6 +131,8 @@
             cell = str[i].split('=');
             if (cell[0] == param) {
               return cell[1];
+            }else{
+              return false;
             }
           }
         },
@@ -134,12 +152,19 @@
           if(res.json().sucess == 0){
             console.log(res.json().error);
           }else{
-            this.$set('detailedList',res.json());
+            var data = res.json();
+            data.class_field=this.grade_level(data.class_field);
+            this.$set('detailedList',data);
           }
         });
   	    },
         onReturn: function(){
-          var searchWord = this.getParam('keyword');
+          var searchWord,word = this.getParam('keyword');
+          if(word){
+            searchWord = word;
+          }else{
+            searchWord = '';
+          }
           // if(searchWord !== ''){
           //   searchWord = encodeURIComponent(searchWord);
           // }

@@ -36,7 +36,7 @@
 				<div class="rightMsg">
 					<p class="name">
 						<em v-text="item.name"></em>
-						<em v-text="item.isInvited"></em>
+						<em v-text="item.isInvited" v-bind:class="{red:item.isRed}"></em>
 					</p>
 					<p class="subject">
 						<em v-text="item.subject"></em>
@@ -152,6 +152,6 @@
 <script src="../dist/js/vue-resource.min.js"></script>  
 <script src="../dist/js/lubo.min.js"></script>   
 <script src="../dist/js/scroll.min.js"></script> 
-<script src="../src/js/parentAllTutor.js"></script>
+<script src="../dist/js/parentAllTutor.min.js"></script>
 </body>
 </html>

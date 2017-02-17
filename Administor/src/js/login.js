@@ -10,6 +10,7 @@
         status:{
           isLoading: false,
           isSubmit: false,
+          getWechat: false
         },
         hintData: {
     		  status: false,

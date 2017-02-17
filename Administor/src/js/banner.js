@@ -124,9 +124,9 @@
         },
         onSureDelete: function(index){
            var self = this;
-           var img = (this.imgs[index].img).slice(28);
+           var img = (this.imgs[index].img).split(this.domain);
             this.$http.post(this.domain+'/deleteBanner', {
-              'image':img
+              'image':img[1]
             }, {
               emulateJSON:true,
               headers:{

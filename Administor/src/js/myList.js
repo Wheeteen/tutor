@@ -17,15 +17,15 @@
                // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
                // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},
                // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',distance:0.6,native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[]},  
-               // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "您已邀请","finish": 0,"type": "parent"},//取消邀请，之后直接删掉
-               // {"oa_id": 20,"pd": 50,"tea": 8,"name": "李素","result": "老师已拒绝","finish": 1,"type": "parent"},//老师拒绝(老师直接拒绝或者是半小时内没有上传截图)，“再次邀请老师”
-               // {"oa_id": 21,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "parent"}, //老师同意，还没有上传截图，或者管理员还没有审核
-               // {"oa_id": 22,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "parent"}, //老师同意，已经上传截图，管理员审核完
-               // {"oa_id": 23,"pd": 50,"tea": 8,"name": "李素","result": "向您报名","finish": 0,"type": "teacher"}, //家长“接受报名”，“拒绝报名”
-               // {"oa_id": 24,"pd": 50,"tea": 8,"name": "李素","result": "您已同意","finish": 0,"type": "teacher"}, //家长同意老师的报名，同意之后取消同意变为“已拒绝”
-               // {"oa_id": 25,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "teacher"}, //家长同意老师的报名，老师还没有上传截图
-               // {"oa_id": 26,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "teacher"}, //家长同意老师的报名，老师已经上传截图
-               // {"oa_id": 27,"pd": 50,"tea": 8,"name": "李素","result": "已拒绝","finish": 1,"type": "teacher"} //家长拒绝老师的报名，还可以再次“接受报名”
+               {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "您已邀请","finish": 0,"type": "parent"},//取消邀请，之后直接删掉
+               {"oa_id": 20,"pd": 50,"tea": 8,"name": "李素","result": "老师已拒绝","finish": 1,"type": "parent"},//老师拒绝(老师直接拒绝或者是半小时内没有上传截图)，“再次邀请老师”
+               {"oa_id": 21,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "parent"}, //老师同意，还没有上传截图，或者管理员还没有审核
+               {"oa_id": 22,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "parent"}, //老师同意，已经上传截图，管理员审核完
+               {"oa_id": 23,"pd": 50,"tea": 8,"name": "李素","result": "向您报名","finish": 0,"type": "teacher"}, //家长“接受报名”，“拒绝报名”
+               {"oa_id": 24,"pd": 50,"tea": 8,"name": "李素","result": "您已同意","finish": 0,"type": "teacher"}, //家长同意老师的报名，同意之后取消同意变为“已拒绝”
+               {"oa_id": 25,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "teacher"}, //家长同意老师的报名，老师还没有上传截图
+               {"oa_id": 26,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "teacher"}, //家长同意老师的报名，老师已经上传截图
+               {"oa_id": 27,"pd": 50,"tea": 8,"name": "李素","result": "已拒绝","finish": 1,"type": "teacher"} //家长拒绝老师的报名，还可以再次“接受报名”
 			],
 			status:{
 				isTutor: true,
@@ -99,7 +99,7 @@
           });
        	},
        	onReturn: function(){
-       		window.location.href="./parentMyPage.html";
+       		window.location.href="./other.html";
        	},
        	onTutorInfo: function(index){
        		this.detailedList=[];
@@ -149,7 +149,6 @@
 			    this.status.isSuccess = false;
                 this.form.isRegister = "您已拒绝该老师";
 			}else if(list.result == '老师已拒绝'){
-                this.status.isSuccess = true;
                 this.form.isRegister = "再次邀请该老师";
 			}
 			else if(list.result == '向您报名'){

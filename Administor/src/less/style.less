@@ -21,7 +21,7 @@ body{
 .opacity{
   opacity: 1 !important;
 }
-.container{
+.mainCon{
 	width:90%;
 	margin: 60px auto 0;
 	h1{
@@ -85,4 +85,57 @@ body{
 }
 .btn-default{
 	background-color: @color2 !important;
+}
+.getWechat{
+  position:fixed;
+  top:0;
+  z-index: 99;
+  width:100%;
+  height: 100%;
+
+  .greyScreen{
+	width:100%;
+	height: 100%;
+	background:rgba(0, 0, 0, 0.4);
+   }
+   .locationCon{
+      position: fixed;
+	  width:86%;
+	  left:7%;
+	  color: #666;
+	  top:30%;
+	  border:1px solid #999;
+	  background: #fff;
+	  z-index: 23;
+	  .infoTip{
+		margin: 20px auto;
+		width:90%;
+        margin-left: 5%;
+        font-size: 13px;
+		p{
+			text-align: center;
+			line-height: 20px;
+		}
+	  }
+	  .infoBtn{
+		width:100%;
+		// margin-top: 10%;
+	  } 
+	  span{
+		display: inline-block;
+		float: left;
+		width:50%;
+		color:#464;
+		height: 25px;
+		line-height: 25px;
+		text-align: center;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		border-top: 1px solid #ccc;
+		&:first-child{
+			background-color:@color1;
+			color: #fff;
+		}
+	  }
+   }
 }

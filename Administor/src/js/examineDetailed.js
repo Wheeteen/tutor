@@ -119,11 +119,29 @@
               }else{
                 this.status.isParent = true;
                 this.status.isTeacher = false;
-                this.$set('parentMsg',res.json());
+                var data = res.json();
+                data.class_field=this.grade_level(data.class_field);
+                this.$set('parentMsg',data);
               }
             }
           });
     	  },
+        grade_level: function(key){
+          switch(key){
+            case 0:
+              return '';
+            case 1:
+              return '较为靠后';
+            case 2: 
+              return '中等偏下';
+            case 3:
+              return '中等水平';
+            case 4:
+              return '中上水平';
+            case 5: 
+              return '名列前茅';
+          }
+        },
         onReturn: function(){
         	window.location.href = './examine.html?select='+this.form.select;
         },

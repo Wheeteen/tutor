@@ -19,13 +19,21 @@
 		</a>
 	</div>
 	<!-- 重新获取定位 -->
-	<div class="changeLocation" v-on:touchstart='setLocation'>
+	<!-- <div class="changeLocation" v-on:touchstart='setLocation'>
 		<img src="../img/location.png" alt="">
+	</div> -->
+	<div class="changeLocation consult" v-on:touchstart='setLocation'>
+		<a href="#">
+			<em>重新</em>
+			<em>定位</em>
+		</a>
 	</div>
 	<!-- 全部老师 -->
     <div class="recommendTutor">
     	<header>
-    		<p>提示：每次只能选择一名老师进行试课哦~</p>
+    		<p><em>提示：</em>1. 每次只能选择一名老师进行试课哦~</p>
+    		<p class='blank'>2. 地址是用微信定位的地址，不代表用户的住址</p>
+    		<!-- <p></p> -->
 	    	<div class="recommendBtn">
 	    		<span class='active' @touchstart="onRecommend">为您推荐</span>
 			    <span @touchstart="onAllTutor">全部老师</span>
@@ -40,7 +48,7 @@
 				<div class="rightMsg">
 					<p class="name">
 						<em v-text="item.name"></em>
-						<em v-text="item.isInvited"></em>
+						<em v-text="item.isInvited" v-bind:class="{red:item.isRed}"></em>
 					</p>
 					<p class="subject">
 						<em v-text="item.subject"></em>
@@ -120,7 +128,7 @@
     	<div class="greyScreen"></div>
     	<div class="locationCon">
     		<div class="infoTip">
-    			<p>您是否需要重新获取定位，方便测量您与老师之间的距离？</p>
+    			<p>请在您家里获取定位，以接受更精准的推荐。请问您是否需要重新获取定位？</p>
     		</div>
             <div class="infoBtn">
                 <span v-on:touchstart="onAllow">是</span>
@@ -133,6 +141,6 @@
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script> 
-<script src="../src/js/parentPage.js"></script>
+<script src="../dist/js/parentPage.min.js"></script>
 </body>
 </html>

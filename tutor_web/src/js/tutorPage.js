@@ -12,6 +12,7 @@
       	status:{
           isParent: true,
           isNoParent: false,
+          isRegister: '',
           isLoading: false,
       		myInfo: false,
       		isTutorInfo: false,
@@ -45,7 +46,6 @@
         jsonData:[],
       	form:{
       		selected: '',
-      		isRegister: '',
           expection: '',
       	},
         location:{
@@ -87,6 +87,11 @@
                 for(var i=0;i<data.length;i++){
                   var level=this.grade_level(data[i].class_field);
                   data[i].class_field = level;
+                  if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '家长已拒绝'){
+                    data[i].isRed = true;
+                  }else{
+                    data[i].isRed = false;
+                  }
                 }
                 var json=self.msgList.concat(data);
                 this.$set('msgList',json); 
@@ -135,7 +140,7 @@
             emulateJSON:true,
             crossOrigin: true,
             headers:{
-              'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' 
+              'Content-Type':'application/json' 
             }
           }).then(function(res){
             this.signature = res.json().signature;
@@ -190,36 +195,50 @@
       	onTutorInfo: function(index){
       		this.form.selected = index;
       		this.status.isTutorInfo = true;
+          this.status.isDefault = false;
+          this.status.isSuccess = true;
           this.detailedList = this.msgList[index];
-          if(this.msgList[index].isInvited=="已报名"){
-             this.status.isDefault = true;
-             this.status.isSuccess = false;
-             this.form.isRegister = "取消报名";
-          }else if(this.msgList[index].isInvited =="已拒绝"){ 
-             this.status.isDefault = true;
-             this.status.isSuccess = false;
-             this.form.isRegister = "报名被拒绝";
-          }else if(this.msgList[index].isInvited =="已接受"){
-            this.status.isDefault = false;
-            this.status.isSuccess = true;
-            this.form.isRegister = "报名已接受";
-          }else if(this.msgList[index].isInvited =="已完成"){
-            this.status.isDefault = false;
-            this.status.isSuccess = true;
-            this.form.isRegister = "双方已成交";
-          }
-          else{
-            this.status.isDefault = false;
-            this.status.isSuccess = true;
-            this.form.isRegister = "报名";
-          }
-      		
+          switch(this.detailedList.isInvited){
+            case '您已报名':
+              this.status.isDefault = true;
+              this.status.isSuccess = false;
+              this.status.isRegister = "取消报名";
+              break;
+            case '对方已邀请':
+              this.status.isRegister = "该家长已邀请";
+              break;
+            case '对方已同意':
+              this.status.isRegister = "该家长已同意";
+              break;
+            case '您已拒绝':
+              this.status.isDefault = true;
+              this.status.isSuccess = false;
+              this.status.isRegister = "您已拒绝该家长";
+              break;
+            case '家长已拒绝':
+              this.status.isDefault = true;
+              this.status.isSuccess = false;
+              this.status.isRegister = "该家长已拒绝";
+              break;
+            case '请上传截图':
+              this.status.isRegister = '请到“我的订单”上传截图';
+              break;
+            case '管理员审核中':
+              this.status.isRegister = "管理员审核中";
+              break; 
+            case '已成交':
+              this.status.isRegister = "双方已成交";
+              break; 
+            case '':
+              this.status.isRegister = "报名";
+              break; 
+          }      		
       	},
       	onClose: function(){
       	    this.status.isTutorInfo = false;
       	},
       	onRegister: function(index){
-      	  if(this.form.isRegister == "取消报名"){
+      	  if(this.status.isRegister == "取消报名"){
              this.$http.post(this.domain+'applyParent',{
               'pd_id': this.msgList[index].pd_id,
               'type': 0              
@@ -231,7 +250,7 @@
              }).then(function(res){
                console.log(res.json());
                if(res.json().success == 1){
-                this.form.isRegister ='取消成功';
+                this.status.isRegister ='取消成功';
                 var self = this;
                 this.timer && clearTimeout(this.timer);
                 this.timer = setTimeout(function(){
@@ -243,11 +262,12 @@
                }
                
              })
-          }else if(this.form.isRegister == "报名"){
+          }else if(this.status.isRegister == "报名"){
             this.status.isTutorInfo = false;
             this.status.expection = true;
           }
           else {
+            this.status.isTutorInfo = false;
             return false;
           }       
       	},
@@ -268,7 +288,7 @@
             if(res.json().success == 1){              
               this.timer && clearTimeout(this.timer);
               this.timer = setTimeout(function(){
-                self.msgList[index].isInvited='已报名';
+                self.msgList[index].isInvited='您已报名';
                 self.status.expection = false;
                 self.form.expection = '';
               }, 1000);

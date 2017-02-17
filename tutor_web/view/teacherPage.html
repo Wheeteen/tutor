@@ -19,8 +19,17 @@
 		</a>
 	</div>
 	<!-- 重新获取定位 -->
-	<div class="changeLocation" v-on:touchstart='setLocation'>
+	<!-- <div class="changeLocation" v-on:touchstart='setLocation'>
 		<img src="../img/location.png" alt="">
+	</div> -->
+	<div class="changeLocation consult" v-on:touchstart='setLocation'>
+		<a href="#">
+			<em>重新</em>
+			<em>定位</em>
+		</a>
+	</div>
+	<div class="remindTip">
+		<p>提示：地址是用微信定位的地址，不代表用户的住址</p>
 	</div>
 	<!-- 家教信息列表 -->
 	<ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isParent'>
@@ -28,7 +37,7 @@
 			<div class="name">
 				<em v-text="item.name"></em>
 				<em v-text="item.create_time"></em>
-				<em v-text="item.isInvited"></em>
+				<em v-text="item.isInvited" v-bind:class="{red:item.isRed}"></em>
 			</div>
 			<div class="subject">
 				<em v-text="item.subject"></em>
@@ -69,7 +78,7 @@
 				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
 			</div>
 			<div class="submitBtn">
-				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" @touchstart="onRegister(form.selected)" >
+				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" @touchstart="onRegister(form.selected)" >
 			</div>
 		</div>
 	</div>	

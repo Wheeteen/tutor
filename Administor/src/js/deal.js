@@ -64,6 +64,11 @@
               if(data.length!=0){
                 for(var i =0;i<data.length;i++){
                   data[i].screenshot_path = this.domain+data[i].screenshot_path;
+                  if(data[i].result == '未处理'){
+                    data[i].isDeal= false;
+                  }else{
+                    data[i].isDeal = true;
+                  }
                 }
                 var json=self.mainData.concat(data);
                 this.$set('mainData',json);
@@ -117,11 +122,11 @@
         		this.$http.post(this.domain+'/sendPhone',{
               "tea_id":list.tea,
               "oa_id":list.oa_id,
-              "tel":1881234567
+              "tel":list.parent_tel
             },{
               crossOrigin:true,
               headers:{
-                'Content-Type':'application/json; charset=UTF-8' 
+                'Content-Type':'application/json' 
               }
 
             }).then(function(res){
@@ -131,7 +136,8 @@
               	list.isDeal = false;
                 this.timer && clearTimeout(this.timer);
                 this.timer = setTimeout(function(){
-                  list.result = '已处理';
+                  list.isDeal = true;
+                  list.result = '已成交';
                   self.status.isUploadImg = false;
                 }, 2000); 
               }

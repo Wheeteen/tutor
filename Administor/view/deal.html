@@ -34,7 +34,7 @@
 	          <img :src="detailedList.screenshot_path" alt="">
     		</div>
             <div class="client tel">
-                <span>该老师的联系方式：{{detailedList.tea_tel}}</span>
+                <span>该老师的联系方式：{{detailedList.teacher_tel}}</span>
             </div>
     		<div class="submitBtn">
     			<span v-on:touchstart="onSubmitMsg(status.selected)" class='refuse' v-bind:class="{bgreen: status.isGreen}">{{status.isSend}}</span>

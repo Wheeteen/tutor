@@ -14,22 +14,25 @@
 		<span v-bind:class="{active:status.isOther}"  v-on:touchstart="onOther">其他</span>
 	</div>
     <div class="mainInfo">
-        <div class="changeInfo" v-on:touchstart="onExamine">
+        <div v-on:touchstart="onExamine">
             审核
         </div>
-        <div class="myMsg" v-on:touchstart="onPopularTeacher">
+        <div v-on:touchstart="onList">
+            我的订单
+        </div>
+        <div v-on:touchstart="onPopularTeacher">
             热门老师
         </div>
-        <div class="myList" v-on:touchstart="onQuestion">
+        <div v-on:touchstart="onQuestion">
             发布需求
         </div>
-        <div class="changeInfo" v-on:touchstart="onFeedback">
+        <div v-on:touchstart="onFeedback">
             查看反馈
         </div>
-        <div class="myMsg" v-on:touchstart="onBanner">
+        <div v-on:touchstart="onBanner">
             修改banner
         </div>
-        <div class="myList" v-on:touchstart="onText">
+        <div v-on:touchstart="onText">
             文本更改
         </div>
     </div>

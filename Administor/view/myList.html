@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,intial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<title>好学吧家教服务平台</title>
-	<link rel="stylesheet" href="../dist/css/myTeacher.min.css">
+	<link rel="stylesheet" href="../dist/css/myList.min.css">
 </head>
 <body>
 <div class="container" v-bind:class="{opacity:!status.Loading}">
@@ -25,7 +25,7 @@
 	</ul>
 	<!-- 当没有消息的时候，有提示 -->
     <div class="noTutor" v-if='status.isNoTutor'>
-    	对不起，暂时还没有关于您的老师订单消息！
+    	对不起，暂时还没有关于您的订单消息！
     </div>
 	 <!-- 家教信息详情 -->
 	<div class="tutorInfo" v-if="status.isTutorInfo">
@@ -103,6 +103,6 @@
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
-<script src="../dist/js/myTeacher.min.js"></script>
+<script src="../dist/js/myList.min.js"></script>
 </body>
 </html>

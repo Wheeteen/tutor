@@ -26,6 +26,9 @@
       	onExamine: function(){
       		window.location.href = './examine.html';
       	},
+        onList: function(){
+          window.location.href = './myList.html';
+        },
         onPopularTeacher: function(){
           window.location.href='./popularTeacher.html';
         },

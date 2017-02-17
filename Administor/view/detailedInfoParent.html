@@ -44,7 +44,7 @@
 		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
 			<li v-for="item in msgList" v-on:touchstart="onDetailedInfo($index)">
 				<span v-text="item.name"></span>
-				<span v-text="item.result" v-bind:class="{red:item.isRed}"></span>
+				<span v-text="item.result" v-bind:class="{'red':item.isRed}"></span>
 			</li>
 		</ul>
 		<!-- 当没有消息的时候，有提示 -->
@@ -112,6 +112,6 @@
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
-<script src="../src/js/detailedInfoParent.js"></script>
+<script src="../dist/js/detailedInfoParent.min.js"></script>
 </body>
 </html>

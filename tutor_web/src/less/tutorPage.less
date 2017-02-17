@@ -27,7 +27,7 @@ ul,ul li{
 	bottom:0;
 	height: 30px;
 	width:100%;
-	z-index: 9999;
+	// z-index: 9999;
 	span{
 		width:50%;
 		text-align: center;
@@ -71,20 +71,25 @@ ul,ul li{
 	position: fixed;
 	z-index: 100;
 	bottom: 100px;
-	right:5%;
-	width: 45px;
-	height: 45px;
-	border-radius: 50%;
-	background-color: #666;
-	display: table;
+	// right:5%;
+	// width: 45px;
+	// height: 45px;
+	// border-radius: 50%;
+	// background-color: #666;
+	// display: table;
 
-	img{
-		display: table-cell;
-		vertical-align: middle;
-		margin-left: 4px;
-		width:37px;
-		height: 45px;
-	}
+	// img{
+	// 	display: table-cell;
+	// 	vertical-align: middle;
+	// 	margin-left: 4px;
+	// 	width:37px;
+	// 	height: 45px;
+	// }
+}
+.remindTip{
+	color: @color1;
+	width:94%;
+    margin: 8px auto 3px;
 }
 .noParent{
 	width:80%;
@@ -123,6 +128,9 @@ ul,ul li{
 			color:@color1;
 		}
 	}
+	.red{
+		color:#ff0000 !important;
+	}
 }
 .subject{
 	overflow: hidden;
@@ -146,11 +154,14 @@ ul,ul li{
 
 .tutorInfo{
 	position: fixed;
+	overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 	width:100%;
 	height: 100%;
 	top:0;
+	z-index: 10000;
 	.InfoList{
-		position: fixed;
+		position: absolute;
 		width:80%;
 		left:10%;
 		top:8%;
@@ -202,7 +213,7 @@ ul,ul li{
 	}
 }
 .info{
-	padding:0 2% 40px;
+	padding:0 2% 20px;
 
 	p{
 		margin-bottom: 2px;

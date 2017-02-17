@@ -8,23 +8,38 @@
 </head>
 <body>
 <div class="container" v-bind:class="{opacity: status.isLoading}">
-	<h1>管理员登录</h1>
-	<div class="text-error" v-if="hintData.status">
-		<span v-text="hintData.text"></span>
-		<span v-on:touchstart="offHint">×</span>
+	<div class="mainCon">
+		<h1>管理员登录</h1>
+		<div class="text-error" v-if="hintData.status">
+			<span v-text="hintData.text"></span>
+			<span v-on:touchstart="offHint">×</span>
+		</div>
+		<form action="" v-on:submit.prevent="onSubmit">
+			<div class="username">
+				<input type="text" placeholder="用户名" required v-model.trim="form.username">
+			</div>
+			<div class="pwd">
+				<input type="password" placeholder="密码" required v-model.trim="form.pwd">
+			</div>
+			<div class="login">
+				<input type="submit" v-bind:class="{'btn-default':isBtn}" v-if="!status.isSubmit" value="确认登录">
+			    <input type="submit" v-else value="loading..." disabled="disabled">
+			</div>
+		</form>
 	</div>
-	<form action="" v-on:submit.prevent="onSubmit">
-		<div class="username">
-			<input type="text" placeholder="用户名" required v-model.trim="form.username">
-		</div>
-		<div class="pwd">
-			<input type="password" placeholder="密码" required v-model.trim="form.pwd">
-		</div>
-		<div class="login">
-			<input type="submit" v-bind:class="{'btn-default':isBtn}" v-if="!status.isSubmit" value="确认登录">
-		    <input type="submit" v-else value="loading..." disabled="disabled">
-		</div>
-	</form>
+	<!-- 提示管理员是否绑定微信 -->
+    <div class="getWechat" v-if='status.getWechat'>
+    	<div class="greyScreen"></div>
+    	<div class="locationCon">
+    		<div class="infoTip">
+    			<p>您现在绑定的微信号不是自身账号，是否更新绑定以方便推送消息到您的账号？</p>
+    		</div>
+            <div class="infoBtn">
+                <span v-on:touchstart="onAllow">是</span>
+                <span v-on:touchstart="onCancel">否</span>
+            </div>
+    	</div>
+    </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>

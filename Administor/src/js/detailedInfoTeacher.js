@@ -13,8 +13,8 @@
 	        isTutorInfo: false,
 	        selected: '',
           hot_not:"设为热门",
-          isList: false,
-          isNoList: true,
+          isList: true,
+          isNoList: false,
           text: '删除该请求',
       	},
       	msgDetailedList:{
@@ -89,13 +89,13 @@
               var data = res.json();
               if(data.length!=0){
                 for(var i = 0;i<data.length;i++){
-                  if(data[i].result == '已拒绝'||data[i].result == '家长已拒绝'){
+                  if(data[i].result == '您已拒绝'||data[i].result == '家长已拒绝'){
                     data[i].isRed = true;
                   }else{
                     data[i].isRed = false;
                   }
                  }
-                var json=this.msgList.concat(res.json());
+                var json=this.msgList.concat(data);
                 this.$set('msgList',json);
                 this.status.isSelecting = false;
               }else{
@@ -107,6 +107,22 @@
             }
           });
 		    },
+        grade_level: function(key){
+          switch(key){
+            case 0:
+              return '';
+            case 1:
+              return '较为靠后';
+            case 2: 
+              return '中等偏下';
+            case 3:
+              return '中等水平';
+            case 4:
+              return '中上水平';
+            case 5: 
+              return '名列前茅';
+          }
+        },
         getParam: function(param) {   //获取url上的参数
           var str = location.search;
           if (str.indexOf("?") == -1) return '';
@@ -179,7 +195,7 @@
             popular = 0;
             msgText = '设为热门';
           }
-      		this.$http.post(this.domain+'setHot',{
+      		this.$http.post(this.domain+'/setHot',{
             'id': this.id,
             "type": popular,
             'user': "teacher"
@@ -202,7 +218,7 @@
           this.status.text = '删除该请求';
            this.status.selected = index;
            var list = this.msgList[index];
-           this.$http.post(this.domain+'getParentInfo',{
+           this.$http.post(this.domain+'/getParentInfo',{
               "pd_id": list.pd,
               "format": true,
             },{
@@ -214,7 +230,9 @@
                if(res.json().success == 0){
                 console.log(res.json().error);
                }else{
-                this.detailedList = res.json();
+                 var data = res.json();
+                 data.class_field=this.grade_level(data.class_field);
+                this.detailedList = data;
                 this.status.isTutorInfo = true;
                }
             })

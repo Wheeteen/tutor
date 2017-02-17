@@ -158,10 +158,12 @@ header{
 	}
 	.showImg{
 		padding:0 2%;
+		margin: 5px 0;
 	}
 	.showImage{
 		overflow: hidden;
 		width:100%;
+		margin-top: 5px;
 		li{
 			float: left;
 			width:30%;
@@ -215,6 +217,7 @@ header{
 			text-align: right;
 			color: @color1;
 			font-size: 13px;
+			font-weight: bold;
 
 		}
 		.red{
@@ -223,18 +226,19 @@ header{
     }
 }
 .tutorInfo{
-	position: absolute;
+	position: fixed;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 	width:100%;
 	height: 100%;
 	top:0;
 	z-index: 99999;
 	.InfoList{
 		position: absolute;
-		overflow-y: scroll;
 		width:90%;
 		left:5%;
 		// margin:0 auto;
-		top:5%;
+		top:8%;
 		border:1px solid #53C778;
 		background: #fff;
 		z-index: 20;
@@ -298,6 +302,7 @@ header{
 	.showImage{
 		overflow: hidden;
 		width:100%;
+		margin-top: 4px;
 		li{
 			float: left;
 			width:30%;

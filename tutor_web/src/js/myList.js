@@ -174,10 +174,6 @@
         if(list.result == '对方已邀请'){
           this.status.isInvited = true;
           this.status.isReject = false;
-        }else if(list.result == '您已拒绝'){
-          this.status.text = '再次接受邀请';
-          this.status.isInvited = false;
-          this.status.isReject = true;
         }
         else if(list.result == '已成交'){
           this.status.text = '双方已成交';
@@ -187,7 +183,13 @@
           this.status.text = '再次报名该家长';
           this.status.isInvited = false;
           this.status.isReject = true;
-        }else if(list.result == '您已报名'){
+        }else if(list.result == '您已拒绝'){
+          this.status.text = '您已拒绝邀请';
+          this.status.isInvited = false;
+          this.status.isReject = true;
+          this.status.isSuccess = false;
+        }
+        else if(list.result == '您已报名'){
           this.status.text = '取消报名';
           this.status.isInvited = false;
           this.status.isReject = true;
@@ -196,17 +198,14 @@
       }      
   	},
     onStep: function(index){
-      if(this.status.text=='再次接受邀请'){
-        this.msgList[index].finish = 0;
-        this.onAccept(index);
-      }else if(this.status.text=='再次报名该家长'){
+      if(this.status.text=='再次报名该家长'){
         this.status.isTutorInfo = false;
         this.status.expection = true;
       }else if(this.status.text == '取消报名'){
         this.status.isTutorInfo = false;
         this.form.isMsg = '取消报名';
         this.status.isSureRefuse = true;
-      }else if(this.status.text == '双方已成交'){
+      }else if(this.status.text == '双方已成交' || this.status.text == '您已拒绝邀请'){
         this.status.isTutorInfo = false;
       }
     },
