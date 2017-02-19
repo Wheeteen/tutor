@@ -1,5 +1,4 @@
 (function(){
-  var id=window.localStorage.getItem("id");
   Vue.http.interceptors.push(function(request, next){
     request.credentials = true;
     next();
@@ -55,6 +54,15 @@
           accuracy:'',
         },
         signature: '',
+      },
+      computed:{
+       remindSubmit: function(){
+          if(this.form.expection!==''&&this.form.expection!=null){
+            return true;
+          }else{
+            return false;
+          }
+        },
       },
       ready: function(){
       	this.getData();

@@ -1,5 +1,4 @@
 (function(){
-	var id=window.localStorage.getItem("id");
   Vue.http.interceptors.push(function(request, next){
     request.credentials = true;
     next();

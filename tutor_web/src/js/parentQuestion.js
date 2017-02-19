@@ -8,7 +8,6 @@ function dateCompare(date1, date2) {
   }
 }
 (function(){
-  var localStorage = window.localStorage;
   Vue.http.interceptors.push(function(request, next){
     request.credentials = true;
     next();
