@@ -12,11 +12,15 @@
       		isSelecting: true,
 	        isLoading: false,
 	        isTutorInfo: false,
-	        selected: '',
+          isChangeInfo: false,
 	        isRemindTeacher: false,
           isList: true,
           isNoList: false,
-          text: '删除该请求'
+          text: '删除该请求',
+          isSuccess: true,
+          onParent: true,
+          onTeacher: false,
+          errorTip:'对不起，您只能选择一位老师'
       	},
       	detailedList:{
       		pd_id:0,
@@ -38,22 +42,18 @@
       		deadline: '2016年12月23号',
       		tel: '1234567891'
       	},
-      	msgList:[
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已邀请',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已报名',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'已拒绝',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'},
-           // {tea_id: 1,certificate_photo:'../img/user02.png',name:'张老师',isInvited:'',subject:'数学',subject_other:'',grade:'高一',native_place:"天河",time:"周六上午",place:"家长家",teacher_method:"nice,细心",teacher_method_other: '',expection:"上课要耐心细致",sex:'男',salary_bottom:20,salary_top:60,campus_major:'数学',score:'学习成绩进步很大',self_comment:'特别受学生喜欢',teach_show_photo:[],tel:'18826103726'}, 
-		    ],
+      	msgList:[],
         jsonData: [],
       	msgDetailedList: [],
         start: 0,
       	msg: {
       		text: '已发送请求'
-      	}
+      	},
+        form:{
+          selected:'',
+          isRegister: '',
+          isMsg: '',
+        } 
       },
       ready: function(){
           this.renderTutor();
@@ -132,7 +132,7 @@
             if (cell[0] == param) {
               return cell[1];
             }else{
-              return false;
+              // return false;
             }
           }
         },
@@ -165,11 +165,13 @@
           }else{
             searchWord = '';
           }
-          // if(searchWord !== ''){
-          //   searchWord = encodeURIComponent(searchWord);
-          // }
-          // console.log(searchWord);
-          window.location.href = './userAdministor.html?user=parent&keyword='+searchWord;
+          console.log(this.getParam('keyword'),searchWord);
+          if(!this.getParam('list')){
+            window.location.href = './userAdministor.html?user=parent&keyword='+searchWord;
+            
+          }else{
+            window.location.href = './myList.html';
+          }
         },
         onUser:function(){
       		window.location.href = './userAdministor.html';
@@ -208,7 +210,7 @@
       		}
       	},
       	onDetailedInfo: function(index){
-           this.status.selected = index;
+           this.form.selected = index;
            this.status.text = '删除该请求';
            this.msgDetailedList = [];
            var list = this.msgList[index];
@@ -234,11 +236,37 @@
                   photo[i]=this.domain+photo[i];
                  }
                 }
+                if(list.expectation!=null||list.expectation!=''){
+                  data.expectation=list.expectation;
+                }
                 this.msgDetailedList = data;
                 this.status.isTutorInfo = true;
                }
             })
-           
+            this.status.onParent = true;
+            this.status.onTeacher = false;
+            this.status.isSuccess = true;
+            if(list.result == '管理员审核中'){
+              this.form.isRegister = "管理员审核中";
+            }else if(list.result == '已成交'){
+              this.form.isRegister = "双方已成交";
+            }else if(list.result == '您已邀请'){
+              this.status.isSuccess = false;
+              this.form.isRegister = "取消邀请";
+            }else if(list.result == '您已拒绝'){
+              this.status.isSuccess = false;
+              this.form.isRegister = "您已拒绝该老师";
+            }else if(list.result == '老师已拒绝'){
+              this.status.isSuccess = true;
+              this.form.isRegister = "再次邀请该老师";
+            }
+            else if(list.result == '向您报名'){
+              this.status.onParent= false;
+              this.status.onTeacher = true;
+            }else if(list.result == '您已同意'){
+              this.status.isSuccess = false;
+              this.form.isRegister = "拒绝选择该老师";
+            }
       	},
       	onDelete: function(index){        	
       		this.$http.post(this.domain+'/deleteOrder',{
@@ -263,8 +291,164 @@
     				
     			});        
         },
+        onRegister1: function(index){
+         if(this.form.isRegister == "取消邀请"){
+            this.form.isMsg = '邀请';
+            this.status.isTutorInfo = false;
+            this.status.isChangeInfo = true;
+          }else if(this.form.isRegister == '再次邀请该老师'){
+            this.$http.post(this.domain+'/inviteTeacher',{
+              'tea_id': this.msgList[index].tea,
+              'type': 1
+            },{
+              crossOrigin: true,
+              headers:{
+                'Content-Type':'application/json' 
+              }
+
+            }).then(function(res){
+              console.log(res.json());
+              if(res.json().success==1){
+                this.form.isRegister = '您已邀请';
+                this.msgList[index].finish = 0;               
+                var self = this;
+                this.timer && clearTimeout(this.timer);
+                this.timer = setTimeout(function(){
+                  self.msgList[index].result = '您已邀请';
+                  self.msgList[index].isRed = false;
+                  self.status.isTutorInfo = false;
+               }, 1500);
+              }else{
+                console.log(res.json().error);
+                var self = this;
+                this.status.errorTip = res.json().error;
+                this.status.isTutorInfo = false;
+                this.status.isInfoTipOne = true;
+                this.timer && clearTimeout(this.timer);
+                this.timer=setTimeout(function(){
+                self.status.isInfoTipOne = false;
+                },2000);
+              }
+              
+            })
+          }else if(this.form.isRegister == '拒绝选择该老师'){
+            this.status.isTutorInfo = false;
+            this.form.isMsg = '信息';
+            this.status.isChangeInfo = true;
+          }else{
+            this.status.isTutorInfo = false;
+            return false;
+          }
+        },
+        //选择该老师
+        onSelect: function(index){
+            this.$http.post(this.domain+'/handleOrder',{
+            'type': 1,
+            'id': this.msgList[index].tea,
+            'accept': 1
+          },{
+            crossOrigin: true,
+            headers:{
+              'Content-Type':'application/json' 
+            }
+
+          }).then(function(res){
+            if(res.json().success==1){
+              var self = this;
+              this.timer && clearTimeout(this.timer);
+              this.timer = setTimeout(function(){
+                self.status.isTutorInfo = false;
+                self.msgList[index].result = "您已同意"; 
+                self.msgList[index].isRed = false;             
+              }, 1000);
+            }else{
+              console.log(res.json().error);
+            }
+          })
+        },
+        //拒绝该老师
+        onRefuse: function(index){
+          this.$http.post(this.domain+'/handleOrder',{
+            'type': 1,
+            'id': this.msgList[index].tea,
+            'accept': 0
+          },{
+            crossOrigin: true,
+            headers:{
+              'Content-Type':'application/json' 
+            }
+
+          }).then(function(res){
+            console.log(res.json());
+              if(res.json().success==1){
+              var self = this;
+              this.msgList[index].finish = 1;
+              this.timer && clearTimeout(this.timer);
+              this.timer = setTimeout(function(){
+                self.status.isTutorInfo = false;
+                self.msgList[index].result = "您已拒绝";  
+                self.msgList[index].isRed = true;            
+              }, 1000);
+            }else{
+              console.log(res.json().error);
+            }
+          })
+        },
+        onSureChange: function(index){
+          var msg = this.form.isMsg;
+          if(msg == '邀请'){
+            this.$http.post(this.domain+'/inviteTeacher',{
+              'tea_id': this.msgList[index].tea,
+              'type': 0
+            },{
+              crossOrigin: true,
+              headers:{
+                'Content-Type':'application/json' 
+              }
+
+            }).then(function(res){
+              console.log(res.json());
+              if(res.json().success==1){
+                var self = this;
+                  this.timer && clearTimeout(this.timer);
+                  this.timer = setTimeout(function(){
+                    self.status.isChangeInfo = false;
+                    self.msgList.splice(index,1);              
+                  }, 300);
+              }else{
+                console.log(res.json().error);
+              }
+              
+            })
+          }else{
+            this.$http.post(this.domain+'/handleOrder',{
+              'type': 1,
+                'id': this.msgList[index].tea,
+                'accept': 0
+            },{
+              crossOrigin: true,
+              headers:{
+                'Content-Type':'application/json' 
+              }
+
+            }).then(function(res){
+              console.log(res.json());
+              if(res.json().success==1){
+                this.status.isChangeInfo = false;
+                  this.msgList[index].result = '您已拒绝';
+                  this.msgList[index].isRed = true; 
+                  this.msgList[index].finish = 1;
+              }else{
+                console.log(res.json().error);
+              }
+            })
+          }
+          
+        },
         onClose: function(){
-        	this.status.isTutorInfo = false;
+        	this.status.isChangeInfo = false;
+          this.status.isTutorInfo = false;
+          this.status.isInfoTipOne = false;
         }
       },
 	});

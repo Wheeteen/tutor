@@ -94,15 +94,35 @@
                    </li>             
 				</ul>
 			</div>
-			<div class="submitBtn">
-				<span v-on:touchstart="onDelete(status.selected)">{{status.text}}</span>
+			<div class="submitBtn" v-if='status.onParent'>
+				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
 			</div>
+			<div class="infoBtn" v-if='status.onTeacher'>
+                <span v-on:touchstart="onSelect(form.selected)">选择该老师</span>
+                <span v-on:touchstart="onRefuse(form.selected)">拒绝该老师</span>
+            </div>
 		</div>
 	</div>
 	<!-- 发送请求 -->
 	<div class="tutorInfo remindInfo" v-if="status.isRemindTeacher">
 		<p>{{msg.text}}</p>
 	</div>
+	<div class="InfoTipOne" v-if="status.isInfoTipOne">
+	    <p class='close' @touchstart="onClose">×</p>
+		<p class="infoTip" v-text='status.errorTip'></p>
+	</div>
+	<div class="tutorInfo" v-if="status.isChangeInfo">
+	    <div class="greyScreen"></div>
+    	<div class="InfoTipOne InfoRequest">
+    		<div class="infoTip">
+    			<p>{{form.isMsg}}已发送，确定取消吗？</p>
+    		</div>
+    		<div class="infoBtn">
+    			<span v-on:touchstart="onSureChange(form.selected)">确定</span>
+    			<span v-on:touchstart="onClose">取消</span>
+    		</div>
+    	</div>
+    </div>
 	<div class="bottomBtn">
 		<span class="active" v-on:touchstart="onUser">用户管理</span>
 		<span class='deal' v-on:touchstart="onDeal">成交</span>

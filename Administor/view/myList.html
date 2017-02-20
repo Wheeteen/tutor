@@ -16,89 +16,22 @@
 	<ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
 		<li v-for='item in tutorList' v-on:touchstart="onTutorInfo($index)">
 			<div class="nameMsg">
-				<p class="name">
+				<div class="name">
 					<em v-text="item.name"></em>
-					<em v-text="item.result" v-bind:class="{red:item.isRed}"></em>
-				</p>
+					<em v-text="item.create_time"></em>
+				</div>
+				<div class="subject">
+					<em v-text="item.subject"></em>
+					<em>{{item.learning_phase}}{{item.grade}}</em>
+					
+				</div>
 			</div>
 		</li>
 	</ul>
 	<!-- 当没有消息的时候，有提示 -->
     <div class="noTutor" v-if='status.isNoTutor'>
-    	对不起，暂时还没有关于您的订单消息！
-    </div>
-	 <!-- 家教信息详情 -->
-	<div class="tutorInfo" v-if="status.isTutorInfo">
-	    <div class="greyScreen"></div>
-		<div class="InfoList">
-			<div class="client">
-			    <div class="image">
-			    	<img v-bind:src="detailedList.certificate_photo" alt="">
-			    </div>
-				<div class="msgName">
-					<span> 
-					{{detailedList.name}}
-					</span>
-				    <span class='close' @touchstart="onClose">×</span>
-				</div>
-			</div>
-			<div class="distance">
-				<span>距您{{detailedList.distance}}
-				km</span>
-			</div>
-			<div class="info">
-				<p>性别：<em>
-				{{detailedList.sex}}
-				</em></p>
-				<p>专业：<em>
-				{{detailedList.campus_major}}
-				</em></p>
-				<p>可教年级：<em>{{detailedList.grade}}</em></p>
-				<p>可教科目：<em>
-				{{detailedList.subject}}{{detailedList.subject_other}}
-				</em></p>
-				<p>上课时间：<em>{{detailedList.time}}</em></p>
-				<p>可接受地点：<em>{{detailedList.place}}</em></p>
-				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p>相关成绩：<em>{{detailedList.score}}</em></p>
-				<p>个人简介：<em>{{detailedList.self_comment}}</em></p>
-				<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
-				<p>老师籍贯：<em>{{detailedList.native_place}}</em></p>
-				<p v-if='detailedList.expectation'>对家教的设想：<em>{{detailedList.expectation}}</em></p>
-			</div>
-			<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
-				<h3>家教秀</h3>
-				<ul class="showImage">
-                   <li v-for="item in detailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="">
-                   </li>             
-				</ul>
-			</div>
-			<div class="submitBtn" v-if='status.onParent'>
-				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
-			</div>
-			<div class="infoBtn" v-if='status.onTeacher'>
-                <span v-on:touchstart="onSelect(form.selected)">选择该老师</span>
-                <span v-on:touchstart="onRefuse(form.selected)">拒绝该老师</span>
-            </div>
-		</div>
-	</div>
-	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' @touchstart="onClose">×</p>
-		<p class="infoTip" v-text='status.errorTip'></p>
-	</div>
-	<div class="tutorInfo" v-if="status.isChangeInfo">
-	    <div class="greyScreen"></div>
-    	<div class="InfoTipOne InfoRequest">
-    		<div class="infoTip">
-    			<p>{{form.isMsg}}已发送，确定取消吗？</p>
-    		</div>
-    		<div class="infoBtn">
-    			<span v-on:touchstart="onSureChange(form.selected)">确定</span>
-    			<span v-on:touchstart="onClose">取消</span>
-    		</div>
-    	</div>
-    </div>
+    	对不起，暂时您还没有创建任何订单！
+    </div>	
 </div>
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>

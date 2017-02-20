@@ -143,6 +143,7 @@
               }
             })
         	}else {
+            this.status.isUploadImg = false;
         		return false;
         	}
         },
