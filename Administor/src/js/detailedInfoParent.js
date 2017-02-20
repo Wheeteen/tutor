@@ -18,8 +18,9 @@
           isNoList: false,
           text: '删除该请求',
           isSuccess: true,
-          onParent: true,
+          onParent: false,
           onTeacher: false,
+          isDetailed: true,
           errorTip:'对不起，您只能选择一位老师'
       	},
       	detailedList:{
@@ -214,6 +215,7 @@
            this.status.text = '删除该请求';
            this.msgDetailedList = [];
            var list = this.msgList[index];
+           var myList = this.getParam('list');
            this.$http.post(this.domain+'/getTeacherInfo',{
               "tea_id": list.tea,
               "format": true,
@@ -242,31 +244,36 @@
                 this.msgDetailedList = data;
                 this.status.isTutorInfo = true;
                }
-            })
-            this.status.onParent = true;
-            this.status.onTeacher = false;
-            this.status.isSuccess = true;
-            if(list.result == '管理员审核中'){
-              this.form.isRegister = "管理员审核中";
-            }else if(list.result == '已成交'){
-              this.form.isRegister = "双方已成交";
-            }else if(list.result == '您已邀请'){
-              this.status.isSuccess = false;
-              this.form.isRegister = "取消邀请";
-            }else if(list.result == '您已拒绝'){
-              this.status.isSuccess = false;
-              this.form.isRegister = "您已拒绝该老师";
-            }else if(list.result == '老师已拒绝'){
+            });
+            if(myList){
+              this.status.isDetailed = false;
+              this.status.onParent = true;
+              this.status.onTeacher = false;
               this.status.isSuccess = true;
-              this.form.isRegister = "再次邀请该老师";
+              if(list.result == '管理员审核中'){
+                this.form.isRegister = "管理员审核中";
+              }else if(list.result == '已成交'){
+                this.form.isRegister = "双方已成交";
+              }else if(list.result == '您已拒绝'){
+                this.status.isSuccess = false;
+                this.form.isRegister = "您已拒绝该老师";
+              }else if(list.result == '老师已拒绝'){
+                this.status.isSuccess = false;
+                this.form.isRegister = "该老师已拒绝";
+              }
+              else if(list.result == '向您报名'){
+                this.status.onParent= false;
+                this.status.onTeacher = true;
+              }else if(list.result == '您已同意'){
+                this.status.isSuccess = false;
+                this.form.isRegister = "拒绝选择该老师";
+              }
+            }else{
+               this.status.isDetailed = true;
+               this.status.onParent = false;
+               this.status.onTeacher = false;
             }
-            else if(list.result == '向您报名'){
-              this.status.onParent= false;
-              this.status.onTeacher = true;
-            }else if(list.result == '您已同意'){
-              this.status.isSuccess = false;
-              this.form.isRegister = "拒绝选择该老师";
-            }
+            
       	},
       	onDelete: function(index){        	
       		this.$http.post(this.domain+'/deleteOrder',{
@@ -292,46 +299,7 @@
     			});        
         },
         onRegister1: function(index){
-         if(this.form.isRegister == "取消邀请"){
-            this.form.isMsg = '邀请';
-            this.status.isTutorInfo = false;
-            this.status.isChangeInfo = true;
-          }else if(this.form.isRegister == '再次邀请该老师'){
-            this.$http.post(this.domain+'/inviteTeacher',{
-              'tea_id': this.msgList[index].tea,
-              'type': 1
-            },{
-              crossOrigin: true,
-              headers:{
-                'Content-Type':'application/json' 
-              }
-
-            }).then(function(res){
-              console.log(res.json());
-              if(res.json().success==1){
-                this.form.isRegister = '您已邀请';
-                this.msgList[index].finish = 0;               
-                var self = this;
-                this.timer && clearTimeout(this.timer);
-                this.timer = setTimeout(function(){
-                  self.msgList[index].result = '您已邀请';
-                  self.msgList[index].isRed = false;
-                  self.status.isTutorInfo = false;
-               }, 1500);
-              }else{
-                console.log(res.json().error);
-                var self = this;
-                this.status.errorTip = res.json().error;
-                this.status.isTutorInfo = false;
-                this.status.isInfoTipOne = true;
-                this.timer && clearTimeout(this.timer);
-                this.timer=setTimeout(function(){
-                self.status.isInfoTipOne = false;
-                },2000);
-              }
-              
-            })
-          }else if(this.form.isRegister == '拒绝选择该老师'){
+         if(this.form.isRegister == '拒绝选择该老师'){
             this.status.isTutorInfo = false;
             this.form.isMsg = '信息';
             this.status.isChangeInfo = true;
@@ -342,10 +310,10 @@
         },
         //选择该老师
         onSelect: function(index){
-            this.$http.post(this.domain+'/handleOrder',{
-            'type': 1,
-            'id': this.msgList[index].tea,
-            'accept': 1
+          this.$http.post(this.domain+'/handleUserOrder',{
+            'willing': 2,
+            'oa_id': this.msgList[index].oa_id,
+            'user': "parent"
           },{
             crossOrigin: true,
             headers:{
@@ -368,10 +336,10 @@
         },
         //拒绝该老师
         onRefuse: function(index){
-          this.$http.post(this.domain+'/handleOrder',{
-            'type': 1,
-            'id': this.msgList[index].tea,
-            'accept': 0
+          this.$http.post(this.domain+'/handleUserOrder',{
+            'willing': 0,
+            'oa_id': this.msgList[index].oa_id,
+            'user': "parent"
           },{
             crossOrigin: true,
             headers:{
@@ -386,6 +354,7 @@
               this.timer && clearTimeout(this.timer);
               this.timer = setTimeout(function(){
                 self.status.isTutorInfo = false;
+                self.status.isChangeInfo =false;
                 self.msgList[index].result = "您已拒绝";  
                 self.msgList[index].isRed = true;            
               }, 1000);
@@ -394,56 +363,8 @@
             }
           })
         },
-        onSureChange: function(index){
-          var msg = this.form.isMsg;
-          if(msg == '邀请'){
-            this.$http.post(this.domain+'/inviteTeacher',{
-              'tea_id': this.msgList[index].tea,
-              'type': 0
-            },{
-              crossOrigin: true,
-              headers:{
-                'Content-Type':'application/json' 
-              }
-
-            }).then(function(res){
-              console.log(res.json());
-              if(res.json().success==1){
-                var self = this;
-                  this.timer && clearTimeout(this.timer);
-                  this.timer = setTimeout(function(){
-                    self.status.isChangeInfo = false;
-                    self.msgList.splice(index,1);              
-                  }, 300);
-              }else{
-                console.log(res.json().error);
-              }
-              
-            })
-          }else{
-            this.$http.post(this.domain+'/handleOrder',{
-              'type': 1,
-                'id': this.msgList[index].tea,
-                'accept': 0
-            },{
-              crossOrigin: true,
-              headers:{
-                'Content-Type':'application/json' 
-              }
-
-            }).then(function(res){
-              console.log(res.json());
-              if(res.json().success==1){
-                this.status.isChangeInfo = false;
-                  this.msgList[index].result = '您已拒绝';
-                  this.msgList[index].isRed = true; 
-                  this.msgList[index].finish = 1;
-              }else{
-                console.log(res.json().error);
-              }
-            })
-          }
-          
+        onSureChange: function(index){         
+          this.onRefuse(index); 
         },
         onClose: function(){
         	this.status.isChangeInfo = false;

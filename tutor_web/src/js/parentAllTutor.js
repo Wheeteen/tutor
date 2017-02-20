@@ -18,7 +18,8 @@
                 isLoading: false,
                 errorTip:'对不起，您只能选择一位老师',
                 isTutor: true,
-                isNoTutor: false
+                isNoTutor: false,
+                isBanner: false,
 			},
 			recommendList:[],
 			detailedList:[],
@@ -118,19 +119,22 @@
 	        		console.log(res.json());
 	        		if(res.json().success == 1){
 	        			var data = res.json().getImg;
-	        			for(var i = 0;i<data.length;i++){
-	        				var img = data[i].img;
-	        				data[i].img = this.domain+img;	
-	        				if(data[i].url==''||data[i].url==null){
-	        					data[i].url = '#';
-	        				}        				
+	        			if(data.length>0){
+	        				for(var i = 0;i<data.length;i++){
+		        				var img = data[i].img;
+		        				data[i].img = this.domain+img;	
+		        				if(data[i].url==''||data[i].url==null){
+		        					data[i].url = '#';
+		        				}        				
+		        			}
+		        			this.$set('swipeinfo', data);
+		        			//等dom更新之后才执行
+		        			this.$nextTick(function(){
+		        				this.getSwipe();
+		        			})
+	        			}else{
+	        				this.status.isBanner = true;
 	        			}
-	        			this.$set('swipeinfo', data);
-	        			//等dom更新之后才执行
-	        			this.$nextTick(function(){
-	        				this.getSwipe();
-	        			})
-	        			console.log(this.swipeinfo.length)
 	        		}else{
 	        			console.log(res.json().error);
 	        		}				

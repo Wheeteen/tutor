@@ -10,7 +10,7 @@
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<div class="bottomBtn">
 		<span v-on:touchstart="onUser">用户管理</span>
-		<span class='deal active' v-on:touchstart="onDeal">成交</span>
+		<span class='deal active'>成交</span>
 		<span v-on:touchstart="onOther">其他</span>
 	</div>
 	<ul class="userList" v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-if='status.isList'>

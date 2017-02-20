@@ -8,22 +8,22 @@
        data: {
          	domain:'http://www.yinzishao.cn:8000',
          	timer: null,
-       	    tutorList:[],
-			status:{
-				isTutor: true,
-				isNoTutor: false,
-                isTutorInfo: false,
-                isSuccess: true,
-                isChangeInfo: false,
-                // isDefault: '',
-                isInfoTipOne: false,
-                selected: '',
-                isRegister: '',
-                isLoading: false,
-                onParent: true,
-                onTeacher: false,
-                errorTip:'对不起，您只能选择一位老师'
-			},
+       	  tutorList:[],
+    			status:{
+    				isTutor: true,
+    				isNoTutor: false,
+            isTutorInfo: false,
+            isSuccess: true,
+            isChangeInfo: false,
+            // isDefault: '',
+            isInfoTipOne: false,
+            selected: '',
+            isRegister: '',
+            isLoading: false,
+            onParent: true,
+            onTeacher: false,
+            errorTip:'对不起，您只能选择一位老师'
+    			},
 			para:{
 		        'start': 0,
 		        'size': 16

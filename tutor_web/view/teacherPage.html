@@ -108,7 +108,7 @@
 	    </div>
         <div class="submitBtn">
 	        <input type="submit"
-	        v-bind:class="{'btn-success':remindSubmit}" class="btn-default"  v-if="!status.isSubmit" value="提交">
+	        v-bind:class="{'btn-success':remindSubmit}"  v-if="!status.isSubmit" value="提交">
 	        <input type="submit" v-else class="btn-success" value="已提交" disabled="disabled">
 	     </div>
       </form>

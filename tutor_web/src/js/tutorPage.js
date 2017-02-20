@@ -145,7 +145,6 @@
             timestamp: 1482652615,
             nonceStr: 'yinzishao',
           },{
-            emulateJSON:true,
             crossOrigin: true,
             headers:{
               'Content-Type':'application/json' 

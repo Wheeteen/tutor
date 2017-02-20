@@ -230,8 +230,8 @@
                if(res.json().success == 0){
                 console.log(res.json().error);
                }else{
-                 var data = res.json();
-                 data.class_field=this.grade_level(data.class_field);
+                var data = res.json();
+                data.class_field=this.grade_level(data.class_field);
                 this.detailedList = data;
                 this.status.isTutorInfo = true;
                }

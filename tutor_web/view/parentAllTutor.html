@@ -28,7 +28,42 @@
 			    <span class='active' @touchstart="onAllTutor">全部老师</span>
 	    	</div>
     	</header>
-    	<!-- 家教信息列表 -->
+	    <!-- 轮播 -->
+		<div v-el:swipe id='swipe' class='swipe bar-slider' v-if='swipeinfo.length>0'>
+		    <div class='swipe-wrap'>
+		        <div v-for="item in swipeinfo"><a :href='item.url'><img :src='item.img' /></a></div>
+		    </div>
+		    <!-- 分页 -->
+		    <div class="pagination">
+		        <span class="swipe-pagination-switch swipe-active-switch" @click="slideToCur(0)"></span>
+		        <span class="swipe-pagination-switch" @click="slideToCur($index+1)" v-for="item in slideNum"></span>
+		    </div>
+		</div>
+	    <!-- 选择 -->
+        <form class="search" v-on:submit.prevent="onSubmitSearch" v-bind:class='{"noBanner":status.isBanner}'>
+			<div class="subject">
+				<select v-model='change.subject'>
+					<option v-for='subject in formGroup[0].value' v-bind:value="subject.tag">
+						{{subject.tag}}
+					</option>
+				</select>
+			</div>
+			<div class="grade">
+				<select v-model='change.grade' v-on:change="onSelectGrade">
+					<option v-for='subject in grade' v-bind:value="subject.tag">
+						{{subject.tag}}
+					</option>
+				</select>
+			</div>
+			<div class="popular">
+				<select v-model='form.hot' v-on:change="onSelectChange">
+					<option v-for='subject in formGroup[3].value' v-bind:value="subject.key">
+						{{subject.tag}}
+					</option>
+				</select>
+			</div>
+		</form>
+		<!-- 家教信息列表 -->
         <ul class="tutorList" v-scroll="down()" scroll-foot="30" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
 			<li v-for='item in recommendList' v-on:touchstart="onTutorInfo($index)">
 				<div class="image">
@@ -55,41 +90,6 @@
         <div class="noTutor" v-if='status.isNoTutor'>
         	对不起，暂时没有您要找的老师，请选择别的老师！
         </div>
-	    <!-- 轮播 -->
-		<div v-el:swipe id='swipe' class='swipe bar-slider'>
-		    <div class='swipe-wrap'>
-		        <div v-for="item in swipeinfo"><a :href='item.url'><img :src='item.img' /></a></div>
-		    </div>
-		    <!-- 分页 -->
-		    <div class="pagination">
-		        <span class="swipe-pagination-switch swipe-active-switch" @click="slideToCur(0)"></span>
-		        <span class="swipe-pagination-switch" @click="slideToCur($index+1)" v-for="item in slideNum"></span>
-		    </div>
-		</div>
-	    <!-- 选择 -->
-        <form class="search" v-on:submit.prevent="onSubmitSearch">
-			<div class="subject">
-				<select v-model='change.subject'>
-					<option v-for='subject in formGroup[0].value' v-bind:value="subject.tag">
-						{{subject.tag}}
-					</option>
-				</select>
-			</div>
-			<div class="grade">
-				<select v-model='change.grade' v-on:change="onSelectGrade">
-					<option v-for='subject in grade' v-bind:value="subject.tag">
-						{{subject.tag}}
-					</option>
-				</select>
-			</div>
-			<div class="popular">
-				<select v-model='form.hot' v-on:change="onSelectChange">
-					<option v-for='subject in formGroup[3].value' v-bind:value="subject.key">
-						{{subject.tag}}
-					</option>
-				</select>
-			</div>
-		</form>
 			
     </div>
 

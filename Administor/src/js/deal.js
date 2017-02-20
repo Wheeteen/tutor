@@ -84,9 +84,9 @@
         onUser:function(){
           window.location.href = './userAdministor.html';
         },
-        onDeal: function(){
-          this.status.isUploadImg = false;
-        },
+        // onDeal: function(){
+        //   this.status.isUploadImg = false;
+        // },
         onOther: function(){
           window.location.href = './other.html';
         },

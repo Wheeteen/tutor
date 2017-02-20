@@ -148,6 +148,7 @@
         this.status.isTutorInfo = false;
         this.status.isAccount = true;
       }else if(list.result == '对方已同意'){
+        this.status.isTutorInfo = false;
         this.onAccept(index);
       }else if(list.result == '管理员审核中'){
         this.status.isTutorInfo = false;

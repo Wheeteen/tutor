@@ -94,6 +94,9 @@
                    </li>             
 				</ul>
 			</div>
+			<div class="submitBtn" v-if='status.isDetailed'>
+				<span v-on:touchstart="onDelete(form.selected)">{{status.text}}</span>
+			</div>
 			<div class="submitBtn" v-if='status.onParent'>
 				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
 			</div>
@@ -115,7 +118,7 @@
 	    <div class="greyScreen"></div>
     	<div class="InfoTipOne InfoRequest">
     		<div class="infoTip">
-    			<p>{{form.isMsg}}已发送，确定取消吗？</p>
+    			<p>信息已发送，确定取消吗？</p>
     		</div>
     		<div class="infoBtn">
     			<span v-on:touchstart="onSureChange(form.selected)">确定</span>
@@ -132,6 +135,6 @@
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
-<script src="../dist/js/detailedInfoParent.min.js"></script>
+<script src="../src/js/detailedInfoParent.js"></script>
 </body>
 </html>

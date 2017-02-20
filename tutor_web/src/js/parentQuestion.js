@@ -49,7 +49,7 @@ function dateCompare(date1, date2) {
           textTip: '',
           isLoading: false,
           isOtherTutorChar: false,
-          getLocation: true,
+          getLocation: false,
           textUsername: '',
           textAddress: '',
           getTip: false,
