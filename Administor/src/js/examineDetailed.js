@@ -53,7 +53,9 @@
       		isFeeInfo: false,
       		isLoading: false,
       		isParent: true,
-      		isTeacher: true
+      		isTeacher: true,
+          isEnlargeImg: false,
+          enlargeImg: '',
       	},
       	form: {
       		'select': 1,
@@ -104,7 +106,7 @@
             }else{
               if(this.form.select == 1){
                 var data = res.json();
-                if(data.certificate_photo!=''||data.certificate_photo!=null){
+                if(data.certificate_photo!=''&&data.certificate_photo!=null){
                   data.certificate_photo=this.domain+data.certificate_photo;
                 }
                 var photo=data.teach_show_photo,len = photo.length;
@@ -182,6 +184,13 @@
               this.onReturn();
   					}
   				});
+        },
+        showImg: function(index){
+          this.status.enlargeImg = this.tutorMsg.teach_show_photo[index];
+          this.status.isEnlargeImg = true;
+        },
+        closeImg: function(){
+          this.status.isEnlargeImg = false;
         },
         // onSubmit: function(){
         //     this.$http.post('', {

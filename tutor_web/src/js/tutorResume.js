@@ -15,12 +15,12 @@ var vm = new Vue({
     config:{
       width: 100,
       height:100,
-      quality: 0.8
+      quality: 0.9
     },
     config1:{
       width:80,
       height: 80,
-      quality: 0.8
+      quality: 0.9
     },
   	status:{
   	   isSubmit: false,
@@ -43,6 +43,14 @@ var vm = new Vue({
       longitude:'',
       speed:'',
       accuracy:'',
+    },
+    images:{
+      certificate_photo:'',
+      teach_show_photo: [
+        {img:''},
+        {img:''},
+        {img:''}
+      ],
     },
     signature: '',
   	form: {
@@ -194,6 +202,7 @@ var vm = new Vue({
         this.status.getLocation = false;
         this.render();
       }
+      this.getSignature();
       this.status.isLoading = true;
   },
   methods: {
@@ -317,17 +326,16 @@ var vm = new Vue({
       this.form.score_other.push(obj);
     },
     onWeekday:function(day,index,begin,end){          
-      var time = this.time,
-          form = this.form;
+     var time = this.time,
+         form = this.form;
       if(time[day].length==0){
-        //第一次点
-          form[begin]=index;
-          form[end] = index+1;
-          time[day].push(index+1);    
+      //第一次点
+        form[begin]=index; 
+        form[end]=index;  
       }               
-      if(time[day].length>1){
-        if(index> form[end]){
-           form[end] = index;  
+      if(time[day].length>=1){
+       if(index> form[end]){
+          form[end] = index;  
           time[day] = [];
           for(var i =  form[begin];i<form[end];i++){
             time[day].push(i);
@@ -340,7 +348,7 @@ var vm = new Vue({
           }       
         }
         else if(index == form[begin]){
-           form[end] =  form[begin];
+          form[end] =  form[begin];
           time[day] = [];
           for(var i =  form[begin];i<=form[end];i++){
             time[day].push(i);
@@ -348,20 +356,13 @@ var vm = new Vue({
           form[begin]='';
           form[end]='';
         }
-        else if(index == form[end]){
-          time[day] = [];
-          for(var i =  form[begin];i<form[end];i++){
-            time[day].push(i);
-          }
-        }
         else if(index< form[begin]&& form[begin]< form[end]){
           form[begin] = index;   
           time[day] = [];
           for(var i =form[begin]+1;i<= form[end];i++){
             time[day].push(i);
           } 
-        }
-       
+        } 
       }
     },
     zero: function(n){
@@ -429,40 +430,72 @@ var vm = new Vue({
     onNotice: function(){
       location.href = 'teacherPage.html';
     },
-    uploadImg: function(e){
-        var self = this;
-        var file = e.target.files[0];
-        this.status.isUploadImg = false;
-        lrz(file, self.config)
-            .then(function (rst) {              
-              self.form.certificate_photo=rst.base64;
-            })
-            .catch(function (err) {
-                console.log(err)
-                alert('压缩失败')
-            })
-            .always(function () {
-                // 清空文件上传控件的值
-                e.target.value = null
-            });
+    uploadImg: function(index){
+        // var self = this;
+        // var file = e.target.files[0];
+        // this.status.isUploadImg = false;
+        // lrz(file, self.config)
+        //     .then(function (rst) {              
+        //       self.form.certificate_photo=rst.base64;
+        //     })
+        //     .catch(function (err) {
+        //         console.log(err)
+        //         alert('压缩失败')
+        //     })
+        //     .always(function () {
+        //         // 清空文件上传控件的值
+        //         e.target.value = null
+        //     });
+      var img = this.images;
+      if(index == 'certificate_photo'){
+         img = img.certificate_photo;
+      }else{
+        img = img.teach_show_photo[index].img;
+      }
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          console.log(res);
+          var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          img = localId;
+          this.uploadImgTo(localId,index);
+        }
+      });
     },
-    uploadPic: function(e,index){
-      var self = this;
-      var file = e.target.files[0];
-      lrz(file, self.config1)
-          .then(function (rst){              
-            self.form.teach_show_photo[index].img = rst.base64;
-            console.log(self.form.teach_show_photo[index]);
-          })
-          .catch(function (err) {
-              console.log(err)
-              alert('压缩失败')
-          })
-          .always(function () {
-              // 清空文件上传控件的值
-              e.target.value = null
-          });
+    uploadImgTo: function(id,index){
+      var img = this.form;
+      if(index == 'certificate_photo'){
+         img = img.certificate_photo;
+      }else{
+        img = img.teach_show_photo[index].img;
+      }
+      wx.uploadImage({
+        localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
+        isShowProgressTips: 1, // 默认为1，显示进度提示
+        success: function (res) {
+          img = res.serverId; // 返回图片的服务器端ID
+        }
+      });
     },
+    // uploadPic: function(e,index){
+    //   var self = this;
+    //   var file = e.target.files[0];
+    //   lrz(file, self.config1)
+    //       .then(function (rst){              
+    //         self.form.teach_show_photo[index].img = rst.base64;
+    //         console.log(self.form.teach_show_photo[index]);
+    //       })
+    //       .catch(function (err) {
+    //           console.log(err)
+    //           alert('压缩失败')
+    //       })
+    //       .always(function () {
+    //           // 清空文件上传控件的值
+    //           e.target.value = null
+    //       });
+    // },
     onClosePrice: function(){
       this.status.isPrice = false;
     },
@@ -485,17 +518,25 @@ var vm = new Vue({
       });
     },
     getSignature: function(){        
-      this.$http.post(this.domain+'',{
+      this.$http.post(this.domain+'/generate_signature',{
         timestamp: 1482652615,
         nonceStr: 'yinzishao',
       },{
-        emulateJSON:true,
         crossOrigin: true,
         headers:{
-          'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' 
+          'Content-Type':'application/json' 
         }
       }).then(function(res){
         this.signature = res.json().signature;
+        var self = this;
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+          timestamp: 1482652615, // 必填，生成签名的时间戳
+          nonceStr:'yinzishao' , // 必填，生成签名的随机串
+          signature: self.signature,// 必填，签名，见附录1
+          jsApiList: ['getLocation','chooseImage','.uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
       })                
     },
     wxReady: function(){

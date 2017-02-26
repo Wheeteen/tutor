@@ -5,6 +5,7 @@ html,body,div,input,button,p,span,em,h1,h3,ul,li{
 @color1:#23CD74;
 @color2:#999;
 .input(){
+	-webkit-appearance:none;
 	width:100%;
    	height: 30px;
    	color:#fff;
@@ -14,8 +15,10 @@ html,body,div,input,button,p,span,em,h1,h3,ul,li{
    	outline: none;
    	border:0;
    	border-radius: 4px;
+   	font-size: 14px;
 }
 .input1(){
+	-webkit-appearance:none;
 	width:68%;
 	height: 26px;
 	line-height: 26px;
@@ -24,6 +27,7 @@ html,body,div,input,button,p,span,em,h1,h3,ul,li{
 	color:#464;
 	outline:none;
 	border-radius: 4px;
+	font-size: 14px;
 	&:focus{
 		border-color: @color1;
 	}
@@ -33,13 +37,14 @@ html,body,div,input,button,p,span,em,h1,h3,ul,li{
 	resize:none;
 	color:#464;
     padding:4px;
+    font-size: 14px;
 	&:focus{
 		border-color: @color1;
 	}
 }
 body{
 	width:100%;
-	font-size: 12px;
+	font-size: 14px;
 	font-family:'Microsoft Yahei';
 	background-color: #fff;
 }
@@ -94,7 +99,7 @@ em{
    	span{
    		position: absolute;
    		right:0;
-   		font-size: 20px;
+   		font-size: 25px;
    		margin-top: 3px;
    	}
    }
@@ -235,7 +240,7 @@ header{
             position: absolute;
             left:0;
             bottom: 0;
-            font-size: 13px;
+            // font-size: 13px;
     	}
     }
 }
@@ -259,6 +264,7 @@ header{
 		width:90%;
 		margin: 3px auto;
 		color:@color1;
+		font-size: 12px;
 	}
 	.tutorTime{
        margin-top: 10px;
@@ -294,7 +300,10 @@ header{
       	margin-left: 12%;
       }
       span:last-child{
-         margin-left: 34%;
+         // margin-left: 34%;
+        display: block;
+        float: right;
+        margin-right: 3%;
       }
 	}
 	&>div{
@@ -317,18 +326,18 @@ header{
 	}
 	
 }
-.background{
-	width:80%;
-	display: inline-block;
-	position: absolute;
-	left:13.5%;
-	height: 3px;
-	margin-top: 14px;
-	background: @color1;
-}
+// .background{
+// 	width:80%;
+// 	display: inline-block;
+// 	position: absolute;
+// 	left:13.5%;
+// 	height: 3px;
+// 	margin-top: 14px;
+// 	background: @color1;
+// }
 .Monday{
 	overflow: hidden;
-	width:81%;
+	width:84%;
 	position: absolute;
 	display: inline-block;
 	height: 30px;
@@ -336,12 +345,14 @@ header{
 	
 	li{
 		overflow: hidden;
-		width:11px;
-		height: 12px;
-		line-height: 30px;
-		margin-top: 10px;
-		float: left;
-		margin-right: 0.8%;	
+		width:17px;
+		height: 30px;
+		// line-height: 30px;
+		// margin-top: 10px;
+		display: inline-block;
+		position: relative;
+		// float: left;
+		margin-right: 4.5%;	
 		input{
 			position: absolute;
 			width:100%;
@@ -353,14 +364,14 @@ header{
 		em{
 			position: absolute;
 			top:50%;
-			margin-top: -6px;
+			margin-top: -9px;
 			vertical-align: middle;
-			width: 11px;
-			height: 12px;
-		    background: url(../../img/radioS.png) center;	
+			width: 17px;
+			height: 18px;
+		    background: url(../../img/radioh.png) center;	
 		}
 		input:checked+em{
-            background: url(../../img/radioCheckS.png) center;
+            background: url(../../img/radiohCheck.png) center;
 		}
 	}
 }
@@ -406,15 +417,14 @@ header{
 			em{
 				position: absolute;
 				top:50%;
-				margin-top: -6px;
+				margin-top: -9px;
 				vertical-align: middle;
-				width: 16px;
-				height: 16px;
-				margin-top: -8px;
-			    background: url(../../img/radio.png) center;	
+				width: 17px;
+				height: 18px;
+			    background: url(../../img/radioh.png) center;	
 			}
 			input:checked+em{
-	            background: url(../../img/radioCheck.png) center;
+	            background: url(../../img/radiohCheck.png) center;
 			}
 		}
 		
@@ -600,7 +610,7 @@ header{
 		margin-bottom: 15px;
 		input{
 			.input1();
-            width: 85%;
+            width: 82%;
 		}
 		p{
 			margin-top: 3px;

@@ -9,8 +9,8 @@
 <body>
 <div class="container" v-bind:class="{opacity:status.Loading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="javascript:;" class="hs1" v-on:touchend="onReturn"></a>
+		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<!-- 列表详情 -->
 	<div class="tutorDetailedInfo">
@@ -34,7 +34,7 @@
 				<p>住址：<em>{{detailedList.address}}</em></p>
 			</div>
 			<div class="remindTeacher client">
-				<span class='green' v-on:touchstart="onRemindParent(detailedList.pd_id)">提醒家长</span>
+				<span class='green' v-tap="onRemindParent(detailedList.pd_id)">提醒家长</span>
 			</div>
 		</div>
 	</div>
@@ -42,7 +42,7 @@
 	<div class="orderList">
 		<h1>订单列表</h1>
 		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
-			<li v-for="item in msgList" v-on:touchstart="onDetailedInfo($index)">
+			<li v-for="item in msgList" v-tap="onDetailedInfo($index)">
 				<span v-text="item.name"></span>
 				<span v-text="item.result" v-bind:class="{'red':item.isRed}"></span>
 			</li>
@@ -57,7 +57,7 @@
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
 			<div class="client">
-			    <div class="image">
+			    <div class="image" v-if="msgDetailedList.certificate_photo">
 			    	<img :src="msgDetailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
@@ -90,19 +90,19 @@
 				<h3>家教秀</h3>
 				<ul class="showImage">
                    <li v-for="item in msgDetailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="">
+                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
                    </li>             
 				</ul>
 			</div>
 			<div class="submitBtn" v-if='status.isDetailed'>
-				<span v-on:touchstart="onDelete(form.selected)">{{status.text}}</span>
+				<span v-tap="onDelete(form.selected)">{{status.text}}</span>
 			</div>
 			<div class="submitBtn" v-if='status.onParent'>
 				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
 			</div>
 			<div class="infoBtn" v-if='status.onTeacher'>
-                <span v-on:touchstart="onSelect(form.selected)">选择该老师</span>
-                <span v-on:touchstart="onRefuse(form.selected)">拒绝该老师</span>
+                <span v-tap="onSelect(form.selected)">选择该老师</span>
+                <span v-tap="onRefuse(form.selected)">拒绝该老师</span>
             </div>
 		</div>
 	</div>
@@ -121,18 +121,22 @@
     			<p>信息已发送，确定取消吗？</p>
     		</div>
     		<div class="infoBtn">
-    			<span v-on:touchstart="onSureChange(form.selected)">确定</span>
-    			<span v-on:touchstart="onClose">取消</span>
+    			<span v-tap="onSureChange(form.selected)">确定</span>
+    			<span v-tap="onClose()">取消</span>
     		</div>
     	</div>
     </div>
 	<div class="bottomBtn">
-		<span class="active" v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span v-on:touchstart="onOther">其他</span>
+		<span class="active" v-tap="onUser()">用户管理</span>
+		<span class='deal' v-tap="onDeal()">成交</span>
+		<span v-tap="onOther()">其他</span>
 	</div>
+	<div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
+    </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../src/js/detailedInfoParent.js"></script>

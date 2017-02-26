@@ -9,13 +9,13 @@
 <body>
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="javascript:;" class="hs1" v-on:touchend="onReturn"></a>
+		<h1 v-on:touchend="onReturn">返回</h1>
 	</header>
 	<div class="bottomBtn">
-		<span v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span class="active"  v-on:touchstart="onOther">其他</span>
+		<span v-on:touchend="onUser">用户管理</span>
+		<span class='deal' v-on:touchend="onDeal">成交</span>
+		<span class="active"  v-on:touchend="onOther">其他</span>
 	</div>
 	<!-- 家长需求信息详情 -->
 	<div class="msgInfo" v-if='status.isParent'>
@@ -44,7 +44,7 @@
 	<!-- 老师简历信息详情 -->
 	<div class="msgInfo" v-if='status.isTeacher'>
 		<div class="client">
-			<div class="image">
+			<div class="image" v-if="tutorMsg.certificate_photo">
 		    	<img v-bind:src="tutorMsg.certificate_photo" alt="">
 		    </div>
 			<div class="msgName">
@@ -81,21 +81,26 @@
 			<h3>家教秀</h3>
 			<ul class="showImage">
 	           <li v-for="item in tutorMsg.teach_show_photo">
-	           	<img v-bind:src="item" alt="">
+	           	<img v-bind:src="item" alt="" v-on:touchend="showImg($index)">
 	           </li>             
 			</ul>
 		</div>
 	</div>
 	<!-- 审核按钮 -->
 	<div class="assume">
-		<p class="bgreen" v-on:touchstart="YesExamine">通过审核</p>
-		<p v-on:touchstart="notExamine">未通过审核</p>
+		<p class="bgreen" v-on:touchend="YesExamine">通过审核</p>
+		<p v-on:touchend="notExamine">未通过审核</p>
 	</div>
+	<div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<!-- <div class="pic"> -->
+    		<img :src="status.enlargeImg" alt="" v-on:touchend="closeImg">
+    	<!-- </div> -->
+    </div>
 	<!-- 信息费 -->
 	<!-- <div class="feeInfo" v-if="status.isFeeInfo">
         <div class="greyScreen"></div>
         <form class="InfoRequest" v-on:submit.prevent='onSubmit'>
-            <p class='close' v-on:touchstart='onClose'>×</p>
+            <p class='close' v-on:touchend='onClose'>×</p>
             <div class="infoTip">
                 <p>信息费 <input type="Number" trim.v-model="fee" required> 元</p>
             </div>

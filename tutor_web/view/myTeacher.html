@@ -9,12 +9,12 @@
 <body>
 <div class="container" v-bind:class="{opacity:!status.Loading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="javascript:;" class="hs1" v-tap="onReturn()"></a>
+		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<!-- 页面关于我的老师的列表 -->
 	<ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
-		<li v-for='item in tutorList' v-on:touchstart="onTutorInfo($index)">
+		<li v-for='item in tutorList' v-tap="onTutorInfo($index)">
 			<div class="nameMsg">
 				<p class="name">
 					<em v-text="item.name"></em>
@@ -39,7 +39,7 @@
 					<span> 
 					{{detailedList.name}}
 					</span>
-				    <span class='close' @touchstart="onClose">×</span>
+				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
 			<div class="distance">
@@ -75,16 +75,16 @@
 				</ul>
 			</div>
 			<div class="submitBtn" v-if='status.onParent'>
-				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
+				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" v-tap="onRegister1(form.selected)" >
 			</div>
 			<div class="infoBtn" v-if='status.onTeacher'>
-                <span v-on:touchstart="onSelect(form.selected)">选择该老师</span>
-                <span v-on:touchstart="onRefuse(form.selected)">拒绝该老师</span>
+                <span v-tap="onSelect(form.selected)">选择该老师</span>
+                <span v-tap="onRefuse(form.selected)">拒绝该老师</span>
             </div>
 		</div>
 	</div>
 	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' @touchstart="onClose">×</p>
+	    <p class='close' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
 	<div class="tutorInfo" v-if="status.isChangeInfo">
@@ -94,13 +94,14 @@
     			<p>{{form.isMsg}}已发送，确定取消吗？</p>
     		</div>
     		<div class="infoBtn">
-    			<span v-on:touchstart="onSureChange(form.selected)">确定</span>
-    			<span v-on:touchstart="onClose">取消</span>
+    			<span v-tap="onSureChange(form.selected)">确定</span>
+    			<span v-tap="onClose()">取消</span>
     		</div>
     	</div>
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/myTeacher.min.js"></script>

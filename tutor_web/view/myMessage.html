@@ -9,12 +9,12 @@
 <body>
 <div class="container" v-bind:class="{'opacity':!status.isLoading}">
     <header>
-        <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-        <h1 v-on:touchstart="onReturn">返回</h1>
+        <a href="javascript:;" class="hs1" v-tap="onReturn()"></a>
+        <h1 v-tap="onReturn()">返回</h1>
     </header>
     <ul class='msgList' v-scroll="down()" scroll-foot="80" scroll-top="200" scroll-up="up()" v-show='status.isMsg'>
         <li v-for='item in msgList'>
-            <p class='fontS' v-bind:class="{'strong':item.status}" @touchstart="onShow($index)">{{item.message_title}}</p>
+            <p class='fontS' v-bind:class="{'strong':item.status}" v-tap="onShow($index)">{{item.message_title}}</p>
             <p v-show="item.isDetailed">{{item.message_content}}</p>
         </li>
     </ul>
@@ -28,12 +28,12 @@
         <form class="feedbackCon" v-on:submit.prevent="onFeedback">
             <div class="fTitle">
                 <h3>请填写反馈</h3>
-                <span v-on:touchstart="onClose">×</span>
+                <span v-tap="onClose()">×</span>
             </div>
             <div class="fXing">
                 <p>为了产品能给您带来更好的服务体验，我们诚挚邀请您填写宝贵的意见和建议。</p>
                 <ul>
-                    <li v-for='item in xingList' v-bind:class="{'active':item.key}" v-on:touchstart="onXing($index)">       
+                    <li v-for='item in xingList' v-bind:class="{'active':item.key}" v-tap="onXing($index)">    
                     </li>
                 </ul>
             </div>
@@ -54,6 +54,7 @@
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/myMessage.min.js"></script>

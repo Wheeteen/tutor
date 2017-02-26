@@ -211,29 +211,33 @@
       }
     },
     onApply: function(index){
-      this.$http.post(this.domain+'/applyParent',{
-        "pd_id": this.msgList[index].pd,
-        "expectation": this.form.expection,
-        "type": 1
-       },{
-           crossOrigin: true,
-            headers:{
-              'Content-Type':'application/json' 
-            }
-       }).then(function(res){
-        console.log(res.json());
-         if(res.json().success == 1){
-          var self = this;
-          this.timer && clearTimeout(this.timer);
-          this.timer = setTimeout(function(){
-            self.msgList[index].result='您已报名';
-            self.msgList[index].isRed = false;
-            self.msgList[index].finish = 0;
-            self.status.expection = false;
-            self.form.expection = '';
-          }, 1000);
-         }
-       })
+      if(this.form.expection!=""&&this.form.expection!=null){
+        this.$http.post(this.domain+'/applyParent',{
+          "pd_id": this.msgList[index].pd,
+          "expectation": this.form.expection,
+          "type": 1
+         },{
+             crossOrigin: true,
+              headers:{
+                'Content-Type':'application/json' 
+              }
+         }).then(function(res){
+          console.log(res.json());
+           if(res.json().success == 1){
+            var self = this;
+            this.timer && clearTimeout(this.timer);
+            this.timer = setTimeout(function(){
+              self.msgList[index].result='您已报名';
+              self.msgList[index].isRed = false;
+              self.msgList[index].finish = 0;
+              self.status.expection = false;
+              self.form.expection = '';
+            }, 1000);
+           }
+        })
+       }else{
+        return false;
+       }      
     },
 		onAccept: function(index){
       this.$http.post(this.domain+'/handleOrder',{

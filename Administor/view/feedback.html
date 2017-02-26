@@ -9,12 +9,12 @@
 <body>
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="./other.html" class="hs1"></a>
+		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<h1 class="title">用户反馈</h1>
 	<ul class="msgList" v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" v-show='status.isList'>
-		<li v-for="item in mainData" v-on:touchstart="onDetailedInfo($index)">
+		<li v-for="item in mainData" v-tap="onDetailedInfo($index)">
 			<span v-text="item.name"></span>
 			<span>
 				<ul class='fXing'>
@@ -42,7 +42,7 @@
         <div class="feedbackCon">
             <div class="fTitle">
                 <h3>用户反馈</h3>
-                <span v-on:touchstart="onClose">×</span>
+                <span v-tap="onClose()">×</span>
             </div>
             <div class="fXing">
                 <span>{{msgList.name}}</span>
@@ -61,21 +61,22 @@
             </div>
             <div class="tutorService">
                 <p>家教服务：</p>
-                <textarea v-model="msgList.tutorservice"></textarea>
+                <div v-text="msgList.tutorservice"></div>
             </div>
             <div class="appService">
                 <p>平台服务：</p>
-                <textarea v-model="msgList.appservice"></textarea>
+                <div v-text="msgList.appservice"></div>
             </div>
         </div>
     </div>
 	<div class="bottomBtn">
-		<span v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span class="active"  v-on:touchstart="onReturn">其他</span>
+		<span v-tap="onUser()">用户管理</span>
+		<span class='deal' v-tap="onDeal()">成交</span>
+		<span class="active"  v-tap="onReturn()">其他</span>
 	</div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/feedback.min.js"></script>

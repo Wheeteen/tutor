@@ -5,7 +5,7 @@ body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 12px;
+	font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
 }
@@ -110,9 +110,10 @@ header{
           float: left;
           margin-right: 2%;
           img{
-          	width:100%;
+          	width:48px;
+          	height: 48px;
           	border-radius: 50%;
-          	border:1px solid #666;
+          	// border:1px solid #666;
           }
 		}
 		.msgName{
@@ -136,10 +137,16 @@ header{
 	}
 	.showImg{
 		padding:0 2%;
+		h3{
+			font-size: 14px;
+			font-weight: normal;
+			margin-bottom: 3px;
+		}
 	}
 	.showImage{
 		overflow: hidden;
 		width:100%;
+
 		li{
 			float: left;
 			width:30%;
@@ -176,70 +183,92 @@ header{
   	line-height: 28px;
   }
 }
-.feeInfo{
+.enlargeImg{
 	position: fixed;
+	z-index: 999999;
 	width:100%;
 	height: 100%;
 	top:0;
+	left:0;
+	background-color: #000;
 	
-	.greyScreen{
-		position: fixed;
-		top:0;
-		width:100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.3);
-	}
-	.InfoRequest{
-		position: fixed;
-		width:70%;
-		left:15%;
-		top: 20%;
-		border-radius: 3px;
-		border:1px solid #ccc;
-		background: #fff;
-		.close{
-			width:90%;
-			margin:3px auto;
-			text-align: right;
-			font-size: 25px;
-			color:#aaa;
-		}
-		.infoTip{
-			margin-top: 6%;
-			p{
-				text-align: center;
-			}
-			input{
-				display: inline-block;
-				margin: 0 3px;
-				width:30%;
-				outline: none;
-				height: 20px;
-				line-height: 20px;
-				border:1px solid #ccc;
-				text-indent: 3px;
-				border-radius: 2px;
-				&:focus{
-					border-color: @color1;
-				}
-			}
-		}
-		.infoBtn{
-			margin-top: 30px;
-			width:100%;
-		}
-		
-		input[type='submit']{
-			display: block;
-			width:100%;
-			color:#fff;
-			height: 25px;
-			line-height: 25px;
-			outline: none;
-			border:0;
-			text-align: center;
-			background: @color1;
-			letter-spacing: 1px;
-		}
+	img{
+      position: fixed;
+      margin: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      z-index: 9999;
+	  width:100%;
+	  max-height: 100%;
+
 	}
 }
+// .feeInfo{
+// 	position: fixed;
+// 	width:100%;
+// 	height: 100%;
+// 	top:0;
+	
+// 	.greyScreen{
+// 		position: fixed;
+// 		top:0;
+// 		width:100%;
+// 		height: 100%;
+// 		background: rgba(0, 0, 0, 0.3);
+// 	}
+// 	.InfoRequest{
+// 		position: fixed;
+// 		width:70%;
+// 		left:15%;
+// 		top: 20%;
+// 		border-radius: 3px;
+// 		border:1px solid #ccc;
+// 		background: #fff;
+// 		.close{
+// 			width:90%;
+// 			margin:3px auto;
+// 			text-align: right;
+// 			font-size: 25px;
+// 			color:#aaa;
+// 		}
+// 		.infoTip{
+// 			margin-top: 6%;
+// 			p{
+// 				text-align: center;
+// 			}
+// 			input{
+// 				display: inline-block;
+// 				margin: 0 3px;
+// 				width:30%;
+// 				outline: none;
+// 				height: 20px;
+// 				line-height: 20px;
+// 				border:1px solid #ccc;
+// 				text-indent: 3px;
+// 				border-radius: 2px;
+// 				&:focus{
+// 					border-color: @color1;
+// 				}
+// 			}
+// 		}
+// 		.infoBtn{
+// 			margin-top: 30px;
+// 			width:100%;
+// 		}
+		
+// 		input[type='submit']{
+// 			display: block;
+// 			width:100%;
+// 			color:#fff;
+// 			height: 25px;
+// 			line-height: 25px;
+// 			outline: none;
+// 			border:0;
+// 			text-align: center;
+// 			background: @color1;
+// 			letter-spacing: 1px;
+// 		}
+// 	}
+// }

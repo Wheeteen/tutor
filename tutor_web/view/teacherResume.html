@@ -104,9 +104,8 @@
           </p>
           <div class="weekday" v-for="itemday in formGroup[0].value">
             <label for="">{{itemday.tag}}</label>
-            <span class="background"></span>
             <ul class="Monday">
-                <li v-for='i in 16'>
+                <li v-for='i in 8'>
                   <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchstart="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
                   <em></em>
                 </li>
@@ -166,8 +165,8 @@
             <p>上传照片</p>
             <p>（100M以内）</p>
           </div>
-          <input type="file" accept="image/*" @change="uploadImg($event)">
-          <img :src="form.certificate_photo" alt="">
+          <input type="file" accept="image/*" @change="uploadImg('certificate_photo')">
+          <img :src="images.certificate_photo" alt="">
         </div>
       </div>
       <div class="group-form groupWage">
@@ -187,8 +186,8 @@
         <p>上传家长评价截图成绩凭证，最多上传三张截图</p>
         <div class="uploadImg" v-for='item in 3'>
           <span>＋</span>
-          <input type="file" accept="image/*" @change="uploadPic($event,item)">
-          <img :src="form.teach_show_photo[item].img" alt="">
+          <input type="file" accept="image/*" @change="uploadImg($index)">
+          <img :src="images.teach_show_photo[item].img" alt="">
         </div>
       </div>
       <div class="group-form submit">
@@ -230,7 +229,7 @@
   </div>
 </div>
 <script src="../dist/js/wx.js"></script>
-<script src="../dist/js/lrz.bundle.js"></script>
+<!-- <script src="../dist/js/lrz.bundle.js"></script> -->
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/tutorResume.min.js"></script>

@@ -19,6 +19,8 @@
           isFeeInfoTrue: false,
           isList: true,
           isNoList: false,
+          isEnlargeImg: false,
+          enlargeImg: '',
       	},
       	mainData:[
           // {oa_id: 0,tea:2,pd_name: '张小可',name:'王小源',result: '已处理',isDeal: false,screenshot_path:'../img/user02.png'},
@@ -146,6 +148,13 @@
             this.status.isUploadImg = false;
         		return false;
         	}
+        },
+        showImg: function(){
+          this.status.enlargeImg = this.mainData[this.status.selected].screenshot_path;
+          this.status.isEnlargeImg = true;
+        },
+        closeImg: function(){
+          this.status.isEnlargeImg = false;
         },
       }
 	});

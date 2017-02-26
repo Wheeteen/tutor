@@ -16,7 +16,7 @@
 			<p>即可帮您挑选最适合的老师</p>
 		</div>
 		<div class="startBtn">
-			<input type="button" value='开始体验'@touchstart="onStart">
+			<input type="button" value='开始体验'@touchend="onStart">
 		</div>
 	</div>
 	<header>
@@ -38,13 +38,13 @@
 				<input type="text" v-model.trim="form.subject_other">
 			</div>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit1' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess1}">下一题</button>
-				<span v-on:touchstart="onNext(question[0].key,question[1].key)">跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit1' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess1}">下一题</button>
+				<span v-on:touchend="onNext(question[0].key,question[1].key)">跳过</span>
 			</div>
 		</div>
 		<div class="Q0 Q2" v-show="status.Q2">
 			<h3>
-			  <em v-on:touchstart="onPre(question[0].key,question[1].key)"></em>
+			  <em v-on:touchend="onPre(question[0].key,question[1].key)"></em>
 			  您的孩子找老师的目的？
 			</h3>
 			<ul class="slist">
@@ -54,13 +54,13 @@
 				</li>
 			</ul>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit2' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess2}">下一题</button>
-				<span v-on:touchstart = 'onNext(question[1].key,question[2].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit2' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess2}">下一题</button>
+				<span v-on:touchend = 'onNext(question[1].key,question[2].key)'>跳过</span>
 			</div>
 		</div>
 		<div class="Q0 Q3" v-show="status.Q3">
 		    <h3>
-			  <em v-on:touchstart="onPre(question[1].key,question[2].key)"></em>
+			  <em v-on:touchend="onPre(question[1].key,question[2].key)"></em>
 			  您安排孩子哪些时间上课？
 			</h3>   
 			<div class="tableSchedule">
@@ -70,10 +70,10 @@
 				</p>
         		<div class="weekday" v-for="itemday in formGroup[2].value">
 	        		<label for="">{{itemday.tag}}</label>
-	        		<span class="background"></span>
+	        		<!-- <span class="background"></span> -->
 	        		<ul class="Monday">	     
-	        		    <li v-for='i in 16'>
-	        			  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchstart="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
+	        		    <li v-for='i in 8'>
+	        			  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchend="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
 	        			  <em></em>
 	        			</li>
 	        		</ul>
@@ -98,13 +98,13 @@
 	        	<p>请填数字，单位为小时</p>
 	        </div>
 	        <div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit3' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess3}">下一题</button>
-				<span v-on:touchstart = 'onNext(question[2].key,question[3].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit3' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess3}">下一题</button>
+				<span v-on:touchend = 'onNext(question[2].key,question[3].key)'>跳过</span>
 			</div>
 		</div>
 		<div class="Q0 Q4" v-show="status.Q4">
 			<h3>
-			  <em v-on:touchstart="onPre(question[2].key,question[3].key)"></em>
+			  <em v-on:touchend="onPre(question[2].key,question[3].key)"></em>
 			  您对老师有哪些要求？
 			</h3>
 			<ul class="slist tutorSex">
@@ -125,13 +125,13 @@
 				<input type="text" v-model.trim='form.teacher_method_other' placeholder="20字以内">
 			</div>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit4' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess4}">下一题</button>
-				<span v-on:touchstart = 'onNext(question[3].key,question[4].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit4' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess4}">下一题</button>
+				<span v-on:touchend = 'onNext(question[3].key,question[4].key)'>跳过</span>
 			</div>
 		</div>
 		<div class="Q0 Q5" v-show="status.Q5">
 			<h3>
-			  <em v-on:touchstart="onPre(question[3].key,question[4].key)"></em>
+			  <em v-on:touchend="onPre(question[3].key,question[4].key)"></em>
 			  您孩子的基本学习情况？
 			</h3>
 			<div class="education">
@@ -158,31 +158,31 @@
 				</select>
 			</div>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onNext(question[4].key,question[5].key)' class="btn-success">下一题</button>
-				<span v-on:touchstart='onNext(question[4].key,question[5].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onNext(question[4].key,question[5].key)' class="btn-success">下一题</button>
+				<span v-on:touchend='onNext(question[4].key,question[5].key)'>跳过</span>
 			</div>
 		</div>
 	    <div class="Q0 Q6" v-show="status.Q6">
 	    	<h3>
-			  <em v-on:touchstart="onPre(question[4].key,question[5].key)"></em>
+			  <em v-on:touchend="onPre(question[4].key,question[5].key)"></em>
 			  您对老师还有什么要求吗？
 			</h3>
 			<textarea placeholder="填写更详细的需求或者孩子的情况，可以帮助您更快找到合适的老师哦~" v-model="form.require"></textarea>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit6' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess6}">下一题</button>
-				<span v-on:touchstart = 'onNext(question[5].key,question[6].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit6' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess6}">下一题</button>
+				<span v-on:touchend = 'onNext(question[5].key,question[6].key)'>跳过</span>
 			</div>
 	    </div>
 	    <div class="Q0 Q7" v-show="status.Q7">
 	    	<h3>
-			  <em v-on:touchstart="onPre(question[5].key,question[6].key)"></em>
+			  <em v-on:touchend="onPre(question[5].key,question[6].key)"></em>
 			  请给出您对家教的理想价格
 			</h3>
 			<div class="hprice">
 				<label for="">时薪</label>
 				<input type="Number" v-model.trim="form.salary">
 				<label for="">（请填数字）</label>
-				<p class='clickPrice' v-on:touchstart="clickPrice">点击链接可参考市价</p>
+				<p class='clickPrice' v-on:touchend="clickPrice">点击链接可参考市价</p>
 			</div>
 			<div class="allowance">
 				<div class="aCheckbox">
@@ -196,17 +196,17 @@
 			</div>
 			<p class='expectDate'>
 				<span>我想要在</span>
-				<input type="text" @touchstart="open($event)" @focus="open($event)" v-model="form.deadline" readonly>
+				<input type="text" @touchend="open($event)" @focus="open($event)" v-model="form.deadline" readonly>
 				<span>前找到家教</span>
 			</p>
 			<div class="sQ1">
-				<button type='button' v-on:touchstart = 'onSubmit7' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess7}">下一题</button>
-				<span v-on:touchstart = 'onNext(question[6].key,question[7].key)'>跳过</span>
+				<button type='button' v-on:touchend = 'onSubmit7' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess7}">下一题</button>
+				<span v-on:touchend = 'onNext(question[6].key,question[7].key)'>跳过</span>
 			</div>
 	    </div>
 	    <div class="Q0 Q8" v-show="status.Q8">
 	    	<h3>
-			  <em v-on:touchstart="onPre(question[6].key,question[7].key)"></em>
+			  <em v-on:touchend="onPre(question[6].key,question[7].key)"></em>
 			  <p>最后一步</p>
 			  <p>请填写您的个人资料</p>
 			  <p>以方便老师联系您及上门教学</p>
@@ -227,7 +227,7 @@
 				<p>{{status.textAddress}}</p>
 			</div>
 			<div class="sQ1">
-				<button type="button" class="btn-default" v-bind:class="{'btn-success':isBtnSuccess8}" v-if="!status.isSubmit" v-on:touchstart="onStartLoaction">提交请求</button>
+				<button type="button" class="btn-default" v-bind:class="{'btn-success':isBtnSuccess8}" v-if="!status.isSubmit" v-on:touchend="onStartLoaction">提交请求</button>
 				<button type="button" v-else class="btn-success" disabled="disabled">loading...</button>	
 			</div>
 	    </div>
@@ -237,7 +237,7 @@
     	<div class="priceDetailed">
     		<div class="ptitle">
     			<h3>时薪参考标准</h3>
-    			<span v-on:touchstart="onClosePrice">×</span>
+    			<span v-on:touchend="onClosePrice">×</span>
     		</div>
     		<div class="ptext">{{salary}}</div>
     	</div>
@@ -268,7 +268,7 @@
 		            <td 
 		            v-for="(k2,child) in day" 
 		            :class="{'selected':child.selected,'disabled':child.disabled}"
-		            @click="select(k1,k2,$event)" @touchstart="select(k1,k2,$event)">
+		            @click="select(k1,k2,$event)" @touchend="select(k1,k2,$event)">
 		            <span>{{child.day}}</span>
 		            <div class="lunar" v-if="showLunar">{{child.lunar}}</div>
 		            </td>
@@ -284,8 +284,8 @@
     			<p>好学吧要对您进行定位，方便测量您与老师之间的距离，是否允许？</p>
     		</div>
             <div class="infoBtn">
-                <span v-on:touchstart="onAllow">允许</span>
-                <span v-on:touchstart="onCancel">拒绝</span>
+                <span v-on:touchend="onAllow">允许</span>
+                <span v-on:touchend="onCancel">拒绝</span>
             </div>
     	</div>
     </div>
@@ -302,6 +302,6 @@
 <script src="../dist/js/wx.js"></script>
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
-<script src="../dist/js/parentQuestion.min.js"></script>
+<script src="../src/js/parentQuestion.js"></script>
 </body>
 </html>

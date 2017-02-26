@@ -9,14 +9,14 @@
 <body>
 <div class="container" v-bind:class="{opacity:status.Loading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="javascript:;" class="hs1" v-on:touchend="onReturn"></a>
+		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<!-- 列表详情 -->
 	<div class="tutorDetailedInfo">
 		<div class="InfoList">
 			<div class="client1">
-			    <div class="image">
+			    <div class="image" v-if="msgDetailedList.certificate_photo">
 			    	<img :src="msgDetailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
@@ -51,7 +51,7 @@
 				<h3>家教秀</h3>
 				<ul class="showImage">
                    <li v-for="item in msgDetailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="">
+                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
                    </li>             
 				</ul>
 			</div>
@@ -61,7 +61,7 @@
 	<div class="orderList">
 		<h1>订单列表</h1>
 		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}"  v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
-			<li v-for="item in msgList" v-on:touchstart="onDetailedInfo($index)">
+			<li v-for="item in msgList" v-tap="onDetailedInfo($index)">
 				<span v-text="item.name"></span>
 				<span v-text="item.result" v-bind:class="{red:item.isRed}"></span>
 			</li>
@@ -93,17 +93,21 @@
 				<p>住址：<em>{{detailedList.address}}</em></p>
 			</div>
 			<div class="submitBtn">
-				<span v-on:touchstart="onDelete(status.selected)">{{status.text}}</span>
+				<span v-tap="onDelete(status.selected)">{{status.text}}</span>
 			</div>
 		</div>
 	</div>
 	<div class="bottomBtn">
-		<span class="active" v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span v-on:touchstart="onOther">其他</span>
+		<span class="active" v-tap="onUser()">用户管理</span>
+		<span class='deal' v-tap="onDeal()">成交</span>
+		<span v-tap="onOther()">其他</span>
 	</div>
+	<div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
+    </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/detailedInfoTeacher.min.js"></script>	

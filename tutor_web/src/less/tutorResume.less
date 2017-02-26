@@ -4,7 +4,7 @@ html,body,div,p,h1,table,tr,td,input,textarea,form,label,span,em,ul,li{
 }
 body{
 	width:100%;
-	font-size:12px;
+	font-size:14px;
 	font-family: 'Microsoft Yahei';
 }
 @color1:#23CD74;
@@ -111,6 +111,8 @@ em{
 		text-align: right;
 	}
 	input[type=text],input[type=tel],input[type=Number]{
+		-webkit-appearance: none;
+		font-size: 14px;
 		outline: none;
 		border: 1px solid #ccc;
 		border-radius: 3px;
@@ -125,6 +127,7 @@ em{
 	textarea{
 		outline: none;
 		resize:none;
+		font-size: 14px;
 		width:90%;
 		height:100px;
 		margin:4px 4% 0;
@@ -294,7 +297,10 @@ em{
       	margin-left: 12%;
       }
       span:last-child{
-         margin-left: 46%;
+         // margin-left: 46%;
+        display: block;
+        float: right;
+        margin-right: 3%;
       }
 	}
 	&>div{
@@ -317,18 +323,18 @@ em{
 	}
 	
 }
-.background{
-	width:80%;
-	display: inline-block;
-	position: absolute;
-	left:13.5%;
-	height: 3px;
-	margin-top: 14px;
-	background: @color1;
-}
+// .background{
+// 	width:80%;
+// 	display: inline-block;
+// 	position: absolute;
+// 	left:13.5%;
+// 	height: 3px;
+// 	margin-top: 14px;
+// 	background: @color1;
+// }
 .Monday{
 	overflow: hidden;
-	width:81%;
+	width:84%;
 	position: absolute;
 	// height: 4px;
 	// margin-top: 12px;
@@ -338,13 +344,14 @@ em{
 	// background: @color1;
 	li{
 		overflow: hidden;
-		width:11px;
-		height: 12px;
-		line-height: 30px;
-		margin-top: 10px;
-		// display: inline-block;
-		float: left;
-		margin-right: 0.8%;	
+		width:17px;
+		height: 30px;
+		// line-height: 30px;
+		// margin-top: 10px;
+		display: inline-block;
+		position: relative;
+		// float: left;
+		margin-right: 4.5%;	
 		input{
 			position: absolute;
 			width:100%;
@@ -356,14 +363,14 @@ em{
 		em{
 			position: absolute;
 			top:50%;
-			margin-top: -6px;
+			margin-top: -9px;
 			vertical-align: middle;
-			width: 11px;
-			height: 12px;
-		    background: url(../../img/radioS.png) center;	
+			width: 17px;
+			height: 18px;
+		    background: url(../../img/radioh.png) center;	
 		}
 		input:checked+em{
-            background: url(../../img/radioCheckS.png) center;
+            background: url(../../img/radiohCheck.png) center;
 		}
 	}
 }
@@ -389,7 +396,7 @@ em{
 		display: inline-block;
 		width:75%;
 		li{
-			width:16px;
+			width:17px;
 			height: 30px;
 			margin-right: 15%;	
 			display: inline-block;
@@ -408,15 +415,15 @@ em{
 			em{
 				position: absolute;
 				top:50%;
-				margin-top: -6px;
+				margin-top: -9px;
 				vertical-align: middle;
-				width: 16px;
-				height: 16px;
+				width: 17px;
+				height: 18px;
 				margin-top: -8px;
-			    background: url(../../img/radio.png) center;	
+			    background: url(../../img/radioh.png) center;	
 			}
 			input:checked+em{
-	            background: url(../../img/radioCheck.png) center;
+	            background: url(../../img/radiohCheck.png) center;
 			}
 		}
 		
@@ -504,6 +511,7 @@ em{
 
 		}
 		input{
+			-webkit-appearance: none;
 			opacity: 0;
 			position: absolute;
 			outline: none;
@@ -589,6 +597,7 @@ em{
 }
 .submit{
 	input{
+		-webkit-appearance: none;
 		width:80%;
 		margin-left: 10%;
 		// margin: 5px auto;
@@ -681,8 +690,8 @@ em{
    	}
    	span{
    		position: absolute;
-   		right:0;
-   		font-size: 20px;
+   		right:3px;
+   		font-size: 25px;
    		margin-top: 3px;
    	}
    }

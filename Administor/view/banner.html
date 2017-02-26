@@ -9,19 +9,19 @@
 <body>
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onOther">返回</h1>
+	    <a href="./other.html" class="hs1"></a>
+		<h1 v-on:touchend="onOther">返回</h1>
 	</header>
 	<h1 class="title">修改banner</h1>
   <!-- 图片预览 -->
   <div class="showImg" v-show="imgs.length>0">
     <div class="imgs" v-for="img in imgs">
       <img :src="img.img" alt="">
-      <span @touchstart="remove($index)">删除</span>
+      <span @touchend="remove($index)">删除</span>
     </div>
   </div>
 	<!-- 上传图片的按钮 -->
-  <div class="clickImg" @touchstart='onClickImg' v-show="imgs.length<5">
+  <div class="clickImg" @touchend='onClickImg' v-show="imgs.length<5">
     <p><span>＋</span></p>
   </div>
 	<!-- 上传图片的弹窗 -->
@@ -30,7 +30,7 @@
     <form class="InfoList" v-on:submit.prevent='onSubmitImg'>
       <div class="client">
         <span>上传banner</span>
-        <span class='close' @touchstart="onClose">×</span>
+        <span class='close' @touchend="onClose">×</span>
       </div>
       <div class="uploadImg">
         <span>＋</span>
@@ -54,15 +54,15 @@
             <p>确定删除吗？</p>
         </div>
         <div class="infoBtn">
-            <span v-on:touchstart="onSureDelete(status.selected)">确定</span>
-            <span v-on:touchstart="onCancel">取消</span>
+            <span v-on:touchend="onSureDelete(status.selected)">确定</span>
+            <span v-on:touchend="onCancel">取消</span>
         </div>
     </div>
   </div>
 	<div class="bottomBtn">
-		<span v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span class="active"  v-on:touchstart="onOther">其他</span>
+		<span v-on:touchend="onUser">用户管理</span>
+		<span class='deal' v-on:touchend="onDeal">成交</span>
+		<span class="active"  v-on:touchend="onOther">其他</span>
 	</div>
 </div>
 <script src="../dist/js/lrz.bundle.js"></script>

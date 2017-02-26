@@ -19,13 +19,13 @@
             <figcaption v-text='form.name'>张老师</figcaption>
         </figure>
         <div class="mainInfo">
-            <div class="changeInfo" v-on:touchstart="onchangeInfo">
+            <div class="changeInfo" v-on:touchend="onchangeInfo">
                 修改需求
             </div>
-            <div class="myMsg" v-on:touchstart="onMsg">
+            <div class="myMsg" v-on:touchend="onMsg">
                 我的消息
             </div>
-            <div class="myList" v-on:touchstart="onTeacher">
+            <div class="myList" v-on:touchend="onTeacher">
                 我的老师
             </div>
             <div class="remindInfo">
@@ -50,8 +50,8 @@
                 <p class="strong">确定修改请求吗？</p>
             </div>
             <div class="infoBtn">
-                <span v-on:touchstart="onSureChange">确定</span>
-                <span v-on:touchstart="onCancel">取消</span>
+                <span v-on:touchend="onSureChange">确定</span>
+                <span v-on:touchend="onCancel">取消</span>
             </div>
         </div>
     </div>

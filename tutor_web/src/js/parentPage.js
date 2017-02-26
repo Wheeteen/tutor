@@ -18,7 +18,9 @@
                 errorTip:'对不起，您只能选择一位老师',
                 getLocation: false,
                 isTutor: true,
-                isNoTutor: false
+                isNoTutor: false,
+                isEnlargeImg: false,
+                enlargeImg: '',
 			},
 			recommendList:[],
 			detailedList:[],
@@ -249,6 +251,13 @@
 					}
 					
 				})
+			},
+			showImg: function(index){
+              this.status.enlargeImg = this.detailedList.teach_show_photo[index];
+              this.status.isEnlargeImg = true;
+			},
+			closeImg: function(){
+               this.status.isEnlargeImg = false;
 			},
 			onClose: function(){
 	      		this.status.isTutorInfo = false;

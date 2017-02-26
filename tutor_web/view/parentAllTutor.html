@@ -9,8 +9,8 @@
 <body>
 <div class="container" v-bind:class="{'opacity': status.isLoading}">
 	<div class="bottomBtn">
-		<span class='active'@touchstart="onRecommend">推荐老师</span>
-		<span @touchstart="onMine">我的</span>
+		<span class='active' v-tap="onRecommend()">推荐老师</span>
+		<span v-tap="onMine()">我的</span>
 	</div>
 	<div class="consult">
 		<a href="#">
@@ -24,14 +24,14 @@
     		<p><em>提示：</em>1. 每次只能选择一名老师进行试课哦~</p>
     		<p class='blank'>2. 地址是用微信定位的地址，不代表用户的住址</p>
 	    	<div class="recommendBtn">
-	    		<span @touchstart="onRecommend">为您推荐</span>
-			    <span class='active' @touchstart="onAllTutor">全部老师</span>
+	    		<span v-tap="onRecommend()">为您推荐</span>
+			    <span class='active' v-tap="onAllTutor()">全部老师</span>
 	    	</div>
     	</header>
 	    <!-- 轮播 -->
 		<div v-el:swipe id='swipe' class='swipe bar-slider' v-if='swipeinfo.length>0'>
 		    <div class='swipe-wrap'>
-		        <div v-for="item in swipeinfo"><a :href='item.url'><img :src='item.img' /></a></div>
+		        <div v-for="item in swipeinfo"><a :href='item.url' v-tap><img :src='item.img' /></a></div>
 		    </div>
 		    <!-- 分页 -->
 		    <div class="pagination">
@@ -65,7 +65,7 @@
 		</form>
 		<!-- 家教信息列表 -->
         <ul class="tutorList" v-scroll="down()" scroll-foot="30" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
-			<li v-for='item in recommendList' v-on:touchstart="onTutorInfo($index)">
+			<li v-for='item in recommendList' v-tap="onTutorInfo($index)">
 				<div class="image">
 			    	<img v-bind:src="item.certificate_photo">
 			    </div>
@@ -105,7 +105,7 @@
 					<span> 
 					{{detailedList.name}}
 					</span>
-				    <span class='close' @touchstart="onClose">×</span>
+				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
 			<div class="distance">
@@ -135,21 +135,25 @@
 				<h3>家教秀</h3>
 				<ul class="showImage">
                    <li v-for="item in detailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="">
+                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
                    </li>             
 				</ul>
 			</div>
 			<div class="submitBtn">
-				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" @touchstart="onRegister1(status.selected)" >
+				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" v-tap="onRegister1(status.selected)" >
 			</div>
 		</div>
 	</div>
 	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' @touchstart="onClose">×</p>
+	    <p class='close' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
+	<div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
+    </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>  
 <script src="../dist/js/lubo.min.js"></script>   
 <script src="../dist/js/scroll.min.js"></script> 

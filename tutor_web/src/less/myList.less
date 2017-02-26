@@ -5,7 +5,7 @@ body,html,header,h1,a,ul,li,p,h3,span{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 12px;
+	font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
 }
@@ -76,8 +76,8 @@ header{
 	em{
 		display: inline-block;
 		margin-right: 7%;
-		font-weight: bold;
-		font-size: 13px;
+		// font-weight: bold;
+		// font-size: 13px;
 		letter-spacing: 1px;
 		&:last-child{
 			float: right;
@@ -132,7 +132,7 @@ header{
 			}
 			.u_img{
 				color:@color1;
-				font-size: 13px;
+				// font-size: 13px;
 				font-weight: bold;
 				margin-bottom: 10px;
 			}
@@ -142,7 +142,7 @@ header{
 		}
 		.green{
 			color:@color1;
-			font-size: 13px;
+			// font-size: 13px;
 		}
 	}
 	.greyScreen{
@@ -166,7 +166,7 @@ header{
 		.close{
 			float: right;
 			margin-right: 3px;
-			font-size: 20px;
+			font-size: 25px;
 		}
 	}
 	.distance{
@@ -193,7 +193,7 @@ header{
 			width:50%;
 			height: 30px;
 			line-height: 30px;
-			font-size: 14px;
+			// font-size: 14px;
 			text-align: center;
 			box-sizing: border-box;
 			-webkit-box-sizing: border-box;
@@ -271,6 +271,8 @@ header{
 			color:#ccc;
 		}
 		input{
+			-webkit-appearance: none;
+			outline: none;
 			width:100%;
 			height: 100%;
 			position: absolute;
@@ -304,14 +306,15 @@ header{
 		padding:8px 3%;
 		h3{
 			position: absolute;
+			font-size: 14px;
           width:100%;
           text-align: center;
 		}
 		span{
 			position: absolute;
-			top:4px;
+			top:-4px;
 			right:3%;
-			font-size: 20px;
+			font-size: 25px;
 			color: #666;
 
 		}
@@ -323,6 +326,7 @@ header{
 		margin-bottom:15px;
 		textarea{
 			width:100%;
+			font-size: 14px;
 			box-sizing: border-box;
 		    -webkit-box-sizing: border-box;
 	        padding: 3px 2%;
@@ -333,6 +337,7 @@ header{
 	}
   .submitButton{
 	input{
+		-webkit-appearance: none;
 		width:100%;
         height: 30px;
         outline: none;
@@ -348,7 +353,7 @@ header{
 }
 
 .btn-default{
-	background-color: @color2 !important;
+	background-color:#666 !important;
 }
 .btn-success{
 	background-color: #23CD74 !important;

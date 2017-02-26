@@ -20,6 +20,8 @@
                 isTutor: true,
                 isNoTutor: false,
                 isBanner: false,
+                isEnlargeImg: false,
+                enlargeImg: '',
 			},
 			recommendList:[],
 			detailedList:[],
@@ -356,7 +358,13 @@
 	      		this.recommendList = [];
 	      		this.renderData();
 	      	},
-	      	
+	      	showImg: function(index){
+              this.status.enlargeImg = this.detailedList.teach_show_photo[index];
+              this.status.isEnlargeImg = true;
+			},
+			closeImg: function(){
+               this.status.isEnlargeImg = false;
+			},
 		}
 	})
 })();

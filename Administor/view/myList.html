@@ -9,12 +9,12 @@
 <body>
 <div class="container" v-bind:class="{opacity:!status.Loading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-on:touchstart="onReturn"></a>
-		<h1 v-on:touchstart="onReturn">返回</h1>
+	    <a href="./other.html" class="hs1"></a>
+		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<!-- 页面关于我的老师的列表 -->
 	<ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isTutor'>
-		<li v-for='item in tutorList' v-on:touchstart="onTutorInfo($index)">
+		<li v-for='item in tutorList' v-tap="onTutorInfo($index)">
 			<div class="nameMsg">
 				<div class="name">
 					<em v-text="item.name"></em>
@@ -34,6 +34,7 @@
     </div>	
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/myList.min.js"></script>

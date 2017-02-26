@@ -5,7 +5,7 @@ body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 12px;
+	font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
 }
@@ -55,7 +55,7 @@ header{
 	position: fixed;
 	bottom:0;
 	width:100%;
-	z-index: 13;
+	// z-index: 13;
 	.deal{
 		position: fixed;
 		left:50%;
@@ -153,6 +153,7 @@ h1.title{
 	width:100%;
 	height: 100%;
 	top:0;
+	z-index: 9999;
 	.feedbackCon{
 		position: fixed;
 		width:80%;
@@ -183,9 +184,9 @@ h1.title{
 		}
 		span{
 			position: absolute;
-			top:4px;
+			top:-4px;
 			right:3%;
-			font-size: 20px;
+			font-size: 30px;
 			color: #666;
 
 		}
@@ -222,14 +223,13 @@ h1.title{
 		p{
 			margin:5px 0;
 		}
-		textarea{
+		div{
 			width:100%;
 			margin: 0 auto;
 			box-sizing: border-box;
 		    -webkit-box-sizing: border-box;
             padding: 3px 2%;
-            outline: none;
-            resize:none;
+            border:1px solid #ccc;
             height: 100px;
 		}
 	}

@@ -20,6 +20,8 @@
           isSuccess: true,
           onParent: false,
           onTeacher: false,
+          isEnlargeImg: false,
+          enlargeImg: '',
           isDetailed: true,
           errorTip:'对不起，您只能选择一位老师'
       	},
@@ -225,11 +227,12 @@
                 'Content-Type':'application/json'  
               }
             }).then(function(res){
+              console.log(res.json());
                if(res.json().success == 0){
                 console.log(res.json().error);
                }else{
                 var data = res.json();
-                if(data.certificate_photo!=''||data.certificate_photo!=null){
+                if(data.certificate_photo!=''&&data.certificate_photo!=null){
                   data.certificate_photo=this.domain+data.certificate_photo;
                 }
                 var photo=data.teach_show_photo,len = photo.length;
@@ -365,6 +368,13 @@
         },
         onSureChange: function(index){         
           this.onRefuse(index); 
+        },
+        showImg: function(index){
+          this.status.enlargeImg = this.msgDetailedList.teach_show_photo[index];
+          this.status.isEnlargeImg = true;
+        },
+        closeImg: function(){
+          this.status.isEnlargeImg = false;
         },
         onClose: function(){
         	this.status.isChangeInfo = false;

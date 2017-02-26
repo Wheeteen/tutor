@@ -9,26 +9,26 @@
 <body>
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<div class="bottomBtn">
-		<span class="active" v-on:touchstart="onUser">用户管理</span>
-		<span class='deal' v-on:touchstart="onDeal">成交</span>
-		<span v-on:touchstart="onOther">其他</span>
+		<span class="active" v-tap="onUser()">用户管理</span>
+		<span class='deal' v-tap="onDeal()">成交</span>
+		<span v-tap="onOther()">其他</span>
 	</div>
 	<!-- 用户管理 -->
 	<div class="userAdmin">
 		<div class="form-search">
 			<input type="text" placeholder="请输入关键词" v-model="form.keyword" >
-			<em v-on:touchstart="onSearch"></em>
+			<em v-tap="onSearch()"></em>
 		</div>
 		<div class="userLabel">
-			<span v-bind:class="{select:status.isParent}" v-on:touchstart="onParent">家长（{{numData.parentNum}}）</span>
-			<span v-bind:class="{select:status.isTeacher}" v-on:touchstart="onTeacher">教师（{{numData.teacherNum}}）
+			<span v-bind:class="{select:status.isParent}" v-tap="onParent()">家长（{{numData.parentNum}}）</span>
+			<span v-bind:class="{select:status.isTeacher}" v-tap="onTeacher()">教师（{{numData.teacherNum}}）
 			</span>
 		</div>
 		<!-- 家长与教师用户列表 -->
 		<ul class="userList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
 			<li v-for="item in mainData">
-				<span v-text="item.name" v-on:touchstart="onDetailedInfo($index)"></span>
-				<span class="delete" v-on:touchstart="onDelete($index)">删除用户</span>
+				<span v-text="item.name" v-tap="onDetailedInfo($index)"></span>
+				<span class="delete" v-tap="onDelete($index)">删除用户</span>
 			</li>
 		</ul>
 		<!-- 当没有消息的时候，有提示 -->
@@ -44,13 +44,14 @@
                 <p>确定删除该用户吗？</p>          
             </div>
             <div class="infoBtn">
-                <span v-on:touchstart="onSureDelete(status.selected)">确定</span>
-                <span v-on:touchstart="onCancel">取消</span>
+                <span v-tap="onSureDelete(status.selected)">确定</span>
+                <span v-tap="onCancel()">取消</span>
             </div>
         </div>
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>
+<script src='../dist/js/v-tap.min.js'></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/userAdministor.min.js"></script>

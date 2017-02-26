@@ -49,6 +49,8 @@ function dateCompare(date1, date2) {
           isLoading: false,
           isOtherTutorChar: false,
           isReturn: false,
+          textUsername: '',
+          textAddress: '',
           getTip: false,
           errorTip: '',
         },
@@ -662,54 +664,46 @@ function dateCompare(date1, date2) {
                 this.status.isSelected = false;
           }
         },
-        
         onWeekday:function(day,index,begin,end){          
           var time = this.time,
               form = this.form;
           if(time[day].length==0){
             //第一次点
-              form[begin]=index;
-              form[end] = index+1;
-              time[day].push(index+1);    
+              form[begin]=index; 
+              form[end]=index;  
           }               
-          if(time[day].length>1){
-            if(index> form[end]){
-               form[end] = index;  
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
-              }       
-            }else if(index> form[begin]&&index<form[end]){
-              form[end] = index;  
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
-              }       
-            }
-            else if(index == form[begin]){
-               form[end] =  form[begin];
-              time[day] = [];
-              for(var i =  form[begin];i<=form[end];i++){
-                time[day].push(i);
+          if(time[day].length>=1){
+             if(index> form[end]){
+                form[end] = index;  
+                time[day] = [];
+                for(var i =  form[begin];i<form[end];i++){
+                  time[day].push(i);
+                }       
+              }else if(index> form[begin]&&index<form[end]){
+                form[end] = index;  
+                time[day] = [];
+                for(var i =  form[begin];i<form[end];i++){
+                  time[day].push(i);
+                }       
               }
-              form[begin]='';
-              form[end]='';
-            }
-            else if(index == form[end]){
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
+              else if(index == form[begin]){
+                form[end] =  form[begin];
+                time[day] = [];
+                for(var i =  form[begin];i<=form[end];i++){
+                  time[day].push(i);
+                }
+                form[begin]='';
+                form[end]='';
               }
-            }
-            else if(index< form[begin]&& form[begin]< form[end]){
-              form[begin] = index;   
-              time[day] = [];
-              for(var i =form[begin]+1;i<= form[end];i++){
-                time[day].push(i);
+              else if(index< form[begin]&& form[begin]< form[end]){
+                form[begin] = index;   
+                time[day] = [];
+                for(var i =form[begin]+1;i<= form[end];i++){
+                  time[day].push(i);
+                } 
               } 
             }
-           
-          }
+            console.log(time[day]);
         }, 
         clickPrice: function(){
           this.getData();
@@ -718,15 +712,35 @@ function dateCompare(date1, date2) {
         onClosePrice: function(){
           this.status.isPrice = false;
         },
+        onVerify: function(){
+          if(this.form.name== ''){
+            this.status.textUsername = '姓名不能为空';
+            return false;
+          }else if(this.form.tel == ''){
+            this.status.textUsername = '';
+            this.status.textTip = '手机号码不能为空';
+            return false;
+          }else if(!(/^1[34578]\d{9}$/.test(this.form.tel))){
+            this.status.textTip = "请填写正确的手机号码";
+            return false;
+          }else if(this.form.address == ''){
+            this.status.textTip = '';
+            this.status.textAddress = '地址不能为空';
+            return false;
+          }else{
+            this.status.textAddress = '';
+            this.onSubmitQuestion();
+          }
+        },
         onSubmitQuestion: function(){
           this.status.isSubmit = true;
           var self = this;
-          if(!(/^1[34578]\d{9}$/.test(this.form.tel))){
-            this.status.textTip = "请填写正确的手机号码";
-            return false;
-          }else{
-            this.status.textTip = '';
-            this.status.isSubmit = true;
+          // if(!(/^1[34578]\d{9}$/.test(this.form.tel))){
+          //   this.status.textTip = "请填写正确的手机号码";
+          //   return false;
+          // }else{
+          //   this.status.textTip = '';
+          //   this.status.isSubmit = true;
             var json;
             if(this.url == 'createParentOrder'){
                json = this.form;
@@ -769,7 +783,7 @@ function dateCompare(date1, date2) {
                 },2000);
               }
             });
-          }
+          // }
         },
       }
 	});

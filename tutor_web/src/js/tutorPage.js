@@ -21,6 +21,7 @@
           expection: false,
           isSubmit: false,
           isInfoTipOne: false,
+          noExpection: '',
           errorTip:'对不起，您还未通过审核'
       	},
       	msgList: [
@@ -178,10 +179,9 @@
         //发送定位
         onAllow: function(){
           this.$http.post(this.domain+'',this.location,{
-            emulateJSON:true,
             crossOrigin: true,
             headers:{
-              'Content-Type':'application/json; charset=UTF-8' 
+              'Content-Type':'application/json' 
             }
           }).then(function(res){
             if(res.json().result == 1){
@@ -279,37 +279,43 @@
           }       
       	},
         onApply: function(index){
-          this.$http.post(this.domain+'applyParent',{
-            "pd_id": this.msgList[index].pd_id,
-            "expectation": this.form.expection,
-            "type": 1
-           },{
-               emulateJSON:true,
-               crossOrigin: true,
-                headers:{
-                  'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' 
-                }
-           }).then(function(res){
-            console.log(res.json());
-            var self = this;
-            if(res.json().success == 1){              
-              this.timer && clearTimeout(this.timer);
-              this.timer = setTimeout(function(){
-                self.msgList[index].isInvited='您已报名';
-                self.status.expection = false;
-                self.form.expection = '';
-              }, 1000);
-            }else{
-               console.log(res.json().error);
-                this.status.errorTip = res.json().error;
-                this.status.isTutorInfo = false;
-                this.status.isInfoTipOne = true;
+          if(this.form.expection!=""&&this.form.expection!=null){
+            this.status.isSubmit= true;
+            this.$http.post(this.domain+'applyParent',{
+              "pd_id": this.msgList[index].pd_id,
+              "expectation": this.form.expection,
+              "type": 1
+             },{
+                 crossOrigin: true,
+                  headers:{
+                    'Content-Type':'application/json' 
+                  }
+             }).then(function(res){
+              console.log(res.json());
+              var self = this;
+              this.status.isSubmit = false;
+              if(res.json().success == 1){              
                 this.timer && clearTimeout(this.timer);
-                this.timer=setTimeout(function(){
-                  self.status.isInfoTipOne = false;
-                },2000);
-            }
-           })
+                this.timer = setTimeout(function(){
+                  self.msgList[index].isInvited='您已报名';
+                  self.status.expection = false;
+                  self.form.expection = '';
+                }, 1000);
+              }else{
+                 console.log(res.json().error);
+                  this.status.errorTip = res.json().error;
+                  this.status.isTutorInfo = false;
+                  this.status.isInfoTipOne = true;
+                  this.timer && clearTimeout(this.timer);
+                  this.timer=setTimeout(function(){
+                    self.status.isInfoTipOne = false;
+                  },2000);
+              }
+            })
+          }else{
+            return false;
+          }
+          
         },
         onCloseExp: function(){
           this.status.expection = false;

@@ -54,23 +54,25 @@
           window.location.href = './other.html';
       	},
       	onSubmit: function(){
-      		this.$http.post(this.domain+'changeText', this.form, {
-    				crossOrigin: true,
-    				headers:{
-    					'Content-Type':'application/json'	
-    				}
-    			}).then(function(res) {
-    				var self = this;
-    				if (res.json().success == 1) {
-    					this.status.isSubmit= true;
-              this.timer && clearTimeout(this.timer);
-    					this.timer = setTimeout(function(){
-    						self.onReturn();
-    					}, 1000);
-    				}else{
-              console.log(res.json().error);
-            }
-    			});
+          if(this.form.salary!=''&&this.form.notice!=''){
+            this.$http.post(this.domain+'changeText', this.form, {
+              crossOrigin: true,
+              headers:{
+                'Content-Type':'application/json' 
+              }
+            }).then(function(res) {
+              var self = this;
+              if (res.json().success == 1) {
+                this.status.isSubmit= true;
+                this.timer && clearTimeout(this.timer);
+                this.timer = setTimeout(function(){
+                  self.onReturn();
+                }, 1000);
+              }else{
+                console.log(res.json().error);
+              }
+            });
+          }	
       	}
       }
 	});

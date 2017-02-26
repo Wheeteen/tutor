@@ -15,7 +15,7 @@ function dateCompare(date1, date2) {
 	var vm = new Vue({
       el: 'body',
       data: {
-        domain: 'http://www.yinzishao.cn:8000/',
+        domain: 'http://www.yinzishao.cn/',
         timer: null,
         calendar:{
           year: 0,
@@ -243,7 +243,7 @@ function dateCompare(date1, date2) {
           }
         },
         isBtnSuccess3: function(){
-          if(this.time.Mon.length>1||this.time.Tue.length>1||this.time.Wed.length>1||this.time.Thr.length>1||this.time.Fri.length>1||this.form.sun_morning == true||this.form.sun_afternoon==true||this.form.sun_evening==true||this.form.sat_morning==true||this.form.sat_afternoon==true||this.form.sat_evening==true){
+          if(this.time.Mon.length>0||this.time.Tue.length>0||this.time.Wed.length>0||this.time.Thr.length>0||this.time.Fri.length>0||this.form.sun_morning == true||this.form.sun_afternoon==true||this.form.sun_evening==true||this.form.sat_morning==true||this.form.sat_afternoon==true||this.form.sat_evening==true){
             return true;
           }else{
             return false;
@@ -431,45 +431,89 @@ function dateCompare(date1, date2) {
              this.time[arr].push(i);
            }
         },
-        configuration: function(){
-          var self = this;
-          wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
-            timestamp: 1482652615, // 必填，生成签名的时间戳
-            nonceStr:'yinzishao' , // 必填，生成签名的随机串
-            signature: self.signature,// 必填，签名，见附录1
-            jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-          });
-        },
+        // configuration: function(){
+        //   var self = this;
+        //   wx.config({
+        //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        //     appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+        //     timestamp: 1482652615, // 必填，生成签名的时间戳
+        //     nonceStr:'yinzishao' , // 必填，生成签名的随机串
+        //     signature: self.signature,// 必填，签名，见附录1
+        //     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        //   });
+        //   wx.ready(function(){
+        //   //地理位置
+        //     wx.getLocation({
+        //       type: 'wgs84',
+        //         success: function (res) {
+        //           self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        //           self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        //           self.form.speed = res.speed; // 速度，以米/每秒计
+        //           self.form.accuracy = res.accuracy; // 位置精度
+        //           console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+        //         }
+        //     });
+        //   });
+        // },
         //获取signature
         getSignature: function(){        
-          this.$http.jsonp('',{
-            emulateJSON:true,
-            params: {
-              timestamp: 1482652615,
-              nonceStr: 'yinzishao',
+          this.$http.post(this.domain+'generate_signature',{
+            "timestamp": 1482652615,
+            "nonceStr": 'yinzishao',
+          },{
+            crossOrigin:true,
+            headers:{
+              'Content-Type':'application/json' 
             }
           }).then(function(res){
-            this.signature = res.json().signature;
+            console.log(res.json());
+            if(res.json().success == 1){
+              this.signature = res.json().signature;
+              var self = this;
+              wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+                timestamp: 1482652615, // 必填，生成签名的时间戳
+                nonceStr:'yinzishao' , // 必填，生成签名的随机串
+                signature: self.signature,// 必填，签名，见附录1
+                jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+              });
+              wx.ready(function(){
+              //地理位置
+                wx.getLocation({
+                  type: 'wgs84',
+                  success: function (res) {
+                    alert(JSON.stringify(res));
+                    self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    self.form.speed = res.speed; // 速度，以米/每秒计
+                    self.form.accuracy = res.accuracy; // 位置精度
+                    console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+                  }
+                });
+              });
+            }else{
+              console.log(res.json().error);
+            }
+            
           })                
         },
-        wxReady: function(){
-          var self = this;
-          wx.ready(function(){
-          //地理位置
-            wx.getLocation({
-              type: 'wgs84',
-                success: function (res) {
-                  self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                  self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                  self.form.speed = res.speed; // 速度，以米/每秒计
-                  self.form.accuracy = res.accuracy; // 位置精度
-                  console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
-                }
-            });
-          });
-        },
+        // wxReady: function(){
+        //   var self = this;
+        //   wx.ready(function(){
+        //   //地理位置
+        //     wx.getLocation({
+        //       type: 'wgs84',
+        //         success: function (res) {
+        //           self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        //           self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        //           self.form.speed = res.speed; // 速度，以米/每秒计
+        //           self.form.accuracy = res.accuracy; // 位置精度
+        //           console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+        //         }
+        //     });
+        //   });
+        // },
         zero: function(n){
           return n < 10 ? '0' + n : n;
         },
@@ -663,7 +707,7 @@ function dateCompare(date1, date2) {
           }
         },
         onSubmit3: function(){
-          if(this.time.Mon.length>1||this.time.Tue.length>1||this.time.Wed.length>1||this.time.Thr.length>1||this.time.Fri.length>1||this.form.sun_morning == true||this.form.sun_afternoon==true||this.form.sun_evening==true||this.form.sat_morning==true||this.form.sat_afternoon==true||this.form.sat_evening==true){
+          if(this.time.Mon.length>0||this.time.Tue.length>0||this.time.Wed.length>0||this.time.Thr.length>0||this.time.Fri.length>0||this.form.sun_morning == true||this.form.sun_afternoon==true||this.form.sun_evening==true||this.form.sat_morning==true||this.form.sat_afternoon==true||this.form.sat_evening==true){
             this.onNext(this.question[2].key,this.question[3].key);
           }else{
             return false;
@@ -714,48 +758,41 @@ function dateCompare(date1, date2) {
               form = this.form;
           if(time[day].length==0){
             //第一次点
-              form[begin]=index;
-              form[end] = index+1;
-              time[day].push(index+1);    
+              form[begin]=index; 
+              form[end]=index;  
           }               
-          if(time[day].length>1){
-            if(index> form[end]){
-               form[end] = index;  
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
-              }       
-            }else if(index> form[begin]&&index<form[end]){
-              form[end] = index;  
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
-              }       
-            }
-            else if(index == form[begin]){
-               form[end] =  form[begin];
-              time[day] = [];
-              for(var i =  form[begin];i<=form[end];i++){
-                time[day].push(i);
+          if(time[day].length>=1){
+             if(index> form[end]){
+                form[end] = index;  
+                time[day] = [];
+                for(var i =  form[begin];i<form[end];i++){
+                  time[day].push(i);
+                }       
+              }else if(index> form[begin]&&index<form[end]){
+                form[end] = index;  
+                time[day] = [];
+                for(var i =  form[begin];i<form[end];i++){
+                  time[day].push(i);
+                }       
               }
-              form[begin]='';
-              form[end]='';
-            }
-            else if(index == form[end]){
-              time[day] = [];
-              for(var i =  form[begin];i<form[end];i++){
-                time[day].push(i);
+              else if(index == form[begin]){
+                form[end] =  form[begin];
+                time[day] = [];
+                for(var i =  form[begin];i<=form[end];i++){
+                  time[day].push(i);
+                }
+                form[begin]='';
+                form[end]='';
               }
-            }
-            else if(index< form[begin]&& form[begin]< form[end]){
-              form[begin] = index;   
-              time[day] = [];
-              for(var i =form[begin]+1;i<= form[end];i++){
-                time[day].push(i);
+              else if(index< form[begin]&& form[begin]< form[end]){
+                form[begin] = index;   
+                time[day] = [];
+                for(var i =form[begin]+1;i<= form[end];i++){
+                  time[day].push(i);
+                } 
               } 
             }
-           
-          }
+            console.log(time[day]);
         }, 
         clickPrice: function(){
           this.status.isPrice = true;
@@ -784,7 +821,7 @@ function dateCompare(date1, date2) {
             if(this.getParam()){
               this.onSubmitQuestion('updateParentOrder');
             }else{
-              // this.getSignature();
+              this.getSignature();
               this.configuration();
               this.wxReady();
               this.status.getLocation = true;
@@ -830,13 +867,12 @@ function dateCompare(date1, date2) {
         },
         onLocation: function(){
           this.$http.post('',this.location,{
-            emulateJSON:true,
             crossOrigin: true,
             headers:{
-              'Content-Type':'application/json; charset=UTF-8' 
+              'Content-Type':'application/json' 
             }
           }).then(function(res){
-            if(res.json().result == 1){
+            if(res.json().success == 1){
               this.status.getLocation = false;
             }
           })
@@ -846,9 +882,11 @@ function dateCompare(date1, date2) {
            this.onSubmitQuestion('createParentOrder');
         },
         onCancel: function(){
+          // this.getSignature();
+          // this.configuration();
           this.status.getLocation = false;
           this.onSubmitQuestion('createParentOrder');
-        }
+        },
       }
 	});
 	

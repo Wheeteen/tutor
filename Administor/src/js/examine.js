@@ -13,8 +13,8 @@
      	  parRequest: false,
      	  isSelecting: true	,
         key: '简历',
-        isList: false,
-        isNoList : true
+        isList: true,
+        isNoList : false
      	},
      	mainData:[],
       jsonData: [],
@@ -129,9 +129,7 @@
         }
         window.location.href='./examineDetailed.html?select='+selectIndex+'&listId='+id;
       },
-      onReturn: function(){
-      	window.location.href = './other.html';
-      }
+      
      }
 	});
 })();

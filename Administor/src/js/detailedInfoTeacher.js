@@ -16,6 +16,8 @@
           isList: true,
           isNoList: false,
           text: '删除该请求',
+          isEnlargeImg: false,
+          enlargeImg: '',
       	},
       	msgDetailedList:{
           tea_id: '',
@@ -151,7 +153,7 @@
               console.log(res.json().error);
             }else{
               var data = res.json();
-              if(data.certificate_photo!=''||data.certificate_photo!=null){
+              if(data.certificate_photo!=''&&data.certificate_photo!=null){
                 data.certificate_photo=this.domain+data.certificate_photo;
               }
               var photo=data.teach_show_photo,len = photo.length;
@@ -259,6 +261,13 @@
             }
             
           });        
+        },
+        showImg: function(index){
+          this.status.enlargeImg = this.msgDetailedList.teach_show_photo[index];
+          this.status.isEnlargeImg = true;
+        },
+        closeImg: function(){
+          this.status.isEnlargeImg = false;
         },
         onClose: function(){
         	this.status.isTutorInfo = false;
