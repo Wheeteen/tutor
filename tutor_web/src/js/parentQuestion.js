@@ -195,8 +195,8 @@ function dateCompare(date1, date2) {
         location:{
           latitude:'',
           longitude:'',
-          speed:'',
-          accuracy:'',
+          // speed:'',
+          // accuracy:'',
         },
         signature: '',
       },
@@ -476,21 +476,7 @@ function dateCompare(date1, date2) {
                 timestamp: 1482652615, // 必填，生成签名的时间戳
                 nonceStr:'yinzishao' , // 必填，生成签名的随机串
                 signature: self.signature,// 必填，签名，见附录1
-                jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-              });
-              wx.ready(function(){
-              //地理位置
-                wx.getLocation({
-                  type: 'wgs84',
-                  success: function (res) {
-                    alert(JSON.stringify(res));
-                    self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                    self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                    self.form.speed = res.speed; // 速度，以米/每秒计
-                    self.form.accuracy = res.accuracy; // 位置精度
-                    console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
-                  }
-                });
+                jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
             }else{
               console.log(res.json().error);
@@ -822,8 +808,8 @@ function dateCompare(date1, date2) {
               this.onSubmitQuestion('updateParentOrder');
             }else{
               this.getSignature();
-              this.configuration();
-              this.wxReady();
+              // this.configuration();
+              // this.wxReady();
               this.status.getLocation = true;
             }
           }
@@ -866,7 +852,7 @@ function dateCompare(date1, date2) {
           
         },
         onLocation: function(){
-          this.$http.post('',this.location,{
+          this.$http.post(this.domain+'setLocations',this.location,{
             crossOrigin: true,
             headers:{
               'Content-Type':'application/json' 
@@ -878,7 +864,19 @@ function dateCompare(date1, date2) {
           })
         },
         onAllow: function(){
-           // this.onLocation();
+          var self = this;
+          wx.getLocation({
+            type: 'wgs84',
+            success: function (res) {
+              alert(JSON.stringify(res));
+              self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+              self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+              // self.form.speed = res.speed; // 速度，以米/每秒计
+              // self.form.accuracy = res.accuracy; // 位置精度
+              console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+              this.onLocation();
+            }
+          });
            this.onSubmitQuestion('createParentOrder');
         },
         onCancel: function(){

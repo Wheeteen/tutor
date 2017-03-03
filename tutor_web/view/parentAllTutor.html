@@ -77,11 +77,11 @@
 					<p class="subject">
 						<em v-text="item.subject"></em>
 						<em v-text="item.grade"></em>
-						<span>距您{{item.distance}}km</span>
+						<span v-if="item.distance!==0">距您{{item.distance}}km</span>
 					</p>
 					<p class="address">
 						<em>老师位置</em>
-						<span v-text="item.native_place"></span>
+						<span v-text="item.address"></span>
 					</p>
 				</div>
 			</li>
@@ -108,10 +108,10 @@
 				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
-			<div class="distance">
+			<!-- <div class="distance">
 				<span>距您{{detailedList.distance}}
 				km</span>
-			</div>
+			</div> -->
 			<div class="info">
 				<p>性别：<em>
 				{{detailedList.sex}}

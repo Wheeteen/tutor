@@ -42,7 +42,7 @@
 			<div class="subject">
 				<em v-text="item.subject"></em>
 				<em>{{item.learning_phase}}{{item.grade}}</em>
-				<span>距您{{item.distance}}km</span>
+				<span v-if="item.distance!==0">距您{{item.distance}}km</span>
 			</div>
 			<div class="address">
 				<em>家长位置</em>
@@ -62,9 +62,9 @@
 				<span>{{detailedList.name}}</span>
 				<span class='close' v-tap="onClose()">×</span>
 			</div>
-			<div class="distance">
+			<!-- <div class="distance">
 				<span>距您{{detailedList.distance}}km</span>
-			</div>
+			</div> -->
 			<div class="info">
 				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
 				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>

@@ -7,20 +7,8 @@
     el: 'body',
     data: {
       timer: null,
-      domain:'http://www.yinzishao.cn:8000',
- 	    msgList: [
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "对方已邀请","finish": 0,"type": "parent"},//“接受邀请”，“拒绝邀请”
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "已拒绝","finish": 1,"type": "parent"},//老师拒绝(直接拒绝或者是没有在半小时内上传截图)，还可以“再次接受邀请”
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "parent"},//老师已上传截图，管理员还没审核
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "管理员审核中","finish": 0,"type": "teacher"},//老师已上传截图，管理员还没审核
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "请上传截图","finish": 0,"type": "parent"}, //老师同意，还没有上传截图
-         // {"oa_id": 19,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "parent"}, //老师同意，已经上传截图，管理员审核完
-         // {"oa_id": 20,"pd": 50,"tea": 8,"name": "李素","result": "您已报名","finish": 0,"type": "teacher"}, //“取消报名”
-         // {"oa_id": 21,"pd": 50,"tea": 8,"name": "李素","result": "对方已同意","finish": 0,"type": "teacher"}, //家长同意老师的报名
-         // {"oa_id": 21,"pd": 50,"tea": 8,"name": "李素","result": "请上传截图","finish": 0,"type": "teacher"}, //家长同意老师的报名，老师已经获取支付宝账号，但是还没有上传截图
-         // {"oa_id": 21,"pd": 50,"tea": 8,"name": "李素","result": "已成交","finish": 1,"type": "teacher"}, //家长同意老师的报名，老师已经上传截图，管理员审核完
-         // {"oa_id": 22,"pd": 50,"tea": 8,"name": "李素","result": "家长已拒绝","finish": 1,"type": "teacher"} //家长拒绝老师的报名，还可以再次“再次报名该家长”
-      ],
+      domain:'http://www.yinzishao.cn',
+ 	    msgList: [],
 			status:{
         isList: true,
         isNoList: false,
@@ -36,7 +24,9 @@
         text: '',
         isSuccess: true,
         expection: false,
-        isSubmit: false
+        isSubmit: false,
+        isEnlargeImg: false,
+        enlargeImg: '',
 			},
 			detailedList: [],
 			form:{
@@ -373,6 +363,13 @@
           }
         })
 	    },
+      showImg: function(index){
+        this.status.enlargeImg = this.msgList[this.form.selected].screenshot_path;
+        this.status.isEnlargeImg = true;
+      },
+      closeImg: function(){
+        this.status.isEnlargeImg = false;
+      },
 	    onSureSubmit: function(index){            
         this.status.isRemindTip = false;
 	    }

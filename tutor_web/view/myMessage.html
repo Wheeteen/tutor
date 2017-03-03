@@ -9,7 +9,7 @@
 <body>
 <div class="container" v-bind:class="{'opacity':!status.isLoading}">
     <header>
-        <a href="javascript:;" class="hs1" v-tap="onReturn()"></a>
+        <a href="javascript:;" class="hs1" v-on:touchend="onReturn()"></a>
         <h1 v-tap="onReturn()">返回</h1>
     </header>
     <ul class='msgList' v-scroll="down()" scroll-foot="80" scroll-top="200" scroll-up="up()" v-show='status.isMsg'>

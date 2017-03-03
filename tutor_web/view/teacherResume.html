@@ -16,8 +16,8 @@
         <p>好学吧要对您进行定位，方便测量您与家长之间的距离，是否允许？</p>
       </div>
           <div class="infoBtn">
-              <span v-on:touchstart="onAllow">允许</span>
-              <span v-on:touchstart="onCancel">拒绝</span>
+              <span v-on:touchend="onGetLocation">允许</span>
+              <span v-on:touchend="onCancel">拒绝</span>
           </div>
     </div>
   </div>
@@ -106,7 +106,7 @@
             <label for="">{{itemday.tag}}</label>
             <ul class="Monday">
                 <li v-for='i in 8'>
-                  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchstart="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
+                  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchend="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
                   <em></em>
                 </li>
             </ul>
@@ -179,7 +179,7 @@
           <label for="">最高的时薪</label>
           <input type="Number" required v-model='form.salary_top'>
         </div>
-        <p><a href="javascript:void(0)" v-on:touchstart="onSalary">点击参考家教薪酬标准</a></p>
+        <p><a href="javascript:void(0)" v-on:touchend="onSalary">点击参考家教薪酬标准</a></p>
       </div>
       <div class="group-form groupShow">
         <label for="">家教秀(选填)</label>
@@ -199,7 +199,7 @@
   <div class="thumbnail" v-if='hintData.status'>
      <div class="text-error">
          <span v-text="hintData.text"></span>
-         <span v-on:touchstart="offHint">×</span>
+         <span v-on:touchend="offHint">×</span>
      </div> 
   </div>
   <!-- 时薪参考标准 -->
@@ -208,21 +208,21 @@
     <div class="priceDetailed">
       <div class="ptitle">
         <h3>时薪参考标准</h3>
-        <span v-on:touchstart="onClosePrice">×</span>
+        <span v-on:touchend="onClosePrice">×</span>
       </div>
       <div class="ptext">{{salary}}</div>
     </div>
-  </div>
+  </div> 
   <!-- 接单须知 -->
   <div class="price" v-if="status.isNotice">
     <div class="greyScreen"></div>
     <div class="priceDetailed">
       <div class="ptitle">
         <h3>接单须知</h3>
-        <!-- <span v-on:touchstart="onCloseNotice">×</span> -->
+        <!-- <span v-on:touchend="onCloseNotice">×</span> -->
       </div>
       <div class="ptext">{{notice}}</div>
-      <div class='iKnow' v-on:touchstart='onNotice'>
+      <div class='iKnow' v-on:touchend='onNotice'>
         我知道啦
       </div>
     </div>

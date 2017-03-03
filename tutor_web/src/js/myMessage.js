@@ -7,7 +7,7 @@
 	var vm = new Vue({
       el:'body',
       data:{
-        domain:'http://www.yinzishao.cn:8000/',
+        domain:'http://www.yinzishao.cn/',
       	msgList:[
           // {'msg_id':1,'message_title':'张先生已接受您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
           // {'msg_id':2,'message_title':'张先生已拒绝您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},

@@ -6,7 +6,7 @@ Vue.http.interceptors.push(function(request, next){
 var vm = new Vue({
   el: 'body',
   data: {
-    domain: 'http://www.yinzishao.cn:8000',
+    domain: 'http://www.yinzishao.cn',
     timer: null,
   	hintData: {
   	   status: false,
@@ -41,8 +41,8 @@ var vm = new Vue({
     location:{
       latitude:'',
       longitude:'',
-      speed:'',
-      accuracy:'',
+      // speed:'',
+      // accuracy:'',
     },
     images:{
       certificate_photo:'',
@@ -197,10 +197,13 @@ var vm = new Vue({
   ready: function(){
       if(!this.getParam()){
         this.status.getLocation = true;
-        this.isGetLocation();
+        // this.isGetLocation();
+        // console.log(1);
+        // this.getSignature();
       }else{
         this.status.getLocation = false;
         this.render();
+        // this.getSignature();
       }
       this.getSignature();
       this.status.isLoading = true;
@@ -230,11 +233,11 @@ var vm = new Vue({
     offHint: function(){
 	    this.hintData.status = false;
     },
-    isGetLocation: function(){
-      // this.getSignature();
-      this.configuration();
-      this.wxReady();
-    },
+    // isGetLocation: function(){
+    //   // this.getSignature();
+    //   this.configuration();
+    //   this.wxReady();
+    // },
     getParam: function(){
       var str = location.search;
       if (str.indexOf("?") == -1) {       
@@ -431,21 +434,6 @@ var vm = new Vue({
       location.href = 'teacherPage.html';
     },
     uploadImg: function(index){
-        // var self = this;
-        // var file = e.target.files[0];
-        // this.status.isUploadImg = false;
-        // lrz(file, self.config)
-        //     .then(function (rst) {              
-        //       self.form.certificate_photo=rst.base64;
-        //     })
-        //     .catch(function (err) {
-        //         console.log(err)
-        //         alert('压缩失败')
-        //     })
-        //     .always(function () {
-        //         // 清空文件上传控件的值
-        //         e.target.value = null
-        //     });
       var img = this.images;
       if(index == 'certificate_photo'){
          img = img.certificate_photo;
@@ -479,23 +467,7 @@ var vm = new Vue({
         }
       });
     },
-    // uploadPic: function(e,index){
-    //   var self = this;
-    //   var file = e.target.files[0];
-    //   lrz(file, self.config1)
-    //       .then(function (rst){              
-    //         self.form.teach_show_photo[index].img = rst.base64;
-    //         console.log(self.form.teach_show_photo[index]);
-    //       })
-    //       .catch(function (err) {
-    //           console.log(err)
-    //           alert('压缩失败')
-    //       })
-    //       .always(function () {
-    //           // 清空文件上传控件的值
-    //           e.target.value = null
-    //       });
-    // },
+    
     onClosePrice: function(){
       this.status.isPrice = false;
     },
@@ -506,17 +478,17 @@ var vm = new Vue({
       this.getData('salary');
       this.status.isPrice = true;
     },
-    configuration: function(){
-      var self = this;
-      wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
-        timestamp: 1482652615, // 必填，生成签名的时间戳
-        nonceStr:'yinzishao' , // 必填，生成签名的随机串
-        signature: self.signature,// 必填，签名，见附录1
-        jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      });
-    },
+    // configuration: function(){
+    //   var self = this;
+    //   wx.config({
+    //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    //     appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+    //     timestamp: 1482652615, // 必填，生成签名的时间戳
+    //     nonceStr:'yinzishao' , // 必填，生成签名的随机串
+    //     signature: self.signature,// 必填，签名，见附录1
+    //     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    //   });
+    // },
     getSignature: function(){        
       this.$http.post(this.domain+'/generate_signature',{
         timestamp: 1482652615,
@@ -527,6 +499,7 @@ var vm = new Vue({
           'Content-Type':'application/json' 
         }
       }).then(function(res){
+        console.log(res.json());
         this.signature = res.json().signature;
         var self = this;
         wx.config({
@@ -535,35 +508,38 @@ var vm = new Vue({
           timestamp: 1482652615, // 必填，生成签名的时间戳
           nonceStr:'yinzishao' , // 必填，生成签名的随机串
           signature: self.signature,// 必填，签名，见附录1
-          jsApiList: ['getLocation','chooseImage','.uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['checkJsApi','openLocation','getLocation','chooseImage','.uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
       })                
     },
-    wxReady: function(){
+    onGetLocation: function(){
       var self = this;
       wx.ready(function(){
       //地理位置
         wx.getLocation({
           type: 'wgs84',
             success: function (res) {
+              alert(JSON.stringify(res));
               self.form.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
               self.form.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              self.form.speed = res.speed; // 速度，以米/每秒计
-              self.form.accuracy = res.accuracy; // 位置精度
-              console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+              // self.form.speed = res.speed; // 速度，以米/每秒计
+              // self.form.accuracy = res.accuracy; // 位置精度
+              this.onAllow();
+              alert("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
             }
         });
       });
     },
     //发送定位
     onAllow: function(){
-      this.$http.post(this.domain+'',this.location,{
+      // this.wxReady();
+      this.$http.post(this.domain+'/setLocations',this.location,{
         crossOrigin: true,
         headers:{
           'Content-Type':'application/json' 
         }
       }).then(function(res){
-        if(res.json().result == 1){
+        if(res.json().success == 1){
           this.status.getLocation = false;
         }
       })

@@ -9,7 +9,7 @@
 <body>
 <div class="container" v-bind:class="{opacity:!status.Loading}">
 	<header>
-	    <a href="javascript:;" class="hs1" v-tap="onReturn()"></a>
+	    <a href="./parentMyPage.html" class="hs1"></a>
 		<h1 v-tap="onReturn()">返回</h1>
 	</header>
 	<!-- 页面关于我的老师的列表 -->
@@ -32,7 +32,7 @@
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
 			<div class="client">
-			    <div class="image">
+			    <div class="image" v-if="detailedList.certificate_photo">
 			    	<img v-bind:src="detailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
@@ -42,10 +42,10 @@
 				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
-			<div class="distance">
+			<!-- <div class="distance">
 				<span>距您{{detailedList.distance}}
 				km</span>
-			</div>
+			</div> -->
 			<div class="info">
 				<p>性别：<em>
 				{{detailedList.sex}}
@@ -70,7 +70,7 @@
 				<h3>家教秀</h3>
 				<ul class="showImage">
                    <li v-for="item in detailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="">
+                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
                    </li>             
 				</ul>
 			</div>
@@ -98,6 +98,9 @@
     			<span v-tap="onClose()">取消</span>
     		</div>
     	</div>
+    </div>
+    <div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>

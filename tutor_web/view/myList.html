@@ -9,7 +9,7 @@
 <body>
 <div class="container" v-bind:class="{'opacity':!status.isLoading}">
 	<header>
-        <a href="javascript:;" class="hs1" v-tap="onReturn()"></a>
+        <a href="./teacherMyPage.html" class="hs1"></a>
         <h1 v-tap="onReturn()">返回</h1>
     </header>
     <ul class="tutorList" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-show='status.isList'>
@@ -31,9 +31,9 @@
 				<span>{{detailedList.name}}</span>
 				<span class='close' v-tap="onClose()">×</span>
 			</div>
-			<div class="distance">
+			<!-- <div class="distance">
 				<span>距您{{detailedList.distance}}km</span>
-			</div>
+			</div> -->
 			<div class="info">
 				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
 				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
@@ -103,7 +103,7 @@
 				<span class='close' v-tap="onSureSubmit()">×</span>
 			</div>
 			<div class="infoImg">
-	          <img :src="msgList[form.selected].screenshot_path"alt="">
+	          <img :src="msgList[form.selected].screenshot_path" v-tap="showImg()" alt="">
     		</div>
 			<div class="infoTip">
     			<p>截图上传成功</p>
@@ -133,6 +133,9 @@
 	        <input type="submit" v-else class="btn-success" value="已提交" disabled="disabled">
 	     </div>
       </form>
+    </div>
+    <div class="enlargeImg" v-if='status.isEnlargeImg'>
+    	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>

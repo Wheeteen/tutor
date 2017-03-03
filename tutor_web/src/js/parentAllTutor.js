@@ -7,7 +7,7 @@
 		el: 'body',
 		data:{
 			timer: null,
-			domain: 'http://www.yinzishao.cn:8000',
+			domain: 'http://www.yinzishao.cn',
 			status:{
                 isTutorInfo: false,
                 isSuccess: '',
