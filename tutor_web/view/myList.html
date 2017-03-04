@@ -84,9 +84,9 @@
     		<div class="client">
 				<span>请上传截图</span>
 			</div>
-			<div class="infoImg">
+			<div class="infoImg" v-tap="uploadImg()">
     		  <span>＋</span>
-	          <input type="file" accept="image/*" @click="uploadPic" capture="camera">
+	          <!-- <input type="file" accept="image/*" @click="uploadPic" capture="camera"> -->
 	          <img :src="form.img" alt="">
     		</div>
     		<div class="submitBtn">
@@ -138,9 +138,9 @@
     	<img :src="status.enlargeImg" alt="" v-tap="closeImg()">
     </div>
 </div>
+<script src="../dist/js/wx.js"></script>
 <script src="../dist/js/vue.min.js"></script>
 <script src='../dist/js/v-tap.min.js'></script>
-<script src="../dist/js/lrz.bundle.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/scroll.min.js"></script>
 <script src="../dist/js/myList.min.js"></script>

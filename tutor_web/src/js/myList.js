@@ -29,12 +29,14 @@
         enlargeImg: '',
 			},
 			detailedList: [],
+      signature: '',
 			form:{
 				selected:'',
 				isRegister: '',
         expection: '',
 				isMsg: '',
 				img: '',
+        serverId: '',
 			},
       para:{
         "start": 0,
@@ -56,7 +58,7 @@
       }
     },
     isOnSubmit: function(){
-      if(this.form.img != ''){
+      if(this.form.serverId != ''){
         return true;
       }else{
         return false;
@@ -110,6 +112,29 @@
         }
       });
    	},
+    getSignature: function(){        
+      this.$http.post(this.domain+'/generate_signature',{
+        timestamp: 1482652615,
+        nonceStr: 'yinzishao',
+      },{
+        crossOrigin: true,
+        headers:{
+          'Content-Type':'application/json' 
+        }
+      }).then(function(res){
+        console.log(res.json());
+        this.signature = res.json().signature;
+        var self = this;
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+          timestamp: 1482652615, // 必填，生成签名的时间戳
+          nonceStr:'yinzishao' , // 必填，生成签名的随机串
+          signature: self.signature,// 必填，签名，见附录1
+          jsApiList: ['chooseImage','uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+      })                
+    },
    	onReturn: function(){
    		window.location.href="./teacherMyPage.html";
    	},
@@ -135,6 +160,9 @@
       this.status.isSuccess = true;
       var list = this.msgList[index];
       if(list.result == '请上传截图'){
+        if(this.signature==''){
+          this.getSignature();
+        }
         this.status.isTutorInfo = false;
         this.status.isAccount = true;
       }else if(list.result == '对方已同意'){
@@ -310,6 +338,9 @@
       }
 		},
     onChangeImg: function(){
+      if(this.signature==''){
+        this.getSignature();
+      }
       this.status.isRemindTip = false;
       this.status.isAccount = true;
     },
@@ -322,27 +353,37 @@
     onCloseAccount: function(){
       this.status.isAccount = false;
     },
-		uploadPic: function(e){
+    uploadImg: function(){
       var self = this;
-      var file = e.target.files[0];
-      lrz(file, self.config)
-          .then(function (rst) {              
-            self.form.img=rst.base64;
-
-          })
-          .catch(function (err) {
-              console.log(err)
-              alert('压缩失败')
-          })
-          .always(function () {
-              // 清空文件上传控件的值
-              e.target.value = null
-          });
-	    },
-	    onSubmitImg: function(index){
-	    	this.$http.post(this.domain+'/uploadScreenshot',{
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          console.log(res);
+          var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片          
+          self.form.img = localId;
+          self.uploadImgTo(localId);
+        }
+      });
+    },
+    uploadImgTo: function(id){
+      var self = this;
+      wx.uploadImage({
+        localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
+        isShowProgressTips: 1, // 默认为1，显示进度提示
+        success: function (res) {
+          self.form.serverId = res.serverId;
+        }
+      });
+       
+    },
+    
+    onSubmitImg: function(index){
+    	if(this.form.serverId!=''){
+        this.$http.post(this.domain+'/uploadScreenshot',{
           'oa_id': this.msgList[index].oa_id,
-          'pic': this.form.img
+          'pic': this.form.serverId
         },{
           crossOrigin: true,
           headers:{
@@ -352,27 +393,31 @@
         }).then(function(res){
           console.log(res.json());
           if(res.json().success == 1){
-          	this.status.isAccount = false;
-          	this.status.isRemindTip = true;
+            this.status.isAccount = false;
+            this.status.isRemindTip = true;
             this.msgList[index].isRed = false;
             this.msgList[index].screenshot_path = this.form.img;
             this.form.img = '';
+            this.form.serverId = '';
             this.msgList[index].result= '管理员审核中';
           }else{
             console.log(res.json().error);
           }
         })
-	    },
-      showImg: function(index){
-        this.status.enlargeImg = this.msgList[this.form.selected].screenshot_path;
-        this.status.isEnlargeImg = true;
-      },
-      closeImg: function(){
-        this.status.isEnlargeImg = false;
-      },
-	    onSureSubmit: function(index){            
-        this.status.isRemindTip = false;
-	    }
+      }else{
+        return false;
+      }
+    },
+    showImg: function(index){
+      this.status.enlargeImg = this.msgList[this.form.selected].screenshot_path;
+      this.status.isEnlargeImg = true;
+    },
+    closeImg: function(){
+      this.status.isEnlargeImg = false;
+    },
+    onSureSubmit: function(index){            
+      this.status.isRemindTip = false;
+    }
   }
 	});
 })();

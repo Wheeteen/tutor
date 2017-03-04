@@ -32,7 +32,6 @@ var vm = new Vue({
        // getLocation: true,
 
   	},
-    confirmImg: '',
     salary: '',
     notice: '',
     Arr: {
@@ -237,11 +236,6 @@ var vm = new Vue({
     offHint: function(){
 	    this.hintData.status = false;
     },
-    // isGetLocation: function(){
-    //   // this.getSignature();
-    //   this.configuration();
-    //   this.wxReady();
-    // },
     getParam: function(){
       var str = location.search;
       if (str.indexOf("?") == -1) {       
@@ -267,7 +261,7 @@ var vm = new Vue({
         this.$set('form',data);
         var img1 = res.json().certificate_photo;
         if(img1!==''){
-          this.form.certificate_photo = this.domain+img1;
+          this.images.certificate_photo = this.domain+img1;
         }
         var img2 = res.json().teach_show_photo;
         for(var i =0;i<3;i++){
@@ -276,7 +270,7 @@ var vm = new Vue({
             img2[i].img = this.domain+img;
           }
         }
-        this.form.teach_show_photo = img2;
+        this.images.teach_show_photo = img2;
         this.form.salary_bottom=parseInt(res.json().salary_bottom);
         this.form.salary_top = parseInt(res.json().salary_top);
         var subject = this.form.subject,
@@ -438,12 +432,7 @@ var vm = new Vue({
       location.href = 'teacherPage.html';
     },
     uploadImg: function(index){
-      var img = this.images,showImg;
-      if(index == 'certificate_photo'){
-         showImg = img.certificate_photo;
-      }else{
-        showImg = img.teach_show_photo[index].img;
-      }
+      var img = this.images;
       var self = this;
       wx.chooseImage({
         count: 1, // 默认9
@@ -451,27 +440,32 @@ var vm = new Vue({
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
           console.log(res);
-          var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-          alert(self.confirmImg);
-          self.confirmImg = localId;
+          var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片          
+          if(index == 'certificate_photo'){
+            img.certificate_photo = localId;
+          }else{
+            img.teach_show_photo[index].img = localId;
+          }
           self.uploadImgTo(localId,index);
         }
       });
     },
     uploadImgTo: function(id,index){
       var img = this.form;
-      if(index == 'certificate_photo'){
-         img = img.certificate_photo;
-      }else{
-        img = img.teach_show_photo[index].img;
-      }
+      var serverId,self = this;
       wx.uploadImage({
         localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: function (res) {
-          img = res.serverId; // 返回图片的服务器端ID
+          serverId = res.serverId;
+          if(index == 'certificate_photo'){
+            img.certificate_photo = serverId;
+          }else{
+            img.teach_show_photo[index].img = serverId;
+          }  
         }
       });
+       
     },
     
     onClosePrice: function(){
@@ -484,17 +478,6 @@ var vm = new Vue({
       this.getData('salary');
       this.status.isPrice = true;
     },
-    // configuration: function(){
-    //   var self = this;
-    //   wx.config({
-    //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-    //     appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
-    //     timestamp: 1482652615, // 必填，生成签名的时间戳
-    //     nonceStr:'yinzishao' , // 必填，生成签名的随机串
-    //     signature: self.signature,// 必填，签名，见附录1
-    //     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    //   });
-    // },
     getSignature: function(){        
       this.$http.post(this.domain+'/generate_signature',{
         timestamp: 1482652615,
@@ -514,7 +497,7 @@ var vm = new Vue({
           timestamp: 1482652615, // 必填，生成签名的时间戳
           nonceStr:'yinzishao' , // 必填，生成签名的随机串
           signature: self.signature,// 必填，签名，见附录1
-          jsApiList: ['checkJsApi','openLocation','getLocation','chooseImage','.uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['checkJsApi','openLocation','getLocation','chooseImage','uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
       })                
     },
