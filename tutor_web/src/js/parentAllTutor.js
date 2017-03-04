@@ -201,6 +201,9 @@
 		              		}else{
 		              			data[i].certificate_photo = '../img/user02.png';
 		              		}
+		              		if(data[i].distance!==0){
+		              			data[i].distance = data[i].distance.toFixed(2);
+		              		}
 		              		var teach_photo=data[i].teach_show_photo,len=data[i].teach_show_photo.length;
 		              		if(len!=0){
 		              			for(var j=0;j<len;j++){

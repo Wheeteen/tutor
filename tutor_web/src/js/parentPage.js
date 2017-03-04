@@ -73,6 +73,9 @@
 		              		for(var j=0;j<len;j++){
 	                           teach_photo[j]=this.domain+teach_photo[j];
 		              		}
+		              		if(data[i].distance!==0){
+		              			data[i].distance = data[i].distance.toFixed(2);
+		              		}
 		              		if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '老师已拒绝'){
 			          	   		data[i].isRed = true;
 			          	   	}else{
