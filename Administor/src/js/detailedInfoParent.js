@@ -7,9 +7,11 @@
       el: 'body',
       data:{
       	timer: null,
-        domain: 'http://www.yinzishao.cn:8000',
+        domain: 'http://www.yinzishao.cn',
       	status:{
       		isSelecting: true,
+          isChangeRst: true,
+          isRemind: true,
 	        isLoading: false,
 	        isTutorInfo: false,
           isChangeInfo: false,
@@ -140,6 +142,10 @@
           }
         },
   	    renderTutor: function(){
+          if(this.getParam('list')){
+            this.status.isChangeRst = false;
+            this.status.isRemind = false;
+          }
   	      var id = parseInt(this.getParam('listId'));
   	      this.$http.post(this.domain+'/getInfo',{
               'id': id,

@@ -29,7 +29,7 @@ var vm = new Vue({
        isPrice: false,
        isNotice: false,
        isSelected: true,
-       getLocation: true
+       // getLocation: true
   	},
     salary: '',
     notice: '',
@@ -195,17 +195,19 @@ var vm = new Vue({
     },   
   },
   ready: function(){
+      this.getSignature();
       if(!this.getParam()){
-        this.status.getLocation = true;
+        this.onGetLocation();
+        // this.status.getLocation = true;
         // this.isGetLocation();
         // console.log(1);
         // this.getSignature();
       }else{
-        this.status.getLocation = false;
+        // this.status.getLocation = false;
         this.render();
         // this.getSignature();
       }
-      this.getSignature();
+      // this.getSignature();
       this.status.isLoading = true;
   },
   methods: {
@@ -448,6 +450,7 @@ var vm = new Vue({
           console.log(res);
           var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
           img = localId;
+          alert(img);
           this.uploadImgTo(localId,index);
         }
       });
@@ -526,6 +529,9 @@ var vm = new Vue({
               // self.form.accuracy = res.accuracy; // 位置精度
               this.onAllow();
               alert("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+            },
+            cancel: function(res){
+              alert("用户拒绝授权获取地理位置");
             }
         });
       });
@@ -544,9 +550,9 @@ var vm = new Vue({
         }
       })
     },
-    onCancel: function(){
-      this.status.getLocation = false;
-    },
+    // onCancel: function(){
+    //   this.status.getLocation = false;
+    // },
   },
 });
 	

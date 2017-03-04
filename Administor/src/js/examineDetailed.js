@@ -6,7 +6,7 @@
 	var vm = new Vue({
       el: 'body',
       data: {
-        domain: 'http://www.yinzishao.cn:8000',
+        domain: 'http://www.yinzishao.cn',
         parentMsg:{
       		pd_id:0,
           name:'张先生',

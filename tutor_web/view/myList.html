@@ -86,7 +86,7 @@
 			</div>
 			<div class="infoImg">
     		  <span>＋</span>
-	          <input type="file" accept="image/*" @change="uploadPic">
+	          <input type="file" accept="image/*" @click="uploadPic" capture="camera">
 	          <img :src="form.img" alt="">
     		</div>
     		<div class="submitBtn">

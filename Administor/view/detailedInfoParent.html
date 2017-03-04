@@ -17,7 +17,7 @@
 		<div class="InfoList">
 			<div class="client">
 				<span> {{detailedList.name}}</span>
-				<span class='green' @touchstart="onChangeRequest(detailedList.pd_id)">修改需求</span>
+				<span class='green' @touchstart="onChangeRequest(detailedList.pd_id)" v-if="status.isChangeRst">修改需求</span>
 			</div>
 			<div class="info">
 				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}{{detailedList.subject_other}}</em></p>
@@ -34,7 +34,7 @@
 				<p>住址：<em>{{detailedList.address}}</em></p>
 			</div>
 			<div class="remindTeacher client">
-				<span class='green' v-tap="onRemindParent(detailedList.pd_id)">提醒家长</span>
+				<span class='green' v-tap="onRemindParent(detailedList.pd_id)" v-if="status.isRemind">提醒家长</span>
 			</div>
 		</div>
 	</div>

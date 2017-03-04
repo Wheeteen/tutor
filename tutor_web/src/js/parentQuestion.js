@@ -49,7 +49,7 @@ function dateCompare(date1, date2) {
           textTip: '',
           isLoading: false,
           isOtherTutorChar: false,
-          getLocation: false,
+          // getLocation: false,
           textUsername: '',
           textAddress: '',
           getTip: false,
@@ -478,6 +478,7 @@ function dateCompare(date1, date2) {
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
+              this.onAllow();
             }else{
               console.log(res.json().error);
             }
@@ -804,13 +805,15 @@ function dateCompare(date1, date2) {
             return false;
           }else{
             this.status.textAddress = '';
+            this.status.textUsername = '';
+            this.status.textTip = '';
             if(this.getParam()){
               this.onSubmitQuestion('updateParentOrder');
             }else{
               this.getSignature();
               // this.configuration();
               // this.wxReady();
-              this.status.getLocation = true;
+              // this.status.getLocation = true;
             }
           }
         },
@@ -859,7 +862,8 @@ function dateCompare(date1, date2) {
             }
           }).then(function(res){
             if(res.json().success == 1){
-              this.status.getLocation = false;
+              // this.status.getLocation = false;
+              this.onSubmitQuestion('createParentOrder');
             }
           })
         },
@@ -875,16 +879,20 @@ function dateCompare(date1, date2) {
               // self.form.accuracy = res.accuracy; // 位置精度
               console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
               this.onLocation();
+            },
+            cancel: function(res){
+              alert("用户拒绝授权获取地理位置");
+              this.onSubmitQuestion('createParentOrder');
             }
           });
-           this.onSubmitQuestion('createParentOrder');
+           
         },
-        onCancel: function(){
-          // this.getSignature();
-          // this.configuration();
-          this.status.getLocation = false;
-          this.onSubmitQuestion('createParentOrder');
-        },
+        // onCancel: function(){
+        //   // this.getSignature();
+        //   // this.configuration();
+        //   this.status.getLocation = false;
+        //   this.onSubmitQuestion('createParentOrder');
+        // },
       }
 	});
 	

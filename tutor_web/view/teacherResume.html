@@ -9,7 +9,7 @@
 <body>
 <div v-bind:clss="{opacity:status.isLoading}">
   <!-- 提示老师是否允许获取位置 -->
-  <div class="getLocation" v-if='status.getLocation'>
+  <!-- <div class="getLocation" v-if='status.getLocation'>
     <div class="greyScreen"></div>
     <div class="locationCon">
       <div class="infoTip">
@@ -20,7 +20,7 @@
               <span v-on:touchend="onCancel">拒绝</span>
           </div>
     </div>
-  </div>
+  </div> -->
   <div class="container">
     <h1>简历填写</h1>
     <p class='msg'>请认真填写一下内容，谢谢。</p>
@@ -160,12 +160,12 @@
       <div class="group-form groupPic">
         <label for="">上传照片</label>
         <span>最好是证件照</span>
-        <div class="uploadPic">
+        <div class="uploadPic" @touchstart="uploadImg('certificate_photo')">
           <div class="text" v-show='status.isUploadImg'>
             <p>上传照片</p>
             <p>（100M以内）</p>
           </div>
-          <input type="file" accept="image/*" @change="uploadImg('certificate_photo')">
+          <!-- <input type="file" accept="image/*"  @change="uploadImg('certificate_photo')" capture="camera"> -->
           <img :src="images.certificate_photo" alt="">
         </div>
       </div>
@@ -184,9 +184,9 @@
       <div class="group-form groupShow">
         <label for="">家教秀(选填)</label>
         <p>上传家长评价截图成绩凭证，最多上传三张截图</p>
-        <div class="uploadImg" v-for='item in 3'>
+        <div class="uploadImg" v-for='item in 3' @touchstart="uploadImg($index)">
           <span>＋</span>
-          <input type="file" accept="image/*" @change="uploadImg($index)">
+          <!-- <input type="file" accept="image/*" @change="uploadImg($index)" capture="camera"> -->
           <img :src="images.teach_show_photo[item].img" alt="">
         </div>
       </div>

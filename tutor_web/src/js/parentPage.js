@@ -16,7 +16,7 @@
                 isRegister: '',
                 isLoading: false,
                 errorTip:'对不起，您只能选择一位老师',
-                getLocation: false,
+                // getLocation: false,
                 isTutor: true,
                 isNoTutor: false,
                 isEnlargeImg: false,
@@ -123,7 +123,7 @@
 	                signature: self.signature,// 必填，签名，见附录1
 	                jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 	              });
-	              this.status.getLocation = true;
+	              this.onAllow();
 	            }else{
 	              console.log(res.json().error);
 	            }
@@ -160,13 +160,17 @@
 	              // self.form.accuracy = res.accuracy; // 位置精度
 	              this.sendLocation();
 	              console.log("latitude : "+self.form.latitude+"--longitude : "+self.form.longitude+"--speed : "+self.form.speed+"--accuracy : "+self.form.accuracy);
+	            },
+	            cancel: function(res){
+	              alert("用户拒绝授权获取地理位置");
+	              this.onSubmitQuestion('createParentOrder');
 	            }
 	          });
 	          
 	        },
-	        onCancel: function(){
-	          this.status.getLocation = false;
-	        },
+	        // onCancel: function(){
+	        //   this.status.getLocation = false;
+	        // },
 			onRecommend:function(){
                 this.status.isTutorInfo = false;
 			},
