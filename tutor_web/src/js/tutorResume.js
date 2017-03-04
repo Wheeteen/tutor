@@ -29,8 +29,10 @@ var vm = new Vue({
        isPrice: false,
        isNotice: false,
        isSelected: true,
-       getLocation: true
+       // getLocation: true,
+
   	},
+    confirmImg: '',
     salary: '',
     notice: '',
     Arr: {
@@ -197,13 +199,13 @@ var vm = new Vue({
   ready: function(){
       this.getSignature();
       if(!this.getParam()){
-        // this.onGetLocation();
-        this.status.getLocation = true;
+        this.onGetLocation();
+        // this.status.getLocation = true;
         // this.isGetLocation();
         // console.log(1);
         // this.getSignature();
       }else{
-        this.status.getLocation = false;
+        // this.status.getLocation = false;
         this.render();
         // this.getSignature();
       }
@@ -450,8 +452,8 @@ var vm = new Vue({
         success: function (res) {
           console.log(res);
           var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-          showImg = localId;
-          alert(self.images.certificate_photo);
+          alert(self.confirmImg);
+          self.confirmImg = localId;
           self.uploadImgTo(localId,index);
         }
       });
@@ -547,13 +549,13 @@ var vm = new Vue({
         }
       }).then(function(res){
         if(res.json().success == 1){
-          this.status.getLocation = false;
+          // this.status.getLocation = false;
         }
       })
     },
-    onCancel: function(){
-      this.status.getLocation = false;
-    },
+    // onCancel: function(){
+    //   this.status.getLocation = false;
+    // },
   },
 });
 	

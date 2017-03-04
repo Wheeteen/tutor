@@ -17,7 +17,7 @@
       		isTutorInfo: false,
       		isDefault: '',
       		isSuccess: '',
-          getLocation: false,
+          // getLocation: false,
           expection: false,
           isSubmit: false,
           isInfoTipOne: false,
@@ -163,8 +163,8 @@
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              // self.onAllow();
-              this.status.getLocation = true;
+              self.onAllow();
+              // this.status.getLocation = true;
             }else{
               console.log(res.json().error);
             }
@@ -210,9 +210,9 @@
           });
             
         },
-        onCancel: function(){
-          this.status.getLocation = false;
-        },
+        // onCancel: function(){
+        //   this.status.getLocation = false;
+        // },
       	onRecommend:function(){
       		this.status.tutorList = true;
       		this.status.myInfo = false;
