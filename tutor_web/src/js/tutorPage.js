@@ -17,7 +17,7 @@
       		isTutorInfo: false,
       		isDefault: '',
       		isSuccess: '',
-          // getLocation: false,
+          getLocation: false,
           expection: false,
           isSubmit: false,
           isInfoTipOne: false,
@@ -163,8 +163,8 @@
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              this.onAllow();
-              // this.status.getLocation = true;
+              // self.onAllow();
+              this.status.getLocation = true;
             }else{
               console.log(res.json().error);
             }
@@ -172,7 +172,7 @@
           })                
         },
         sendLocation: function(){
-          this.$http.post(this.domain+'/setLocations',this.form,{
+          this.$http.post(this.domain+'/setLocations',this.location,{
             crossOrigin: true,
             headers:{
               'Content-Type':'application/json' 
@@ -200,19 +200,19 @@
               self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
               // self.form.speed = res.speed; // 速度，以米/每秒计
               // self.form.accuracy = res.accuracy; // 位置精度
-              this.sendLocation();
+              self.sendLocation();
               console.log("latitude : "+self.location.latitude+"--longitude : "+self.location.longitude);
             },
-            cancel: function(res){
-              alert("用户拒绝授权获取地理位置");
-              this.onSubmitQuestion('createParentOrder');
-            }
+            // cancel: function(res){
+            //   alert("用户拒绝授权获取地理位置");
+            //   self.onSubmitQuestion('createParentOrder');
+            // }
           });
             
         },
-        // onCancel: function(){
-        //   this.status.getLocation = false;
-        // },
+        onCancel: function(){
+          this.status.getLocation = false;
+        },
       	onRecommend:function(){
       		this.status.tutorList = true;
       		this.status.myInfo = false;
