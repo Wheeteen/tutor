@@ -33,6 +33,7 @@ html,body,div,label,input,button,p,span,em,h1,h3,ul,li{
 	}
 }
 .textarea(){
+	-webkit-appearance: none;
 	outline: none;
 	resize:none;
 	color:#464;
@@ -138,59 +139,59 @@ ul,ul li{
    	}
    }
 }
-.getLocation{
-  position:fixed;
-  top:0;
-  z-index: 99;
-  width:100%;
-  height: 100%;
+// .getLocation{
+//   position:fixed;
+//   top:0;
+//   z-index: 99;
+//   width:100%;
+//   height: 100%;
 
-  .greyScreen{
-	width:100%;
-	height: 100%;
-	background:rgba(0, 0, 0, 0.4);
-   }
-   .locationCon{
-      position: fixed;
-	  width:80%;
-	  left:10%;
-	  color: #666;
-	  top:30%;
-	  border:1px solid #999;
-	  background: #fff;
-	  z-index: 23;
-	  .infoTip{
-		margin-top: 20px;
-		margin-bottom: 20px;
-		width:90%;
-        margin-left: 5%;
-        font-size: 13px;
-		p{
-			text-align: center;
-		}
-	  }
-	  .infoBtn{
-		width:100%;
-		margin-top: 5%;
-	  } 
-	  span{
-		display: inline-block;
-		float: left;
-		width:50%;
-		color:#464;
-		height: 25px;
-		line-height: 25px;
-		text-align: center;
-		box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		border-top: 1px solid #ccc;
-		&:first-child{
-			background-color:@color1;
-			color: #fff;
-		}
-	  }
-   }
-}
+//   .greyScreen{
+// 	width:100%;
+// 	height: 100%;
+// 	background:rgba(0, 0, 0, 0.4);
+//    }
+//    .locationCon{
+//       position: fixed;
+// 	  width:80%;
+// 	  left:10%;
+// 	  color: #666;
+// 	  top:30%;
+// 	  border:1px solid #999;
+// 	  background: #fff;
+// 	  z-index: 23;
+// 	  .infoTip{
+// 		margin-top: 20px;
+// 		margin-bottom: 20px;
+// 		width:90%;
+//         margin-left: 5%;
+//         font-size: 13px;
+// 		p{
+// 			text-align: center;
+// 		}
+// 	  }
+// 	  .infoBtn{
+// 		width:100%;
+// 		margin-top: 5%;
+// 	  } 
+// 	  span{
+// 		display: inline-block;
+// 		float: left;
+// 		width:50%;
+// 		color:#464;
+// 		height: 25px;
+// 		line-height: 25px;
+// 		text-align: center;
+// 		box-sizing: border-box;
+// 		-webkit-box-sizing: border-box;
+// 		border-top: 1px solid #ccc;
+// 		&:first-child{
+// 			background-color:@color1;
+// 			color: #fff;
+// 		}
+// 	  }
+//    }
+// }
 .errorTip{
  // .locationCon{
 	// height: 13%; 
@@ -272,6 +273,7 @@ header{
         padding:0 5%;
         color:#333;
         input{
+        	-webkit-appearance: none;
         	text-indent: 4px;
         	border-radius: 3px;
         	outline: none;

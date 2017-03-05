@@ -309,7 +309,7 @@
 		                this.timer = setTimeout(function(){
 		                 self.recommendList[index].isInvited = invitedText;
 				         self.status.isTutorInfo = false;
-		                }, 1500);
+		                }, 400);
 					}else{
 						console.log(res.json().error);
 						var self = this;
@@ -319,7 +319,7 @@
 						this.timer && clearTimeout(this.timer);
 						this.timer=setTimeout(function(){
                            self.status.isInfoTipOne = false;
-						},2000);
+						},1000);
 					}
 					
 				})

@@ -870,22 +870,16 @@ function dateCompare(date1, date2) {
         },
         onAllow: function(){
           var self = this;
-          wx.getLocation({
-            type: 'wgs84',
-            success: function (res) {
-              alert(JSON.stringify(res));
-              self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              // self.form.speed = res.speed; // 速度，以米/每秒计
-              // self.form.accuracy = res.accuracy; // 位置精度
-              // console.log("latitude : "+self.location.latitude+"--longitude : ");
-              self.onLocation();
-            },
-            // cancel: function(res){
-            //   alert("用户拒绝授权获取地理位置");
-            //   this.onSubmitQuestion('createParentOrder');
-            // }
-          });
+          wx.ready(function (){
+            wx.getLocation({
+              type: 'wgs84',
+              success: function (res) {
+                self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                self.onLocation();
+              },
+            });
+          })
            
         },
         // onCancel: function(){

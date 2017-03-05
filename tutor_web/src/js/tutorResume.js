@@ -434,21 +434,23 @@ var vm = new Vue({
     uploadImg: function(index){
       var img = this.images;
       var self = this;
-      wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-          console.log(res);
-          var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片          
-          if(index == 'certificate_photo'){
-            img.certificate_photo = localId;
-          }else{
-            img.teach_show_photo[index].img = localId;
+      wx.ready(function(){
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            console.log(res);
+            var localId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片          
+            if(index == 'certificate_photo'){
+              img.certificate_photo = localId;
+            }else{
+              img.teach_show_photo[index].img = localId;
+            }
+            self.uploadImgTo(localId,index);
           }
-          self.uploadImgTo(localId,index);
-        }
-      });
+        });
+      })
     },
     uploadImgTo: function(id,index){
       var img = this.form;
@@ -507,18 +509,11 @@ var vm = new Vue({
       //地理位置
         wx.getLocation({
           type: 'wgs84',
-            success: function (res) {
-              alert(JSON.stringify(res));
-              self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              // self.form.speed = res.speed; // 速度，以米/每秒计
-              // self.form.accuracy = res.accuracy; // 位置精度
-              self.onAllow();
-              alert("latitude : "+self.location.latitude+"--longitude : "+self.location.longitude+"--speed : ");
-            },
-            cancel: function(res){
-              alert("用户拒绝授权获取地理位置");
-            }
+          success: function (res) {
+            self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            self.onAllow();
+          },
         });
       });
     },

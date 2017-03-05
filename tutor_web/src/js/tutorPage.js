@@ -24,20 +24,7 @@
           noExpection: '',
           errorTip:'对不起，您还未通过审核'
       	},
-      	msgList: [
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:1,name:'张先生',distance:0.8,isInvited: '已接受',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:2,name:'张先生',distance:0.8,isInvited: '已拒绝',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:3,name:'张先生',distance:0.8,isInvited: '已完成',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:4,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-          // {pd_id:0,name:'张先生',distance:0.8,isInvited: '已报名',teacher_sex: '不限', learning_phase: '高中',aim:'提高成绩',subject:'数学',subject_other: '',grade:'高一',address:"大学城小洲",time:"周六上午",class_field: '成绩优良',teacher_method:"nice,细心", teacher_method_other: '',require:"",salary: '18/h', bonus: '100/月',deadline:'2017-01-12',create_time: '2016.12.28 16:59'},
-      	],
+      	msgList: [],
         detailedList: [],
         para:{
           'size': 9,
@@ -94,6 +81,9 @@
               var data = res.json();
               if(data.length!=0){
                 for(var i=0;i<data.length;i++){
+                  if(data[i].distance!==0){
+                    data[i].distance = data[i].distance.toFixed(2);
+                  }
                   var level=this.grade_level(data[i].class_field);
                   data[i].class_field = level;
                   if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '家长已拒绝'){
@@ -142,7 +132,7 @@
         //   });
         // },
         getSignature: function(){        
-          this.$http.post(this.domain+'/generate_signature',{
+          this.$http.post(this.domain+'generate_signature',{
             "timestamp": 1482652615,
             "nonceStr": 'yinzishao',
           },{
@@ -172,14 +162,14 @@
           })                
         },
         sendLocation: function(){
-          this.$http.post(this.domain+'/setLocations',this.location,{
+          this.$http.post(this.domain+'setLocations',this.location,{
             crossOrigin: true,
             headers:{
               'Content-Type':'application/json' 
             }
           }).then(function(res){
             if(res.json().success == 1){
-              this.status.getLocation = false;
+              // this.status.getLocation = false;
             }
           })
         },
@@ -192,23 +182,19 @@
         //发送定位
         onAllow: function(){
           var self = this;
-          wx.getLocation({
-            type: 'wgs84',
-            success: function (res) {
-              alert(JSON.stringify(res));
-              self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              // self.form.speed = res.speed; // 速度，以米/每秒计
-              // self.form.accuracy = res.accuracy; // 位置精度
-              self.sendLocation();
-              console.log("latitude : "+self.location.latitude+"--longitude : "+self.location.longitude);
-            },
-            // cancel: function(res){
-            //   alert("用户拒绝授权获取地理位置");
-            //   self.onSubmitQuestion('createParentOrder');
-            // }
-          });
-            
+          wx.ready(function (){
+            wx.getLocation({
+              type: 'wgs84',
+              success: function (res) {
+                alert()
+                self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                self.sendLocation();
+              },
+              
+            });
+          })
+          
         },
         // onCancel: function(){
         //   this.status.getLocation = false;
@@ -284,7 +270,7 @@
                 this.timer = setTimeout(function(){
                   self.msgList[index].isInvited='';
                   self.status.isTutorInfo = false;
-                }, 1000);
+                }, 400);
                }else{
                  conosle.log(res.json().error);
                }
@@ -321,7 +307,7 @@
                   self.msgList[index].isInvited='您已报名';
                   self.status.expection = false;
                   self.form.expection = '';
-                }, 1000);
+                }, 400);
               }else{
                  console.log(res.json().error);
                   this.status.errorTip = res.json().error;
@@ -330,7 +316,7 @@
                   this.timer && clearTimeout(this.timer);
                   this.timer=setTimeout(function(){
                     self.status.isInfoTipOne = false;
-                  },2000);
+                  },1000);
               }
             })
           }else{
