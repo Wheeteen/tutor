@@ -33,8 +33,6 @@
 			location:{
 	          latitude:'',
 	          longitude:'',
-	          // speed:'',
-	          // accuracy:'',
 	        },
 	        signature: '',
 		},
@@ -93,17 +91,6 @@
 	              }
 	            });
 	        },
-	        // configuration: function(){
-	        //   var self = this;
-	        //   wx.config({
-	        //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-	        //     appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
-	        //     timestamp: 1482652615, // 必填，生成签名的时间戳
-	        //     nonceStr:'yinzishao' , // 必填，生成签名的随机串
-	        //     signature: self.signature,// 必填，签名，见附录1
-	        //     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-	        //   });
-	        // },
 	        getSignature: function(){        
 	          this.$http.post(this.domain+'/generate_signature',{
 	            "timestamp": 1482652615,
@@ -119,7 +106,7 @@
 	              this.signature = res.json().signature;
 	              var self = this;
 	              wx.config({
-	                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 	                appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
 	                timestamp: 1482652615, // 必填，生成签名的时间戳
 	                nonceStr:'yinzishao' , // 必填，生成签名的随机串
@@ -127,7 +114,6 @@
 	                jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 	              });
                   self.onAllow();
-	              // this.status.getLocation = true;
 	            }else{
 	              console.log(res.json().error);
 	            }
@@ -148,8 +134,6 @@
 	        },
 	        setLocation: function(){
 	          this.getSignature();
-	          // this.configuration();
-	          // this.wxReady();
 	        },
 	        //发送定位
 	        onAllow: function(){
@@ -158,7 +142,7 @@
 	          	wx.getLocation({
 		            type: 'wgs84',
 		            success: function (res) {
-		              alert(JSON.stringify(res));
+		              // alert(JSON.stringify(res));
 		              self.location.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 		              self.location.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 		              self.sendLocation();
@@ -168,9 +152,6 @@
 	          })
 	          
 	        },
-	        // onCancel: function(){
-	        //   this.status.getLocation = false;
-	        // },
 			onRecommend:function(){
                 this.status.isTutorInfo = false;
 			},

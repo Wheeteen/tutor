@@ -8,20 +8,7 @@
       el:'body',
       data:{
         domain:'http://www.yinzishao.cn/',
-      	msgList:[
-          // {'msg_id':1,'message_title':'张先生已接受您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':2,'message_title':'张先生已拒绝您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':3,'message_title':'张先生已报名了您的请求','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':4,'message_title':'好学吧家教服务平台邀请您填写反馈意见啦','status':false},
-          // {'msg_id':5,'message_title':'张先生已接受您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':6,'message_title':'张先生已拒绝您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':7,'message_title':'张先生已报名了您的请求','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':8,'message_title':'好学吧家教服务平台邀请您填写反馈意见啦','status':false},
-          // {'msg_id':9,'message_title':'张先生已接受您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':10,'message_title':'张先生已拒绝您的报名','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':11,'message_title':'张先生已报名了您的请求','message_content':'张先生已接受您的报名,请到“我的老师”处查看详细信息','status':false,'isDetailed':false},
-          // {'msg_id':12,'message_title':'好学吧家教服务平台邀请您填写反馈意见！','status':false},  
-      	],
+      	msgList:[],
       	status:{
       		isFeedBack: false,
           isLoading: true,
