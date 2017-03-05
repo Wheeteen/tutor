@@ -9,6 +9,7 @@
         timer: null,
         domain: 'http://www.yinzishao.cn/',
       	status:{
+          timer: null,
           isParent: true,
           isNoParent: false,
           isRegister: '',
@@ -142,8 +143,10 @@
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              self.onAllow();
-              // this.status.getLocation = true;
+              this.timer && clearTimeout(this.timer);
+              this.timer = setTimeout(function(){
+               self.onAllow();
+              }, 300);
             }else{
               console.log(res.json().error);
             }

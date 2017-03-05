@@ -188,11 +188,11 @@ var vm = new Vue({
   ready: function(){
       this.getSignature();
       if(!this.getParam()){
-        this.onGetLocation();
-        // this.status.getLocation = true;
-        // this.isGetLocation();
-        // console.log(1);
-        // this.getSignature();
+        var self = this;
+        this.timer && clearTimeout(this.timer);
+        this.timer = setTimeout(function(){
+         self.onGetLocation();
+        }, 300);
       }else{
         // this.status.getLocation = false;
         this.render();

@@ -454,7 +454,10 @@ function dateCompare(date1, date2) {
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              this.onAllow();
+              this.timer && clearTimeout(this.timer);
+              this.timer = setTimeout(function(){
+                self.onAllow();
+              }, 300);
               // this.status.getLocation = true;
             }else{
               console.log(res.json().error);
@@ -779,7 +782,6 @@ function dateCompare(date1, date2) {
           }
         },
         onSubmitQuestion: function(keyword){ 
-        console.log(this.form.sat_morning,this.form.sat_afternoon,this.form.sat_evening,this.form.sun_morning,this.form.sun_afternoon,this.form.sun_evening);         
           var self = this,url;
           if(keyword=='createParentOrder'){
             url = './parentPage.html';
