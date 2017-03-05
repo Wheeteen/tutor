@@ -260,7 +260,7 @@
 		            <td 
 		            v-for="(k2,child) in day" 
 		            :class="{'selected':child.selected,'disabled':child.disabled}"
-		            @click="select(k1,k2,$event)" @touchend="select(k1,k2,$event)">
+		            @click="select(k1,k2,$event)" @touchstart="select(k1,k2,$event)">
 		            <span>{{child.day}}</span>
 		            <div class="lunar" v-if="showLunar">{{child.lunar}}</div>
 		            </td>

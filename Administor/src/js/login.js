@@ -1,8 +1,4 @@
 (function(){
-  // Vue.http.interceptors.push(function(request, next){
-  //   request.credentials = true;
-  //   next();
-  // });
 	var vm = new Vue({
       el: 'body',
       data: {
@@ -51,7 +47,19 @@
               var self = this;
               this.status.isSubmit = false;
               if (res.json().success == 1) {
-                location.href = './userAdministor.html';
+                self.$http.get(this.domain+'checkWechat',{
+                  crossOrgin: true,
+                  headers:{
+                    'Content-Type':'application/json' 
+                  }
+                }).then(function(res) {
+                  console.log(res.json());
+                  if (res.json().success == 1) {
+                    location.href = './userAdministor.html';
+                  } else{
+                    self.status.getWechat = true;
+                  }
+                });
               } else {
                 this.hintData.text = res.json().error;
                 this.hintData.status = true;
@@ -64,7 +72,26 @@
           }else{
             return false;
           }   			
-    		}
+    		},
+        onAllow: function(){
+          this.$http.get(this.domain+'setWechat',{
+            crossOrgin: true,
+            headers:{
+              'Content-Type':'application/json' 
+            }
+          }).then(function(res) {
+            if (res.json().success == 1) {
+              this.status.getWechat = false;
+              location.href = './userAdministor.html';
+            } else {
+              console.log(res.json().error);
+            }
+          });
+        },
+        onCancel: function(){
+          this.status.getWechat = false;
+          location.href = './userAdministor.html';
+        }
       }
 	});
 })();
