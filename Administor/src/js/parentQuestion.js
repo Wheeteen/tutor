@@ -728,6 +728,8 @@ function dateCompare(date1, date2) {
             this.status.textAddress = '地址不能为空';
             return false;
           }else{
+            this.status.textUsername = '';
+            this.status.textTip = '';
             this.status.textAddress = '';
             this.onSubmitQuestion();
           }
@@ -773,14 +775,14 @@ function dateCompare(date1, date2) {
                 this.timer=setTimeout(function(){
                    self.status.getTip = false;
                    location.href = url;
-                },2000);
+                },1000);
               } else {
                 self.status.errorTip = res.json().error;
                 self.status.getTip = true;
                 this.timer && clearTimeout(this.timer);
                 this.timer=setTimeout(function(){
                  self.status.getTip = false;
-                },2000);
+                },1000);
               }
             });
           // }

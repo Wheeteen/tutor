@@ -11,7 +11,7 @@
       	status:{
       		isParent: true,
       		isTeacher: false,
-      		isSelecting: true,
+          isSelecting : true,
           isLoading: false,
           isDeleteInfo: false,
           selected: '',

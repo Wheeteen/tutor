@@ -32,9 +32,8 @@
         <span>上传banner</span>
         <span class='close' @touchend="onClose">×</span>
       </div>
-      <div class="uploadImg">
+      <div class="uploadImg" @touchend="uploadImg">
         <span>＋</span>
-        <input type="file" accept="image/*" @change="uploadPic">
         <img :src="form.image" alt="">
       </div>
       <div class="url">
@@ -42,7 +41,7 @@
         <input type="text" v-model='form.url'>
       </div>
       <div class="submitBtn">
-        <input type="submit" value='确认上传'>
+        <input type="submit" value='确认上传' v-bind:class="{'bgreen':isOnSubmit}">
       </div>
     </form>
   </div>
@@ -65,7 +64,7 @@
 		<span class="active"  v-on:touchend="onOther">其他</span>
 	</div>
 </div>
-<script src="../dist/js/lrz.bundle.js"></script>
+<script src="../dist/js/wx.js"></script>
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/banner.min.js"></script>

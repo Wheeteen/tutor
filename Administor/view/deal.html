@@ -44,31 +44,6 @@
     <div class="enlargeImg" v-if='status.isEnlargeImg'>
         <img :src="status.enlargeImg" alt="" v-tap="closeImg()">
     </div>
-    <!-- 信息费 -->
-	<!-- <div class="feeInfo" v-if="status.isFeeInfo">
-        <div class="greyScreen"></div>
-        <form class="InfoRequest" v-on:submit.prevent='onSubmit(status.selected)'>
-            <p class='close' v-tap='onClose'>×</p>
-            <div class="infoTip">
-                <p>信息费 <input type="Number" v-model.trim="form.fee" required> 元</p>
-            </div>
-            <div class="infoBtn">
-                <input type="submit" value='提交'>  
-            </div>
-        </form>
-    </div> -->
-    <!-- 已定价 -->
-    <!-- <div class="feeInfo" v-if="status.isFeeInfoTrue">
-        <div class="greyScreen"></div>
-        <div class="InfoRequest">
-            <div class="infoTip">
-                <p>信息费 {{mainData[status.selected].price}} 元</p>
-            </div>
-            <div class="infoBtn">
-                <p>已定价</p>  
-            </div>
-        </div>
-    </div> -->
 </div>
 <script src="../dist/js/vue.min.js"></script>
 <script src='../dist/js/v-tap.min.js'></script>

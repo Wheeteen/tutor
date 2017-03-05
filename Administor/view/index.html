@@ -10,16 +10,12 @@
 <div class="container" v-bind:class="{opacity: status.isLoading}">
 	<div class="mainCon">
 		<h1>管理员登录</h1>
-		<div class="text-error" v-if="hintData.status">
-			<span v-text="hintData.text"></span>
-			<span v-on:touchstart="offHint">×</span>
-		</div>
 		<form action="" v-on:submit.prevent="onSubmit">
 			<div class="username">
 				<input type="text" placeholder="用户名" required v-model.trim="form.username">
 			</div>
 			<div class="pwd">
-				<input type="password" placeholder="密码" required v-model.trim="form.pwd">
+				<input type="password" placeholder="密码" required v-model.trim="form.password">
 			</div>
 			<div class="login">
 				<input type="submit" v-bind:class="{'btn-default':isBtn}" v-if="!status.isSubmit" value="确认登录">
@@ -27,6 +23,12 @@
 			</div>
 		</form>
 	</div>
+	<div class="thumbnail" v-if='hintData.status'>
+	    <div class="text-error">
+         <span v-text="hintData.text"></span>
+         <span v-on:touchend="offHint">×</span>
+        </div> 
+    </div>
 	<!-- 提示管理员是否绑定微信 -->
     <div class="getWechat" v-if='status.getWechat'>
     	<div class="greyScreen"></div>

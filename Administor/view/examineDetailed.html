@@ -92,23 +92,8 @@
 		<p v-on:touchend="notExamine">未通过审核</p>
 	</div>
 	<div class="enlargeImg" v-if='status.isEnlargeImg'>
-    	<!-- <div class="pic"> -->
-    		<img :src="status.enlargeImg" alt="" v-on:touchend="closeImg">
-    	<!-- </div> -->
+      <img :src="status.enlargeImg" alt="" v-on:touchend="closeImg">
     </div>
-	<!-- 信息费 -->
-	<!-- <div class="feeInfo" v-if="status.isFeeInfo">
-        <div class="greyScreen"></div>
-        <form class="InfoRequest" v-on:submit.prevent='onSubmit'>
-            <p class='close' v-on:touchend='onClose'>×</p>
-            <div class="infoTip">
-                <p>信息费 <input type="Number" trim.v-model="fee" required> 元</p>
-            </div>
-            <div class="infoBtn">
-                <input type="submit" value='提交'>  
-            </div>
-        </form>
-    </div> -->
 </div>
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>

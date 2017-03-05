@@ -12,23 +12,13 @@
     			status:{
     				isTutor: true,
     				isNoTutor: false,
-            isTutorInfo: false,
-            isSuccess: true,
-            isChangeInfo: false,
-            // isDefault: '',
-            isInfoTipOne: false,
-            selected: '',
-            isRegister: '',
-            isLoading: false,
-            onParent: true,
-            onTeacher: false,
-            errorTip:'对不起，您只能选择一位老师'
+            isLoading: true,
     			},
-			para:{
+			    para:{
 		        'start': 0,
 		        'size': 16
-		    },
-		    jsonData:[],
+		      },
+		      jsonData:[],
        },
        ready: function(){
         this.renderData();
@@ -37,11 +27,11 @@
        methods:{
        	down: function(){
        	  this.para.size = 5;
-	      this.para.start++;
-	      if(this.jsonData.length!==0){
+  	      this.para.start++;
+  	      if(this.jsonData.length!==0){
             this.renderData();
           }
-	    },
+	      },
        	renderData: function(){
           this.$http.post(this.domain+'/getAdminParent',this.para,{
             crossOrigin: true,
@@ -61,7 +51,7 @@
           	  }else{
           	  	if(this.tutorList.length == 0){
           	  	  this.status.isTutor = false;
-   			      this.status.isNoTutor = true;
+   			          this.status.isNoTutor = true;
           	  	}
           	  }
           	}

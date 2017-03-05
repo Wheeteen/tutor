@@ -22,20 +22,13 @@
           isEnlargeImg: false,
           enlargeImg: '',
       	},
-      	mainData:[
-          // {oa_id: 0,tea:2,pd_name: '张小可',name:'王小源',result: '已处理',isDeal: false,screenshot_path:'../img/user02.png'},
-          // {oa_id: 1,tea:3,pd_name: '张可',name:'王小源',result: '未处理',isDeal: true,screenshot_path:'../img/user02.png'},
-          // {oa_id: 2,tea:4,pd_name: '张大可',name:'王小源',result: '未处理',isDeal: true,screenshot_path:'../img/user02.png'},
-        ],
+      	mainData:[],
         detailedList: [],
         jsonData: [],
         para: {
           'size':15,
           'start':0
         },
-        // form: {
-        //   fee: Number,
-        // }
       },
       ready: function(){
       	this.render();
@@ -51,11 +44,12 @@
         },
       	render: function(){
           var self = this;
+          this.status.isSelecting = true;
            this.$http.post(this.domain+'/getDoneList',this.para,{
-               crossOrigin: true,
-               headers:{
-                  'Content-Type':'application/json' 
-               }
+             crossOrigin: true,
+             headers:{
+                'Content-Type':'application/json' 
+             }
            }).then(function(res){
             console.log(res.json());
             if(res.json().success == 0){
@@ -74,6 +68,7 @@
                 }
                 var json=self.mainData.concat(data);
                 this.$set('mainData',json);
+                this.status.isSelecting = false;
               }else{
                 if(this.mainData.length==0){
                   this.status.isList = false;
@@ -86,34 +81,20 @@
         onUser:function(){
           window.location.href = './userAdministor.html';
         },
-        // onDeal: function(){
-        //   this.status.isUploadImg = false;
-        // },
         onOther: function(){
           window.location.href = './other.html';
         },
         onDeal: function(index){
           this.status.selected = index;
-          var self =this;
-          // if(this.mainData[index].info == '未定价'){
-          //   this.status.isFeeInfo = true;
-          // }else if(this.mainData[index].info == '已定价'){
-          //   this.status.isFeeInfoTrue = true;
-          //   this.timer && clearTimeout(this.timer);
-          //   this.timer = setTimeout(function(){
-          //     self.status.isFeeInfoTrue = false;
-          //   }, 2000);
-          // }else{
-            this.status.isUploadImg = true;
-            this.detailedList = this.mainData[index];
-            if(this.mainData[index].result == '未处理'){
-              this.status.isSend = '发送联系方式';
-              this.status.isGreen = true;
-            }else{
-              this.status.isSend = '已发送';
-              this.status.isGreen = false;
-            }
-          // }
+          this.status.isUploadImg = true;
+          this.detailedList = this.mainData[index];
+          if(this.mainData[index].result == '未处理'){
+            this.status.isSend = '发送联系方式';
+            this.status.isGreen = true;
+          }else{
+            this.status.isSend = '已发送';
+            this.status.isGreen = false;
+          }
         },
         onClose: function(){
         	this.status.isUploadImg = false;
@@ -141,7 +122,7 @@
                   list.isDeal = true;
                   list.result = '已成交';
                   self.status.isUploadImg = false;
-                }, 2000); 
+                }, 1000); 
               }
             })
         	}else {

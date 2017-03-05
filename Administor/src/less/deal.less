@@ -129,7 +129,7 @@ em{
 		width:90%;
 		left:5%;
 		top:10%;
-		border:1px solid #53C778;
+		border:1px solid #ccc;
 		background: #fff;
 		z-index: 20;
 	}
@@ -163,7 +163,8 @@ em{
 		.refuse{
 			width:100%;
 			letter-spacing: 1px;
-			background-color: #666;
+			background-color: #525252;
+			color: #fff;
 			text-align: center;
 			height: 28px;
 			line-height: 28px;
@@ -171,98 +172,22 @@ em{
 		}
 		.bgreen{
 			background-color: @color1 !important;
-			color: #fff !important;
+			// color: #fff !important;
 		}
 	}
 	.infoImg{
-		width:70%;
+		width:90%;
 		margin: 14px auto;
-		// height: 130px;
+		height: 180px;
 		
 		img{
 			width:100%;
+			height: 100%;
 			border:1px solid #ccc;
 		    border-radius: 3px;
 		}
 	}
 
-}
-.feeInfo{
-	position: fixed;
-	width:100%;
-	height: 100%;
-	top:0;
-	
-	.greyScreen{
-		position: fixed;
-		top:0;
-		width:100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.3);
-	}
-	.InfoRequest{
-		position: fixed;
-		width:70%;
-		left:15%;
-		top: 20%;
-		border-radius: 3px;
-		border:1px solid #ccc;
-		background: #fff;
-		.close{
-			width:90%;
-			margin:3px auto;
-			text-align: right;
-			font-size: 25px;
-			color:#aaa;
-		}
-		.infoTip{
-			margin-top: 6%;
-			p{
-				text-align: center;
-			}
-			input{
-				display: inline-block;
-				margin: 0 3px;
-				width:30%;
-				outline: none;
-				height: 20px;
-				line-height: 20px;
-				border:1px solid #ccc;
-				text-indent: 3px;
-				border-radius: 2px;
-				&:focus{
-					border-color: @color1;
-				}
-			}
-		}
-		.infoBtn{
-			margin-top: 30px;
-			width:100%;
-			p{
-				width:100%;
-				height: 25px;
-				line-height: 25px;
-				text-align: center;
-				background: @color2;
-				color:#fff;
-				letter-spacing: 1px;
-			}
-		}
-		
-		input[type='submit']{
-			display: block;
-			width:100%;
-			color:#fff;
-			height: 25px;
-			line-height: 25px;
-			outline: none;
-			border:0;
-			text-align: center;
-			background: @color1;
-			letter-spacing: 1px;
-		}
-
-	}
 }
 .enlargeImg{
 	position: fixed;
