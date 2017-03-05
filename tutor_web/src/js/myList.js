@@ -270,6 +270,9 @@
 
       }).then(function(res){
         if(res.json().success == 1){
+          if(this.signature==""){
+            this.getSignature();
+          }
           this.msgList[index].finish = 0;
           this.msgList[index].isRed = false;
           this.msgList[index].result= '请上传截图';

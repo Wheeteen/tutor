@@ -45,12 +45,7 @@
           }).then(function(res) {
             console.log(res.json());
             this.form.myImg=res.json().headimgurl;
-            this.form.name = res.json().nickname;
-            // if(res.json().result == 0){
-            //  this.form.remindInfo = false;
-            // }else{
-            //  this.form.remindInfo = true;
-            // }    
+            this.form.name = res.json().nickname;  
           });
         },
         onRecommend: function(){
