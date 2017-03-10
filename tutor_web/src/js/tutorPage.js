@@ -163,16 +163,18 @@
             if(res.json().success == 1){
               // this.status.getLocation = false;
               this.para.start =0;
+              this.para.size = 9;
               this.msgList = [];
               this.getData();
             }
           })
         },
         setLocation: function(){
-          // this.status.getLocation = true;
-          this.getSignature();
-          // this.configuration();
-          // this.wxReady();
+          if(this.getSignature==''){
+            this.getSignature();
+          }else{
+            this.onAllow();
+          }
         },
         //发送定位
         onAllow: function(){

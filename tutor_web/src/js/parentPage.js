@@ -133,6 +133,7 @@
 	          }).then(function(res){
 	            if(res.json().success == 1){
 	            	this.form.start = 0;
+	            	this.form.size = 9;
 	            	this.recommendList = [];
 	            	this.renderData();
 	              // this.status.getLocation = false;
@@ -140,7 +141,11 @@
 	          })
 	        },
 	        setLocation: function(){
-	          this.getSignature();
+	          if(this.getSignature==''){
+                this.getSignature();
+	          }else{
+	          	this.onAllow();
+	          }
 	        },
 	        //发送定位
 	        onAllow: function(){
