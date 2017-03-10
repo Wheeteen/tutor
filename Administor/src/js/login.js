@@ -3,7 +3,7 @@
       el: 'body',
       data: {
         timer: null,
-        domain:'http://www.yinzishao.cn/',
+        domain:'http://shaozi.beansonbar.cn/',
         status:{
           isLoading: false,
           isSubmit: false,

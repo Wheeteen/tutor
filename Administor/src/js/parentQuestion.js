@@ -15,7 +15,7 @@ function dateCompare(date1, date2) {
 	var vm = new Vue({
       el: 'body',
       data: {
-        domain: 'http://www.yinzishao.cn/',
+        domain: 'http://shaozi.beansonbar.cn/',
         timer: null,
         calendar:{
           year: 0,

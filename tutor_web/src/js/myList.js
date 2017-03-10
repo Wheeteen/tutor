@@ -7,7 +7,7 @@
     el: 'body',
     data: {
       timer: null,
-      domain:'http://www.yinzishao.cn',
+      domain:'http://shaozi.beansonbar.cn',
  	    msgList: [],
 			status:{
         isList: true,

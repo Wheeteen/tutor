@@ -6,7 +6,7 @@ Vue.http.interceptors.push(function(request, next){
 var vm = new Vue({
   el: 'body',
   data: {
-    domain: 'http://www.yinzishao.cn',
+    domain: 'http://shaozi.beansonbar.cn',
     timer: null,
   	hintData: {
   	   status: false,
@@ -485,7 +485,7 @@ var vm = new Vue({
         var self = this;
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+          appId: 'wx7a327445ac3309b4', // 必填，公众号的唯一标识
           timestamp: 1482652615, // 必填，生成签名的时间戳
           nonceStr:'yinzishao' , // 必填，生成签名的随机串
           signature: self.signature,// 必填，签名，见附录1
