@@ -13,7 +13,7 @@
 		<span v-tap="onMine()">我的</span>
 	</div>
 	<div class="consult">
-		<a href="#">
+		<a href="http://wpa.qq.com/pa?p=2::52">
 			<em>客服</em>
 			<em>咨询</em>
 		</a>
@@ -31,12 +31,12 @@
 	    <!-- 轮播 -->
 		<div v-el:swipe id='swipe' class='swipe bar-slider' v-if='swipeinfo.length>0'>
 		    <div class='swipe-wrap'>
-		        <div v-for="item in swipeinfo"><a :href='item.url' v-tap><img :src='item.img' /></a></div>
+		        <div v-for="item in swipeinfo"><a :href='item.url'><img :src='item.img' /></a></div>
 		    </div>
 		    <!-- 分页 -->
 		    <div class="pagination">
-		        <span class="swipe-pagination-switch swipe-active-switch" @click="slideToCur(0)"></span>
-		        <span class="swipe-pagination-switch" @click="slideToCur($index+1)" v-for="item in slideNum"></span>
+		        <span class="swipe-pagination-switch swipe-active-switch" @touchstart="slideToCur(0)"></span>
+		        <span class="swipe-pagination-switch" @touchstart="slideToCur($index+1)" v-for="item in slideNum"></span>
 		    </div>
 		</div>
 	    <!-- 选择 -->

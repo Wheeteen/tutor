@@ -16,7 +16,7 @@
 			<p>即可帮您挑选最适合的老师</p>
 		</div>
 		<div class="startBtn">
-			<input type="button" value='开始体验'@touchstart="onStart">
+			<input type="button" value='开始体验' @touchstart="onStart">
 		</div>
 	</div>
 	<header>
@@ -38,7 +38,7 @@
 				<input type="text" v-model.trim="form.subject_other">
 			</div>
 			<div class="sQ1">
-				<button type='button' v-on:touchend = 'onSubmit1' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess1}">下一题</button>
+				<button type='button' v-on:touchstart='onSubmit1' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess1}">下一题</button>
 				<span v-on:touchstart="onNext(question[0].key,question[1].key)">跳过</span>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 				</li>
 			</ul>
 			<div class="sQ1">
-				<button type='button' v-on:touchend = 'onSubmit2' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess2}">下一题</button>
+				<button type='button' v-on:touchstart = 'onSubmit2' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess2}">下一题</button>
 				<span v-on:touchstart = 'onNext(question[1].key,question[2].key)'>跳过</span>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 	        		<!-- <span class="background"></span> -->
 	        		<ul class="Monday">	     
 	        		    <li v-for='i in 8'>
-	        			  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchend="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
+	        			  <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchstart="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
 	        			  <em></em>
 	        			</li>
 	        		</ul>
@@ -98,7 +98,7 @@
 	        	<p>请填数字，单位为小时</p>
 	        </div>
 	        <div class="sQ1">
-				<button type='button' v-on:touchend = 'onSubmit3' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess3}">下一题</button>
+				<button type='button' v-on:touchstart = 'onSubmit3' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess3}">下一题</button>
 				<span v-on:touchstart = 'onNext(question[2].key,question[3].key)'>跳过</span>
 			</div>
 		</div>
@@ -158,7 +158,7 @@
 				</select>
 			</div>
 			<div class="sQ1">
-				<button type='button' v-on:touchend = 'onNext(question[4].key,question[5].key)' class="btn-success">下一题</button>
+				<button type='button' v-on:touchstart = 'onNext(question[4].key,question[5].key)' class="btn-success">下一题</button>
 				<span v-on:touchstart='onNext(question[4].key,question[5].key)'>跳过</span>
 			</div>
 		</div>
@@ -169,7 +169,7 @@
 			</h3>
 			<textarea placeholder="填写更详细的需求或者孩子的情况，可以帮助您更快找到合适的老师哦~" v-model="form.require"></textarea>
 			<div class="sQ1">
-				<button type='button' v-on:touchend = 'onSubmit6' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess6}">下一题</button>
+				<button type='button' v-on:touchstart = 'onSubmit6' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess6}">下一题</button>
 				<span v-on:touchstart = 'onNext(question[5].key,question[6].key)'>跳过</span>
 			</div>
 	    </div>
@@ -200,7 +200,7 @@
 				<span>前找到家教</span>
 			</p>
 			<div class="sQ1">
-				<button type='button' v-on:touchend = 'onSubmit7' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess7}">下一题</button>
+				<button type='button' v-on:touchstart = 'onSubmit7' class="btn-default" v-bind:class="{'btn-success':isBtnSuccess7}">下一题</button>
 				<span v-on:touchstart = 'onNext(question[6].key,question[7].key)'>跳过</span>
 			</div>
 	    </div>
@@ -227,7 +227,7 @@
 				<p>{{status.textAddress}}</p>
 			</div>
 			<div class="sQ1">
-				<button type="button" class="btn-default" v-bind:class="{'btn-success':isBtnSuccess8}" v-if="!status.isSubmit" v-on:touchend="onStartLoaction">提交请求</button>
+				<button type="button" class="btn-default" v-bind:class="{'btn-success':isBtnSuccess8}" v-if="!status.isSubmit" v-on:touchstart="onStartLoaction">提交请求</button>
 				<button type="button" v-else class="btn-success" disabled="disabled">loading...</button>	
 			</div>
 	    </div>
@@ -284,8 +284,8 @@
     			<p>好学吧要对您进行定位，方便测量您与老师之间的距离，是否允许？</p>
     		</div>
             <div class="infoBtn">
-                <span v-on:touchend="onAllow">允许</span>
-                <span v-on:touchend="onCancel">拒绝</span>
+                <span v-on:touchstart="onAllow">允许</span>
+                <span v-on:touchstart="onCancel">拒绝</span>
             </div>
     	</div>
     </div> -->
