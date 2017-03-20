@@ -36,35 +36,27 @@
 			    	<img v-bind:src="detailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
-					<span> 
-					{{detailedList.name}}
+					<span v-text="detailedList.name"> 
 					</span>
 				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
-			<!-- <div class="distance">
-				<span>距您{{detailedList.distance}}
-				km</span>
-			</div> -->
 			<div class="info">
-				<p>性别：<em>
-				{{detailedList.sex}}
+				<p>性别：<em v-text="detailedList.sex">
 				</em></p>
-				<p>专业：<em>
-				{{detailedList.campus_major}}
-				</em></p>
-				<p>可教年级：<em>{{detailedList.grade}}</em></p>
+				<p>专业：<em v-text="detailedList.campus_major"></em></p>
+				<p>可教年级：<em v-text="detailedList.grade"></em></p>
 				<p>可教科目：<em>
 				{{detailedList.subject}}{{detailedList.subject_other}}
 				</em></p>
-				<p>上课时间：<em>{{detailedList.time}}</em></p>
-				<p>可接受地点：<em>{{detailedList.place}}</em></p>
-				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p>相关成绩：<em>{{detailedList.score}}</em></p>
-				<p>个人简介：<em>{{detailedList.self_comment}}</em></p>
 				<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
-				<p>老师籍贯：<em>{{detailedList.native_place}}</em></p>
-				<p v-if='detailedList.expectation'>对家教的设想：<em>{{detailedList.expectation}}</em></p>
+				<p>上课时间：<em v-text="detailedList.time"></em></p>
+				<p>可接受地点：<em v-text="detailedList.place"></em></p>
+				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p>相关成绩：<em v-text="detailedList.score"></em></p>
+				<p>自我简介：<em v-text="detailedList.self_comment"></em></p>
+				<p>老师籍贯：<em v-text="detailedList.native_place"></em></p>
+				<p v-if='detailedList.expectation'>对家教的设想：<em v-text="detailedList.expectation"></em></p>
 			</div>
 			<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
 				<h3>家教秀</h3>
@@ -91,7 +83,7 @@
 	    <div class="greyScreen"></div>
     	<div class="InfoTipOne InfoRequest">
     		<div class="infoTip">
-    			<p>{{form.isMsg}}已发送，确定取消吗？</p>
+    			<p><em v-text="form.isMsg"></em>已发送，确定取消吗？</p>
     		</div>
     		<div class="infoBtn">
     			<span v-tap="onSureChange(form.selected)">确定</span>

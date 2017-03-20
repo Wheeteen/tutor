@@ -37,8 +37,9 @@
 			</div>
 			<div class="subject">
 				<em v-text="item.subject"></em>
-				<em>{{item.learning_phase}}{{item.grade}}</em>
-				<span v-if="item.distance!==0">距您{{item.distance}}km</span>
+				<em v-text="item.learning_phase"></em>
+				<em v-text="item.grade"></em>
+				<span v-if="item.distance!==0">距您<i v-text="item.distance"></i>km</span>
 			</div>
 			<div class="address">
 				<em>家长位置</em>
@@ -55,42 +56,26 @@
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
 			<div class="client">
-				<span>{{detailedList.name}}</span>
+				<span v-text="detailedList.name"></span>
 				<span class='close' v-tap="onClose()">×</span>
 			</div>
-			<!-- <div class="distance">
-				<span>距您{{detailedList.distance}}km</span>
-			</div> -->
 			<div class="info">
-				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}</em></p>
-				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
-				<p>上课时间：<em>{{detailedList.time}}</em></p>
-				<p>补课目的：<em>{{detailedList.aim}}</em></p>
-				<p v-if='detailedList.class_field!==""'>孩子班级排名：<em>{{detailedList.class_field}}</em></p>
-				<p>教学特点：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p v-if='detailedList.require!==""'>其他要求：<em>{{detailedList.require}}</em></p>
-				<p>时薪：<em>{{detailedList.salary}}</em></p>
-				<p v-if='detailedList.bonus!==""'>补贴：<em>{{detailedList.bonus}}</em></p>
-				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
+				<p>科目：<em v-text="detailedList.learning_phase"></em><em v-text="detailedList.grade"></em><em v-text="detailedList.subject"></em><em v-text="detailedList.subject_other"></em></p>
+				<p>老师性别：<em v-text="detailedList.tearcer_sex"></em></p>
+				<p>上课时间：<em v-text="detailedList.time"></em></p>
+				<p>补课目的：<em v-text="detailedList.aim"></em></p>
+				<p>孩子班级排名：<em v-text="detailedList.class_field"></em></p>
+				<p>教学特点：<em v-text="detailedList.tearcer_method"></em><em v-text="detailedList.tearcer_method_other"></em></p>
+				<p v-if='detailedList.require!==""'>其他要求：<em v-text="detailedList.require"></em></p>
+				<p>时薪：<em v-text="detailedList.salary"></em></p>
+				<p v-if='detailedList.bonus!==""'>补贴：<em v-text="detailedList.bonus"></em></p>
+				<p>找到家教的日期：<em v-text="detailedList.deadline"></em>前</p>
 			</div>
 			<div class="submitBtn">
 				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" v-tap="onRegister(form.selected)" >
 			</div>
 		</div>
 	</div>	
-	<!-- 提示位置获取 -->
-    <!-- <div class="getLocation" v-if='status.getLocation'>
-    	<div class="greyScreen"></div>
-    	<div class="locationCon">
-    		<div class="infoTip">
-    			<p>您是否需要重新获取定位，方便测量您与家长之间的距离？</p>
-    		</div>
-            <div class="infoBtn">
-                <span v-tap="onAllow()">是</span>
-                <span v-tap="onCancel()">否</span>
-            </div>
-    	</div>
-    </div> -->
     <!-- 报名时填期望 -->
     <div class="getLocation expection" v-if='status.expection'>
       <div class="greyScreen"></div>

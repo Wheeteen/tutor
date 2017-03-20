@@ -34,10 +34,10 @@
 	          <img :src="detailedList.screenshot_path" alt="" v-tap="showImg()">
     		</div>
             <div class="client tel">
-                <span>该老师的联系方式：{{detailedList.teacher_tel}}</span>
+                <span>该老师的联系方式：<em v-text="detailedList.teacher_tel"></em></span>
             </div>
     		<div class="submitBtn">
-    			<span v-tap="onSubmitMsg(status.selected)" class='refuse' v-bind:class="{bgreen: status.isGreen}">{{status.isSend}}</span>
+    			<span v-tap="onSubmitMsg(status.selected)" class='refuse' v-bind:class="{bgreen: status.isGreen}" v-text="status.isSend"></span>
     		</div>
 		</div>
     </div>

@@ -66,7 +66,7 @@
                 this.status.isSubmit= true;
                 this.timer && clearTimeout(this.timer);
                 this.timer = setTimeout(function(){
-                  self.onReturn();
+                   this.status.isSubmit= false;
                 }, 1000);
               }else{
                 console.log(res.json().error);

@@ -8,19 +8,6 @@
 </head>
 <body>
 <div v-bind:clss="{opacity:status.isLoading}">
-  <!-- 提示老师是否允许获取位置 -->
-  <!-- <div class="getLocation" v-if='status.getLocation'>
-    <div class="greyScreen"></div>
-    <div class="locationCon">
-      <div class="infoTip">
-        <p>好学吧要对您进行定位，方便测量您与家长之间的距离，是否允许？</p>
-      </div>
-          <div class="infoBtn">
-              <span v-on:touchend="onGetLocation">允许</span>
-              <span v-on:touchend="onCancel">拒绝</span>
-          </div>
-    </div>
-  </div> -->
   <div class="container">
     <h1>简历填写</h1>
     <p class='msg'>请认真填写一下内容，谢谢。</p>
@@ -74,7 +61,7 @@
         <ul class="subject">
           <li v-for='subject in formGroup[2].value'>
             <input type="checkbox" v-bind:value="subject.tag" v-model="Arr.subjectArr">
-            <em>{{subject.tag}}</em>
+            <em v-text="subject.tag"></em>
           </li>
         </ul>
         <div class="feature"  v-if='isOtherSubject'>
@@ -86,7 +73,7 @@
         <ul class="subject">
           <li v-for='grade in formGroup[3].value'>
             <input type="checkbox"  v-bind:value="grade.tag" v-model="Arr.gradeArr">
-            <em>{{grade.tag}}</em>
+            <em v-text="grade.tag"></em>
           </li>
         </ul>
       </div>
@@ -103,7 +90,7 @@
             <span>晚上十点</span>
           </p>
           <div class="weekday" v-for="itemday in formGroup[0].value">
-            <label for="">{{itemday.tag}}</label>
+            <label for="" v-text="itemday.tag"></label>
             <ul class="Monday">
                 <li v-for='i in 8'>
                   <input type="checkbox"  v-bind:value="$index" v-model="time[itemday.key]" v-on:touchend="onWeekday(itemday.key,$index,itemday.begin,itemday.end)">
@@ -115,7 +102,7 @@
             <span>上午</span><span>下午</span><span>晚上</span>
           </div>
           <div class="weekend" v-for="item in formGroup[1].value">  
-            <label for="">{{item.tag}}</label>
+            <label for="" v-text="item.tag"></label>
             <ul class="clock">
               <li v-for='i in item.key'>
                 <input type="checkbox" :false-value="0" :true-value='1' v-model="form[i.tag]">
@@ -210,7 +197,7 @@
         <h3>时薪参考标准</h3>
         <span v-on:touchend="onClosePrice">×</span>
       </div>
-      <div class="ptext">{{salary}}</div>
+      <div class="ptext" v-text="salary"></div>
     </div>
   </div> 
   <!-- 接单须知 -->
@@ -219,9 +206,8 @@
     <div class="priceDetailed">
       <div class="ptitle">
         <h3>接单须知</h3>
-        <!-- <span v-on:touchend="onCloseNotice">×</span> -->
       </div>
-      <div class="ptext">{{notice}}</div>
+      <div class="ptext" v-text="notice"></div>
       <div class='iKnow' v-on:touchend='onNotice'>
         我知道啦
       </div>
@@ -229,7 +215,6 @@
   </div>
 </div>
 <script src="../dist/js/wx.js"></script>
-<!-- <script src="../dist/js/lrz.bundle.js"></script> -->
 <script src="../dist/js/vue.min.js"></script>
 <script src="../dist/js/vue-resource.min.js"></script>
 <script src="../dist/js/tutorResume.min.js"></script>

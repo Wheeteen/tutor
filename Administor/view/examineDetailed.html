@@ -22,23 +22,23 @@
 		<div class="client">
 			<div class="msgName">
 				<span> 
-				家长 {{parentMsg.name}}
+				家长 <em v-text="parentMsg.name"></em>
 				</span>
 			</div>
 		</div>
 		<div class="info">
-			<p>科目：<em>{{parentMsg.learning_phase}}{{parentMsg.grade}}{{parentMsg.subject}}{{parentMsg.subject_other}}</em></p>
-			<p>老师性别：<em>{{parentMsg.teacher_sex}}</em></p>
-			<p>上课时间：<em>{{parentMsg.time}}</em></p>
-			<p>补课目的：<em>{{parentMsg.aim}}</em></p>
-			<p>孩子班级排名：<em>{{parentMsg.class_field}}</em></p>
-			<p>教学特点：<em>{{parentMsg.teacher_method}} {{parentMsg.teacher_method_other}}</em></p>
-			<p v-if='parentMsg.require!==""'>其他要求：<em>{{parentMsg.require}}</em></p>
-			<p>时薪：<em>{{parentMsg.salary}}</em></p>
-			<p v-if='parentMsg.bonus!==""'>补贴：<em>{{parentMsg.bonus}}</em></p>
-			<p>找到家教的日期：<em>{{parentMsg.deadline}}</em>前</p>
-			<p>联系电话：<em>{{parentMsg.tel}}</em></p>
-			<p>住址：<em>{{parentMsg.address}}</em></p>
+			<p>科目：<em v-text="parentMsg.learning_phase"></em><em v-text="parentMsg.grade"></em><em v-text="parentMsg.subject"></em><em v-text="parentMsg.subject_other"></em></p>
+			<p>老师性别：<em v-text="parentMsg.tearcer_sex"></em></p>
+			<p>上课时间：<em v-text="parentMsg.time"></em></p>
+			<p>补课目的：<em v-text="parentMsg.aim"></em></p>
+			<p>孩子班级排名：<em v-text="parentMsg.class_field"></em></p>
+			<p>教学特点：<em v-text="parentMsg.tearcer_method"></em><em v-text="parentMsg.tearcer_method_other"></em></p>
+			<p v-if='parentMsg.require!==""'>其他要求：<em v-text="parentMsg.require"></em></p>
+			<p>时薪：<em v-text="parentMsg.salary"></em></p>
+			<p v-if='parentMsg.bonus!==""'>补贴：<em v-text="parentMsg.bonus"></em></p>
+			<p>找到家教的日期：<em v-text="parentMsg.deadline"></em>前</p>
+			<p>联系电话：<em v-text="parentMsg.tel"></em></p>
+			<p>住址：<em v-text="parentMsg.address"></em></p>
 		</div>
 	</div>
 	<!-- 老师简历信息详情 -->
@@ -49,33 +49,26 @@
 		    </div>
 			<div class="msgName">
 				<span> 
-				老师 {{tutorMsg.name}}
+				老师 <em v-text="tutorMsg.name"></em>
 				</span>
 			</div>
 		</div>
 		<div class="info">
-			<p>性别：<em>
-			{{tutorMsg.sex}}
+			<p>性别：<em v-text="tutorMsg.sex">
 			</em></p>
-			<p>专业：<em>
-			{{tutorMsg.campus_major}}
-			</em></p>
-			<p>可教年级：<em>
-			{{tutorMsg.grade}}
-			</em></p>
+			<p>专业：<em v-text="tutorMsg.campus_major"></em></p>
+			<p>相关成绩：<em v-text="tutorMsg.score"></em></p>
 			<p>可教科目：<em>
-			{{tutorMsg.subject}}{{tutorMsg.subject_other}}
+			{{tutorMsg.grade}}{{tutorMsg.subject}}{{tutorMsg.subject_other}}
 			</em></p>
-			<p>上课时间：<em>{{tutorMsg.time}}</em></p>
-			<p>可接受地点：<em>{{tutorMsg.place}}</em></p>
-			<p>教学方法：<em>{{tutorMsg.teacher_method}}{{tutorMsg.teacher_method_other}}</em></p>
-			<p>相关成绩：<em>{{tutorMsg.score}}</em></p>
-			<p>个人简介：<em>{{tutorMsg.self_comment}}</em></p>
 			<p>时薪：<em>{{tutorMsg.salary_bottom}}~{{tutorMsg.salary_top}}</em></p>
-			<p>老师籍贯：<em>{{tutorMsg.native_place}}</em></p>
-			<p>联系电话：<em>
-			{{tutorMsg.tel}}
+			<p>上课时间：<em v-text="tutorMsg.time"></em></p>
+			<p>可接受地点：<em v-text="tutorMsg.place"></em></p>
+			<p>教学方法：<em>{{tutorMsg.teacher_method}}{{tutorMsg.teacher_method_other}}</em></p>
+			<p>自我简介：<em v-text="tutorMsg.self_comment"></em></p>
+			<p>联系电话：<em v-text="tutorMsg.tel">
 			</em></p>
+			<p>老师籍贯：<em v-text="tutorMsg.native_place"></em></p>
 		</div>
 		<div class="showImg" v-if='tutorMsg.teach_show_photo.length!==0'>
 			<h3>家教秀</h3>

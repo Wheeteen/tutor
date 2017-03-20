@@ -14,8 +14,8 @@
     </header>
     <ul class='msgList' v-scroll="down()" scroll-foot="80" scroll-top="200" scroll-up="up()" v-show='status.isMsg'>
         <li v-for='item in msgList'>
-            <p class='fontS' v-bind:class="{'strong':item.status}" v-tap="onShow($index)">{{item.message_title}}</p>
-            <p v-show="item.isDetailed">{{item.message_content}}</p>
+            <p class='fontS' v-bind:class="{'strong':item.status}" v-tap="onShow($index)" v-text="item.message_title"></p>
+            <p v-show="item.isDetailed" v-text="item.message_content"></p>
         </li>
     </ul>
     <!-- 当没有消息的时候，有提示 -->

@@ -16,22 +16,22 @@
 	<div class="tutorDetailedInfo">
 		<div class="InfoList">
 			<div class="client">
-				<span> {{detailedList.name}}</span>
-				<span class='green' @touchstart="onChangeRequest(detailedList.pd_id)" v-if="status.isChangeRst">修改需求</span>
+				<span v-text="detailedList.name"></span>
+				<span class='green' v-tap="onChangeRequest(detailedList.pd_id)" v-if="status.isChangeRst">修改需求</span>
 			</div>
 			<div class="info">
-				<p>科目：<em>{{detailedList.learning_phase}}{{detailedList.grade}}{{detailedList.subject}}{{detailedList.subject_other}}</em></p>
-				<p>老师性别：<em>{{detailedList.teacher_sex}}</em></p>
-				<p>上课时间：<em>{{detailedList.time}}</em></p>
-				<p>补课目的：<em>{{detailedList.aim}}</em></p>
-				<p>孩子班级排名：<em>{{detailedList.class_field}}</em></p>
-				<p>教学特点：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p v-if='detailedList.require!==""'>其他要求：<em>{{detailedList.require}}</em></p>
-				<p>时薪：<em>{{detailedList.salary}}</em></p>
-				<p v-if='detailedList.bonus!==""'>补贴：<em>{{detailedList.bonus}}</em></p>
-				<p>找到家教的日期：<em>{{detailedList.deadline}}</em>前</p>
-				<p>联系电话：<em>{{detailedList.tel}}</em></p>
-				<p>住址：<em>{{detailedList.address}}</em></p>
+				<p>科目：<em v-text="detailedList.learning_phase"></em><em v-text="detailedList.grade"></em><em v-text="detailedList.subject"></em><em v-text="detailedList.subject_other"></em></p>
+				<p>老师性别：<em v-text="detailedList.tearcer_sex"></em></p>
+				<p>上课时间：<em v-text="detailedList.time"></em></p>
+				<p>补课目的：<em v-text="detailedList.aim"></em></p>
+				<p>孩子班级排名：<em v-text="detailedList.class_field"></em></p>
+				<p>教学特点：<em v-text="detailedList.tearcer_method"></em><em v-text="detailedList.tearcer_method_other"></em></p>
+				<p v-if='detailedList.require!==""'>其他要求：<em v-text="detailedList.require"></em></p>
+				<p>时薪：<em v-text="detailedList.salary"></em></p>
+				<p v-if='detailedList.bonus!==""'>补贴：<em v-text="detailedList.bonus"></em></p>
+				<p>找到家教的日期：<em v-text="detailedList.deadline"></em>前</p>
+				<p>联系电话：<em v-text="detailedList.tel"></em></p>
+				<p>住址：<em v-text="detailedList.address"></em></p>
 			</div>
 			<div class="remindTeacher client">
 				<span class='green' v-tap="onRemindParent(detailedList.pd_id)" v-if="status.isRemind">提醒家长</span>
@@ -61,30 +61,27 @@
 			    	<img :src="msgDetailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
-					<span> 
-					{{msgDetailedList.name}}
+					<span v-text="msgDetailedList.name"> 
 					</span>
-				    <span class='close' @touchstart="onClose">×</span>
+				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
 			<div class="info">
-				<p>性别：<em>
-				{{msgDetailedList.sex}}
+				<p>性别：<em v-text="msgDetailedList.sex">
 				</em></p>
-				<p>专业：<em>{{msgDetailedList.campus_major}}</em></p>
-				<p>相关成绩：<em>{{msgDetailedList.score}}</em></p>
+				<p>专业：<em v-text="msgDetailedList.campus_major"></em></p>
+				<p>相关成绩：<em v-text="msgDetailedList.score"></em></p>
 				<p>可教科目：<em>
 				{{msgDetailedList.grade}}{{msgDetailedList.subject}}{{msgDetailedList.subject_other}}
 				</em></p>
 				<p>时薪：<em>{{msgDetailedList.salary_bottom}}~{{msgDetailedList.salary_top}}</em></p>
-				<p>上课时间：<em>{{msgDetailedList.time}}</em></p>
-				<p>可接受地点：<em>{{msgDetailedList.place}}</em></p>
+				<p>上课时间：<em v-text="msgDetailedList.time"></em></p>
+				<p>可接受地点：<em v-text="msgDetailedList.place"></em></p>
 				<p>教学方法：<em>{{msgDetailedList.teacher_method}}{{msgDetailedList.teacher_method_other}}</em></p>
-				<p>自我简介：<em>{{msgDetailedList.self_comment}}</em></p>
-				<p>联系电话：<em>
-				{{msgDetailedList.tel}}
+				<p>自我简介：<em v-text="msgDetailedList.self_comment"></em></p>
+				<p>联系电话：<em v-text="msgDetailedList.tel">
 				</em></p>
-				<p>老师籍贯：<em>{{msgDetailedList.native_place}}</em></p>
+				<p>老师籍贯：<em v-text="msgDetailedList.native_place"></em></p>
 			</div>
 			<div class="showImg" v-if='msgDetailedList.teach_show_photo.length!==0'>
 				<h3>家教秀</h3>
@@ -95,10 +92,10 @@
 				</ul>
 			</div>
 			<div class="submitBtn" v-if='status.isDetailed'>
-				<span v-tap="onDelete(form.selected)">{{status.text}}</span>
+				<span v-tap="onDelete(form.selected)" v-text="status.text"></span>
 			</div>
 			<div class="submitBtn" v-if='status.onParent'>
-				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" @touchstart="onRegister1(form.selected)" >
+				<input type="button" value="{{form.isRegister}}" v-bind:class="{'btn-success':status.isSuccess}" v-tap="onRegister1(form.selected)" >
 			</div>
 			<div class="infoBtn" v-if='status.onTeacher'>
                 <span v-tap="onSelect(form.selected)">选择该老师</span>
@@ -108,10 +105,10 @@
 	</div>
 	<!-- 发送请求 -->
 	<div class="tutorInfo remindInfo" v-if="status.isRemindTeacher">
-		<p>{{msg.text}}</p>
+		<p v-text="msg.text">{{msg.text}}</p>
 	</div>
 	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' @touchstart="onClose">×</p>
+	    <p class='close' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
 	<div class="tutorInfo" v-if="status.isChangeInfo">

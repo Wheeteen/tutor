@@ -18,7 +18,7 @@
 	</div>
 	<ul class="msgList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
 		<li v-for="item in mainData" v-tap="onDetailed($index)">
-			<span>{{item.name}}</span>
+			<span v-text="item.name"></span>
 			<span v-text ="item.create_time" class='date'></span>
 		</li>
 	</ul>

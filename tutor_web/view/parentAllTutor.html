@@ -43,22 +43,19 @@
         <form class="search" v-on:submit.prevent="onSubmitSearch" v-bind:class='{"noBanner":status.isBanner}'>
 			<div class="subject">
 				<select v-model='change.subject'>
-					<option v-for='subject in formGroup[0].value' v-bind:value="subject.tag">
-						{{subject.tag}}
+					<option v-for='subject in formGroup[0].value' v-bind:value="subject.tag" v-text="subject.tag">
 					</option>
 				</select>
 			</div>
 			<div class="grade">
 				<select v-model='change.grade' v-on:change="onSelectGrade">
-					<option v-for='subject in grade' v-bind:value="subject.tag">
-						{{subject.tag}}
+					<option v-for='subject in grade' v-bind:value="subject.tag" v-text="subject.tag">
 					</option>
 				</select>
 			</div>
 			<div class="popular">
 				<select v-model='form.hot' v-on:change="onSelectChange">
-					<option v-for='subject in formGroup[3].value' v-bind:value="subject.key">
-						{{subject.tag}}
+					<option v-for='subject in formGroup[3].value' v-bind:value="subject.key" v-text="subject.tag">
 					</option>
 				</select>
 			</div>
@@ -77,7 +74,7 @@
 					<p class="subject">
 						<em v-text="item.subject"></em>
 						<em v-text="item.grade"></em>
-						<span v-if="item.distance!==0">距您{{item.distance}}km</span>
+						<span v-if="item.distance!==0">距您<i v-text="item.distance"></i>km</span>
 					</p>
 					<p class="address">
 						<em>老师位置</em>
@@ -102,34 +99,26 @@
 			    	<img v-bind:src="detailedList.certificate_photo" alt="">
 			    </div>
 				<div class="msgName">
-					<span> 
-					{{detailedList.name}}
+					<span v-text="detailedList.name"> 
 					</span>
 				    <span class='close' v-tap="onClose()">×</span>
 				</div>
 			</div>
-			<!-- <div class="distance">
-				<span>距您{{detailedList.distance}}
-				km</span>
-			</div> -->
 			<div class="info">
-				<p>性别：<em>
-				{{detailedList.sex}}
+				<p>性别：<em v-text="detailedList.sex">
 				</em></p>
-				<p>专业：<em>
-				{{detailedList.campus_major}}
-				</em></p>
-				<p>可教年级：<em>{{detailedList.grade}}</em></p>
+				<p>专业：<em v-text="detailedList.campus_major"></em></p>
+				<p>可教年级：<em v-text="detailedList.grade"></em></p>
 				<p>可教科目：<em>
 				{{detailedList.subject}}{{detailedList.subject_other}}
 				</em></p>
-				<p>上课时间：<em>{{detailedList.time}}</em></p>
-				<p>可接受地点：<em>{{detailedList.place}}</em></p>
-				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p>相关成绩：<em>{{detailedList.score}}</em></p>
-				<p>个人简介：<em>{{detailedList.self_comment}}</em></p>
 				<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
-				<p>老师籍贯：<em>{{detailedList.native_place}}</em></p>
+				<p>上课时间：<em v-text="detailedList.time"></em></p>
+				<p>可接受地点：<em v-text="detailedList.place"></em></p>
+				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+				<p>相关成绩：<em v-text="detailedList.score"></em></p>
+				<p>自我简介：<em v-text="detailedList.self_comment"></em></p>
+				<p>老师籍贯：<em v-text="detailedList.native_place"></em></p>
 			</div>
 			<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
 				<h3>家教秀</h3>

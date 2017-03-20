@@ -45,7 +45,7 @@
                 <span v-tap="onClose()">×</span>
             </div>
             <div class="fXing">
-                <span>{{msgList.name}}</span>
+                <span v-text="msgList.name"></span>
                 <ul>
                     <li v-bind:class='{active:msgList.one}'>
                     </li>
