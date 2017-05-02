@@ -6,7 +6,7 @@
 	var vm = new Vue({
      el: 'body',
      data: {
-      domain: 'http://shaozi.beansonbar.cn/',
+      domain: 'http://www.shendaedu.com/',
      	status:{
      	  isLoading: false,
      	  sendResume: true,

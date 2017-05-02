@@ -6,7 +6,7 @@
 	var vm = new Vue({
       el: 'body',
       data:{
-        domain:'http://shaozi.beansonbar.cn/',
+        domain:'http://www.shendaedu.com/',
         status:{
          isLoading: false,
         },
@@ -18,21 +18,6 @@
       ready:function(){
          this.getImage();
          this.status.isLoading = true;
-      },
-      watch: {
-        // 'form.remindInfo':function(res){
-        //     this.$http.post('', {
-        //     	'id':id,
-        //     	'remindInfo' : res
-        //     }, {
-        //       emulateJSON:true,
-        //       headers:{
-        //         'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' 
-        //       }
-        //     }).then(function(res) {
-             
-        //     });
-        // }
       },
       methods:{
       	getImage: function(){

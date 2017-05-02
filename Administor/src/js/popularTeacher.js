@@ -6,7 +6,7 @@
 	var vm = new Vue({
       el: 'body',
       data: {
-        domain: 'http://shaozi.beansonbar.cn/',
+        domain: 'http://www.shendaedu.com/',
       	timer: null,
       	status:{
       		isSelecting: true,
@@ -22,15 +22,7 @@
           hot: 1,
         	keyword: ''
         },
-        mainData:[
-          // {id: 0,name: '李小可',info: '设为热门'},
-          // {id: 1,name: '张山',info: '设为热门'},
-          // {id: 2,name: '黄大名',info: '设为热门'},
-          // {id: 0,name: '李小可',info: '设为热门'},
-          // {id: 1,name: '张山',info: '设为热门'},
-          // {id: 2,name: '黄大名',info: '设为热门'},
-        
-        ],
+        mainData:[],
         popularData:[]
       },
       ready:function(){

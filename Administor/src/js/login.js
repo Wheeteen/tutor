@@ -3,7 +3,7 @@
       el: 'body',
       data: {
         timer: null,
-        domain:'http://shaozi.beansonbar.cn/',
+        domain:'http://www.shendaedu.com/',
         status:{
           isLoading: false,
           isSubmit: false,
