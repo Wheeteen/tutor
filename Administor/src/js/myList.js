@@ -7,6 +7,7 @@
        el: 'body',
        data: {
          	domain:'http://www.shendaedu.com',
+          // domain: 'http://shaozi.beansonbar.cn',
          	timer: null,
        	  tutorList:[],
     			status:{

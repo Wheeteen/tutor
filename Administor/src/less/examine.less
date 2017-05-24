@@ -5,9 +5,25 @@ body,html,header,h1,a,ul,li,p,h3,span{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
+	// font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1{
+		font-size: 14px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1{
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1{
+		font-size: 17px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -41,7 +57,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;

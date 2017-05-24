@@ -8,6 +8,7 @@
       data: {
       	timer: null,
         domain: 'http://www.shendaedu.com/',
+        // domain: 'http://shaozi.beansonbar.cn/',
       	status:{
       		isParent: true,
       		isTeacher: false,

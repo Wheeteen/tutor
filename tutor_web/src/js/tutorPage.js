@@ -8,6 +8,7 @@
       data: {
         timer: null,
         domain: 'http://www.shendaedu.com/',
+        // domain: 'http://shaozi.beansonbar.cn/',
       	status:{
           timer: null,
           isParent: true,
@@ -23,7 +24,8 @@
           isSubmit: false,
           isInfoTipOne: false,
           noExpection: '',
-          errorTip:'对不起，您还未通过审核'
+          errorTip:'对不起，您还未通过审核',
+          overY: false
       	},
       	msgList: [],
         detailedList: [],
@@ -55,7 +57,8 @@
       },
       ready: function(){
       	this.getData();
-        this.status.isLoading = true;              
+        this.status.isLoading = true; 
+        this.getSignature();             
       },
       methods:{
         down: function(){
@@ -143,10 +146,10 @@
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              this.timer && clearTimeout(this.timer);
-              this.timer = setTimeout(function(){
-               self.onAllow();
-              }, 300);
+              // this.timer && clearTimeout(this.timer);
+              // this.timer = setTimeout(function(){
+              //  self.onAllow();
+              // }, 300);
             }else{
               console.log(res.json().error);
             }
@@ -170,11 +173,11 @@
           })
         },
         setLocation: function(){
-          if(this.getSignature==''){
-            this.getSignature();
-          }else{
-            this.onAllow();
-          }
+          // if(this.getSignature==''){
+          //   this.getSignature();
+          // }else{
+          this.onAllow();
+          // }
         },
         //发送定位
         onAllow: function(){
@@ -200,6 +203,7 @@
       		window.location.href="./teacherMyPage.html";
       	},
       	onTutorInfo: function(index){
+          this.status.overY = true;
       		this.form.selected = index;
       		this.status.isTutorInfo = true;
           this.status.isDefault = false;
@@ -243,6 +247,7 @@
       	},
       	onClose: function(){
       	    this.status.isTutorInfo = false;
+            this.status.overY = false;
       	},
       	onRegister: function(index){
       	  if(this.status.isRegister == "取消报名"){
@@ -256,6 +261,7 @@
                 }
              }).then(function(res){
                console.log(res.json());
+               this.status.overY = false;
                if(res.json().success == 1){
                 this.status.isRegister ='取消成功';
                 var self = this;
@@ -292,6 +298,7 @@
                   }
              }).then(function(res){
               console.log(res.json());
+              this.status.overY = false;
               var self = this;
               this.status.isSubmit = false;
               if(res.json().success == 1){              
@@ -318,6 +325,7 @@
           
         },
         onCloseExp: function(){
+          this.status.overY = false;
           this.status.expection = false;
         }
       }

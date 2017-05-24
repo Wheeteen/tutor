@@ -5,9 +5,43 @@ body,html,header,h1,a,ul,li,p,h3,span{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1,textarea{
+		font-size: 14px;
+	}
+	.submitBtn input{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 28px;
+	}
+}
+
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1,textarea{
+		font-size: 16px;
+	}
+	.submitBtn input{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1,textarea{
+		font-size: 17px;
+	}
+	.submitBtn input{
+		font-size: 20px;
+	}	
+	.closeSize{
+		font-size: 40px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -38,7 +72,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 3px;
@@ -103,16 +137,16 @@ header{
 		height: 20px;
 		padding:8px 3%;
 		h3{
-			position: absolute;
-          width:100%;
+			// position: absolute;
+          // width:100%;
           text-align: center;
 		}
 		span{
 			position: absolute;
-			top:4px;
+			top:-12%;
 			right:3%;
-			font-size: 23px;
-			color: #666;
+			// font-size: 23px;
+			color: #999;
 
 		}
 	}
@@ -126,12 +160,16 @@ header{
 		}
 		li{
 			display: inline-block;
-			width:22px;
-			height: 22px;
+			width:32px;
+			height: 32px;
+			margin-right: 2%;
 			background: url(../../img/xing.png) no-repeat center;
+			&:last-child{
+				margin-right: 0 !important;
+			}
 		}
 		.active{
-			background: url(../../img/xingGreen.png) no-repeat center;
+			background: url(../../img/xingG1.png) no-repeat center;
 		}
 	}
 	.tutorService,.appService{
@@ -162,7 +200,7 @@ header{
             height: 30px;
             outline: none;
             color:#fff;
-            font-size: 16px;
+            // font-size: 16px;
             line-height: 30px;
             border:0;
             letter-spacing: 1px;

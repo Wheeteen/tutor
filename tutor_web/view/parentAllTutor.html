@@ -6,7 +6,7 @@
 	<title>好学吧家教服务平台</title>
 	<link rel="stylesheet" href="../dist/css/parentAllTutor.min.css">
 </head>
-<body>
+<body v-bind:class="{'overY': status.overY}">
 <div class="container" v-bind:class="{'opacity': status.isLoading}">
 	<div class="bottomBtn">
 		<span class='active' v-tap="onRecommend()">推荐老师</span>
@@ -94,47 +94,58 @@
 	<div class="tutorInfo" v-if="status.isTutorInfo">
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
-			<div class="client">
-			    <div class="image">
-			    	<img v-bind:src="detailedList.certificate_photo" alt="">
-			    </div>
-				<div class="msgName">
-					<span v-text="detailedList.name"> 
-					</span>
-				    <span class='close' v-tap="onClose()">×</span>
+			<div class="infoMsg">
+				<div class="client">
+				    <div class="image">
+				    	<img v-bind:src="detailedList.certificate_photo" alt="">
+				    </div>
+					<div class="msgName">
+						<span v-text="detailedList.name"> 
+						</span>
+					    <span class='close closeSize' v-tap="onClose()">×</span>
+					</div>
 				</div>
-			</div>
-			<div class="info">
-				<p>性别：<em v-text="detailedList.sex">
-				</em></p>
-				<p>专业：<em v-text="detailedList.campus_major"></em></p>
-				<p>可教年级：<em v-text="detailedList.grade"></em></p>
-				<p>可教科目：<em>
-				{{detailedList.subject}}{{detailedList.subject_other}}
-				</em></p>
-				<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
-				<p>上课时间：<em v-text="detailedList.time"></em></p>
-				<p>可接受地点：<em v-text="detailedList.place"></em></p>
-				<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
-				<p>相关成绩：<em v-text="detailedList.score"></em></p>
-				<p>自我简介：<em v-text="detailedList.self_comment"></em></p>
-				<p>老师籍贯：<em v-text="detailedList.native_place"></em></p>
-			</div>
-			<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
-				<h3>家教秀</h3>
-				<ul class="showImage">
-                   <li v-for="item in detailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
-                   </li>             
-				</ul>
+				<div class="info">
+					<p>性别：<em v-text="detailedList.sex">
+					</em></p>
+					<p>专业：<em v-text="detailedList.campus_major"></em></p>
+					<p>可教年级：<em v-text="detailedList.grade"></em></p>
+					<p>可教科目：<em>
+					{{detailedList.subject}}{{detailedList.subject_other}}
+					</em></p>
+					<p>时薪：<em>{{detailedList.salary_bottom}}~{{detailedList.salary_top}}</em></p>
+					<p>上课时间：<em v-text="detailedList.time"></em></p>
+					<p>可接受地点：<em v-text="detailedList.place"></em></p>
+					<p>教学方法：<em>{{detailedList.teacher_method}}{{detailedList.teacher_method_other}}</em></p>
+					<p>相关成绩：<em v-text="detailedList.score"></em></p>
+					<p>自我简介：<em v-text="detailedList.self_comment"></em></p>
+					<p>老师籍贯：<em v-text="detailedList.native_place"></em></p>
+				</div>
+				<div class="showImg" v-if='detailedList.teach_show_photo.length!==0'>
+					<h3>家教秀</h3>
+					<ul class="showImage">
+	                   <li v-for="item in detailedList.teach_show_photo">
+	                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
+	                   </li>             
+					</ul>
+				</div>
 			</div>
 			<div class="submitBtn">
 				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" v-tap="onRegister1(status.selected)" >
 			</div>
 		</div>
 	</div>
+	<div class="tutorInfo" v-if="status.isFinishMsg">
+		<div class="greyScreen"></div>
+		<div class="InfoList">
+			<p class="informMsg" v-text="status.informMsg"></p>
+			<div class="submitBtn">
+				<input type="button" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" v-tap="onClose()" value="确定">
+			</div>
+		</div>		
+	</div>
 	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' v-tap="onClose()">×</p>
+	    <p class='close closeSize' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
 	<div class="enlargeImg" v-if='status.isEnlargeImg'>

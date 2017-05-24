@@ -5,9 +5,43 @@ body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
+	// font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1{
+		font-size: 14px;
+	}
+	h1.title{
+		font-size: 15px;
+	}
+	.closeSize{
+		font-size: 25px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1{
+		font-size: 16px;
+	}
+	h1.title{
+		font-size: 17px;
+	}
+	.closeSize{
+		font-size: 33px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1{
+		font-size: 17px;
+	}
+	h1.title{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 37px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -44,7 +78,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;
@@ -100,7 +134,7 @@ header{
 h1.title{
 	width:100%;
 	text-align: center;
-	font-size: 14px;
+	// font-size: 14px;
 	margin:3px auto 6px;
 }
 .upload{
@@ -186,11 +220,13 @@ h1.title{
 		border-bottom: 1px solid #53C778;
 		text-align: center;
 		font-weight: bold;
-		font-size: 14px;
+		// font-size: 14px;
 		.close{
 			float: right;
-			margin-right: 3px;
-			font-size: 25px;
+			margin-right: 2%;
+			margin-top: -2%;
+			color: #999;
+			// font-size: 25px;
 		}
 	}
 	.uploadImg{
@@ -232,7 +268,7 @@ h1.title{
 		width:100%;
 		margin-top: 40px;
 		input{
-			font-size: 14px;
+			// font-size: 14px;
 			-webkit-appearance: none;
 			width:100%;
 			outline: none;

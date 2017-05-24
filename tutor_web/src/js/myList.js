@@ -8,6 +8,7 @@
     data: {
       timer: null,
       domain:'http://www.shendaedu.com',
+      // domain: 'http://shaozi.beansonbar.cn',
  	    msgList: [],
 			status:{
         isList: true,
@@ -27,6 +28,7 @@
         isSubmit: false,
         isEnlargeImg: false,
         enlargeImg: '',
+        overY: false,
 			},
 			detailedList: [],
       signature: '',
@@ -127,7 +129,7 @@
         var self = this;
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx6fe7f0568b75d925', // 必填，公众号的唯一标识
+          appId: 'wx7a327445ac3309b4', // 必填，公众号的唯一标识
           timestamp: 1482652615, // 必填，生成签名的时间戳
           nonceStr:'yinzishao' , // 必填，生成签名的随机串
           signature: self.signature,// 必填，签名，见附录1
@@ -155,6 +157,7 @@
       }
     },
     onTutorInfo: function(index){
+      this.status.overY = true;
   	  this.form.selected = index;
       this.status.isTutorInfo = true;
       this.status.isSuccess = true;
@@ -226,6 +229,7 @@
         this.status.isSureRefuse = true;
       }else if(this.status.text == '双方已成交' || this.status.text == '您已拒绝邀请'){
         this.status.isTutorInfo = false;
+        this.status.overY = false;
       }
     },
     onApply: function(index){
@@ -241,6 +245,7 @@
               }
          }).then(function(res){
           console.log(res.json());
+          this.status.overY = false;
            if(res.json().success == 1){
             var self = this;
             this.timer && clearTimeout(this.timer);
@@ -269,6 +274,7 @@
         }
 
       }).then(function(res){
+        this.status.overY = false;
         if(res.json().success == 1){
           if(this.signature==""){
             this.getSignature();
@@ -285,11 +291,13 @@
       })
 		},
 		onRefuse: function(){
+      this.status.overY = false;
       this.form.isMsg = '拒绝邀请';
       this.status.isTutorInfo = false;
 			this.status.isSureRefuse = true;
 		},
     onCloseExp:function(){
+      this.status.overY = false;
       this.status.expection = false;
     },
 		onSureRefuse: function(index){
@@ -304,6 +312,7 @@
               'Content-Type':'application/json' 
             }
          }).then(function(res){
+          this.status.overY = false;
            console.log(res.json());
            if(res.json().success == 1){
             var self = this;
@@ -328,6 +337,7 @@
             'Content-Type':'application/json' 
           }
         }).then(function(res){
+          this.status.overY = false;
           if(res.json().success == 1){
               this.msgList[index].result= '您已拒绝';
               this.msgList[index].isRed = true;
@@ -348,12 +358,15 @@
       this.status.isAccount = true;
     },
 		onCancel: function(){
+      this.status.overY = false;
 			this.status.isSureRefuse = false;
 		},
 		onClose: function(){
+      this.status.overY = false;
 			this.status.isTutorInfo = false;
 		},
     onCloseAccount: function(){
+      this.status.overY = false;
       this.status.isAccount = false;
     },
     uploadImg: function(){
@@ -420,7 +433,8 @@
     closeImg: function(){
       this.status.isEnlargeImg = false;
     },
-    onSureSubmit: function(index){            
+    onSureSubmit: function(index){     
+    this.status.overY = false;       
       this.status.isRemindTip = false;
     }
   }

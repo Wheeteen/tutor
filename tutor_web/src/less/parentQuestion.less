@@ -4,10 +4,64 @@ html,body,div,label,input,button,p,span,em,h1,h3,ul,li{
 }
 @color1:#23CD74;
 @color2:#999;
+
+@media (max-width: 320px){
+	body{
+		font-size: 14px;
+	}
+	header h1{
+		font-size: 16px;
+	}
+	.tipQuestion input,.fontSize,.Q5 select,.sQ1 button{
+		font-size: 14px;
+	}
+	.Monday li{
+		margin-right: 5.5%;
+	}
+	.closeSize{
+		font-size: 28px;
+	}
+}
+
+@media (min-width: 321px) and (max-width: 375px){
+	body{
+		font-size: 16px;
+	}
+	header h1{
+		font-size: 18px;
+	}
+	.tipQuestion input,.fontSize,.Q5 select,.sQ1 button{
+		font-size: 16px;
+	}
+	.Monday li{
+		margin-right: 6%;
+	}
+	.closeSize{
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 376px){
+	body{
+		font-size: 18px;
+	}
+	header h1{
+		font-size: 20px;
+	}
+	.tipQuestion input,.fontSize,.Q5 select,.sQ1 button{
+		font-size: 18px;
+	}
+	.Monday li{
+		margin-right: 7%;
+	}
+	.closeSize{
+		font-size: 40px;
+	}
+}
 .input(){
 	-webkit-appearance: none;
 	width:100%;
-	font-size: 14px;
+	// font-size: 14px;
    	height: 30px;
    	color:#fff;
    	text-align: center;
@@ -20,7 +74,7 @@ html,body,div,label,input,button,p,span,em,h1,h3,ul,li{
 .input1(){
 	-webkit-appearance: none;
 	width:68%;
-	font-size: 14px;
+	// font-size: 14px;
 	height: 26px;
 	line-height: 26px;
 	text-indent: 4px;
@@ -38,14 +92,14 @@ html,body,div,label,input,button,p,span,em,h1,h3,ul,li{
 	resize:none;
 	color:#464;
     padding:4px;
-    font-size: 14px;
+    // font-size: 14px;
 	&:focus{
 		border-color: @color1;
 	}
 }
 body{
 	width:100%;
-	font-size: 14px;
+	// font-size: 14px;
 	font-family:'Microsoft Yahei';
 	background-color: #fff;
 }
@@ -80,7 +134,7 @@ ul,ul li{
   	padding-left: 3%;
   	color:#fff;
   	margin-top: 70px;
-  	font-size: 16px;
+  	font-size: 18px;
 
   }
   .startBtn{
@@ -107,13 +161,16 @@ ul,ul li{
    }
    .priceDetailed{
    	position: absolute;
-   	width:70%;
+   	width:80%;
    	top:25%;
-   	margin-left: 15%;
-    padding: 15px 4% 40px;
+   	margin-left: 10%;
+    padding: 15px 0 20px;
     background: #fff;
     border-radius: 4px;
     line-height: 20px;
+   }
+   .ptext{
+   	 padding:0 4% 30px;
    }
    .ptitle{
    	width:100%;
@@ -123,7 +180,7 @@ ul,ul li{
    	h3{
    		// position: absolute;
    		font-weight: normal;
-   		font-size: 14px;
+   		// font-size: 14px;
    		width:100%;
    		text-align: center;
    		height: 20px;
@@ -133,9 +190,11 @@ ul,ul li{
    	}
    	span{
    		position: absolute;
-   		right:0;
-   		font-size: 25px;
-   		margin-top: 3px;
+   		right:5%;
+   		top: -3%;
+   		color: #999;
+   		// font-size: 25px;
+   		// margin-top: 3px;
    	}
    }
 }
@@ -165,7 +224,7 @@ ul,ul li{
 		margin-bottom: 20px;
 		width:90%;
         margin-left: 5%;
-        font-size: 13px;
+        // font-size: 13px;
 		p{
 			text-align: center;
 		}
@@ -188,7 +247,6 @@ header{
 
 	margin:5px auto;
 	h1{
-		font-size: 16px;
 		width:100%;
 		text-align: center;
 	}
@@ -203,13 +261,15 @@ header{
     	letter-spacing: 1px;
     	font-weight: normal;
         margin-bottom: 15px;
+        position: relative;
         em{
 		  	position: absolute;
-		  	left:9%;
-			width:16px;
-			height: 19px;
+		  	left:2%;
+		  	top: -3px;
+			width:32px;
+			height: 32px;
 			display: inline-block;
-			background: url(../../img/left.png) no-repeat left center;
+			background: url(../../img/back.png) no-repeat left center;
 		  }
     }
     .slist{
@@ -253,16 +313,17 @@ header{
         padding:0 5%;
         color:#333;
         input{
-        	-webkit-appearance: none;
-        	text-indent: 4px;
-        	border-radius: 3px;
-        	outline: none;
-        	border:1px solid #ccc;
-        	height: 20px;
-        	color: #333;
-        	&:focus{
-        		border-color: #23CD74;
-        	}
+        	// -webkit-appearance: none;
+        	// text-indent: 4px;
+        	// border-radius: 3px;
+        	// outline: none;
+        	// border:1px solid #ccc;
+        	// height: 20px;
+        	// color: #333;
+        	// &:focus{
+        	// 	border-color: #23CD74;
+        	// }
+        	.input1();
         }
     }
     .slist_other1{
@@ -285,7 +346,7 @@ header{
     		width:60%;
     		margin-left: 20%;
     		// margin: 0 auto;
-    		background: url(../../img/rightgrey.png) no-repeat 68% 40%;
+    		background: url(../../img/next.png) no-repeat 70% 42%;
     		
     	}
     	span{
@@ -297,7 +358,7 @@ header{
             // bottom: 0;
             display: inline-block;
 
-            font-size: 13px;
+            // font-size: 13px;
     	}
     }
 }
@@ -317,10 +378,10 @@ header{
 }
 .tableSchedule{
 	border:1px solid #53C778;
-	width:90%;
+	// width:100%;
 	margin: 0 auto;
 	color:#53C778;
-	font-size: 13px;
+	// font-size: 13px;
 	overflow: hidden;
 	.concreteTime{
 	  background-color: @color1;
@@ -355,23 +416,14 @@ header{
 		margin-right: 1%;
 		display: inline-block;
 		float: left;
-		width:15%;
+		width:12%;
 		text-align: center;
 	}
 	
 }
-// .background{
-// 	width:80%;
-// 	display: inline-block;
-// 	position: absolute;
-// 	left:13.5%;
-// 	height: 3px;
-// 	margin-top: 14px;
-// 	background: @color1;
-// }
 .Monday{
 	overflow: hidden;
-	width:84%;
+	width:87%;
 	position: absolute;
 	display: inline-block;
 	height: 30px;
@@ -386,7 +438,7 @@ header{
 		display: inline-block;
 		position: relative;
 		// float: left;
-		margin-right: 4.5%;	
+		// margin-right: 5.5%;	
 		input{
 			position: absolute;
 			width:100%;
@@ -426,7 +478,7 @@ header{
 .weekend{
 	overflow: hidden;
 	label{
-		margin-right: 8%;
+		margin-right: 10%;
 	}
 	.clock{
 		display: inline-block;
@@ -434,7 +486,7 @@ header{
 		li{
 			width:17px;
 			height: 30px;
-			margin-right: 15%;	
+			margin-right: 20%;	
 			display: inline-block;
 			position: relative;
 			&:nth-child(3n){
@@ -471,17 +523,18 @@ header{
 		width:90%;
 		margin: 3px auto;
 		color:@color1;
-		font-size: 12px;
+		// font-size: 12px;
 	}
 	.tutorTime{
        margin-top: 10px;
        color:#464;
        input{
        	.input1();
+       	width: 40%;
        	margin-left: 1%;
        }
        p{
-       	margin-left: 30%;
+       	margin-left: 35%;
        	color:@color1;
        	margin-top: 3px;
        }
@@ -560,7 +613,7 @@ header{
 
 		}
 		.clsSelected{
-			width:30%;
+			width:32%;
 			text-align: left;
 			display: inline-block;
 			right:2%;
@@ -633,6 +686,7 @@ header{
 	input[type='text']{
 		.input1();
 		margin-left: 2%;
+		width: 32%;
 	}
 	.clickPrice{
 		margin-left: 13%;
@@ -725,7 +779,7 @@ header{
 }
 .calendar-tools{
     height:32px;
-    font-size: 20px;
+    font-size: 26px;
     line-height: 32px;
     color:#5e7a88;
 }
@@ -768,7 +822,7 @@ header{
     height:34px;
     text-align: center;
     vertical-align: middle;
-    font-size:14px;
+    // font-size:14px;
     line-height: 125%;
     cursor: pointer;
 }
@@ -809,7 +863,7 @@ header{
 .calendar .timer input{
     border-radius: 2px;
     padding:5px;
-    font-size: 14px;
+    // font-size: 14px;
     line-height: 18px;
     color: #5e7a88;
     width: 50px;
@@ -842,7 +896,7 @@ header{
     color:#666;
 }
 .calendar .lunar{
-     font-size:11px;
+     // font-size:11px;
      line-height: 150%;
      color:#aaa;   
 }

@@ -14,7 +14,7 @@
     <form action="" v-on:submit.prevent="onSubmit"> 
       <div class="group-form">
         <label for="">姓名</label>
-        <input type="text" v-model.trim="form.name" required maxlength="16">
+        <input type="text" v-model.trim="form.name" required maxlength="16" class="fontSize">
       </div>
       <div class="group-form">
         <label for="">学历状态</label>
@@ -35,7 +35,7 @@
       </div>
       <div class="group-form">
         <label for="">填写学号</label>
-        <input type="text" v-model.trim="form.number" required maxlength="16">
+        <input type="text" v-model.trim="form.number" required maxlength="16" class="fontSize">
       </div>
       <div class="group-form group1">
         <label for="">性别</label>
@@ -46,15 +46,15 @@
       </div>
       <div class="group-form">
         <label for="">籍贯</label>
-        <input type="text" v-model.trim="form.native_place" required maxlength="16">
+        <input type="text" v-model.trim="form.native_place" required maxlength="16" class="fontSize">
       </div>
       <div class="group-form">
         <label for="">学院专业</label>
-        <input type="text"  v-model.trim="form.campus_major" required maxlength="16">
+        <input type="text"  v-model.trim="form.campus_major" required maxlength="16" class="fontSize">
       </div>
       <div class="group-form">
         <label for="">联系电话</label>
-        <input type="tel" v-model.trim="form.tel" required>
+        <input type="tel" v-model.trim="form.tel" class="fontSize" required>
       </div>     
       <div class="group-form groupTip">
         <label for="">辅导科目</label>
@@ -79,7 +79,7 @@
       </div>
       <div class="group-form groupTip">
         <label for="">可接受地点</label>
-        <input type="text" v-model.trim="form.place" required>
+        <input type="text" v-model.trim="form.place" class="fontSize" required>
         <p>不限；或者以区为单位，多区域用“，”分隔</p>
       </div>
       <div class="group-form groupTime">
@@ -138,11 +138,11 @@
       </div>
       <div class="group-form groupIntro">
         <label for="">相关成绩</label>
-        <textarea placeholder="大学中学获得的奖项等" required v-model='form.score'></textarea>
+        <textarea placeholder="大学中学获得的奖项等" required v-model='form.score' class="fontSize"></textarea>
       </div>
       <div class="group-form groupIntro">
         <label for="">自我简介</label>
-        <textarea placeholder="家教经验 辅导效果 性格等（300到350字，分点描述， 重点突出辅导效果，家教经验）；可参考热门老师简历填写" required v-model='form.self_comment'></textarea>
+        <textarea placeholder="家教经验 辅导效果 性格等（300到350字，分点描述， 重点突出辅导效果，家教经验）；可参考热门老师简历填写" required v-model='form.self_comment' class="fontSize"></textarea>
       </div>
       <div class="group-form groupPic">
         <label for="">上传照片</label>
@@ -160,11 +160,11 @@
         <label for="">可接受的时薪</label>
         <div class="salary">
           <label for="">最低的时薪</label>
-          <input type="Number" required v-model='form.salary_bottom'>
+          <input type="Number" required v-model='form.salary_bottom' class="fontSize">
         </div>
         <div class="salary">
           <label for="">最高的时薪</label>
-          <input type="Number" required v-model='form.salary_top'>
+          <input type="Number" required v-model='form.salary_top' class="fontSize">
         </div>
         <p><a href="javascript:void(0)" v-on:touchend="onSalary">点击参考家教薪酬标准</a></p>
       </div>
@@ -186,7 +186,7 @@
   <div class="thumbnail" v-if='hintData.status'>
      <div class="text-error">
          <span v-text="hintData.text"></span>
-         <span v-on:touchend="offHint">×</span>
+         <span v-on:touchend="offHint" class="closeSize">×</span>
      </div> 
   </div>
   <!-- 时薪参考标准 -->
@@ -195,7 +195,7 @@
     <div class="priceDetailed">
       <div class="ptitle">
         <h3>时薪参考标准</h3>
-        <span v-on:touchend="onClosePrice">×</span>
+        <span v-on:touchend="onClosePrice" class="closeSize">×</span>
       </div>
       <div class="ptext" v-text="salary"></div>
     </div>

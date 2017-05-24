@@ -7,11 +7,12 @@
       el: 'body',
       data:{
         domain:'http://www.shendaedu.com/',
+        // domain: 'http://shaozi.beansonbar.cn/',
         status:{
          isLoading: false,
         },
         form:{
-         myImg: '../img/user02.png',
+         myImg: '../img/user.png',
          name: '',
         },
       },

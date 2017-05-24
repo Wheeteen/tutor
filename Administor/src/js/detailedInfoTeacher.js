@@ -7,6 +7,7 @@
       el: 'body',
       data:{
         domain: 'http://www.shendaedu.com',
+        // domain: 'http://shaozi.beansonbar.cn',
       	status:{
       		isSelecting: true,
 	        isLoading: false,
@@ -18,6 +19,7 @@
           text: '删除该请求',
           isEnlargeImg: false,
           enlargeImg: '',
+          overY: false,
       	},
       	msgDetailedList:{},
       	msgList:[],
@@ -190,6 +192,7 @@
           });
       	},
       	onDetailedInfo: function(index){
+          this.status.overY = true;
           this.status.text = '删除该请求';
            this.status.selected = index;
            var list = this.msgList[index];
@@ -221,6 +224,7 @@
               'Content-Type':'application/json' 
             } 
           }).then(function(res) {
+            this.status.overY = false;
             if (res.json().success == 1) {
               var self = this;
               this.status.text = '该请求已删除';
@@ -243,6 +247,7 @@
           this.status.isEnlargeImg = false;
         },
         onClose: function(){
+          this.status.overY = false;
         	this.status.isTutorInfo = false;
         }
       },

@@ -4,20 +4,38 @@ html,body,h1,div,span,form,input,ul,li,em{
 }
 body{
 	width:100%;
-	font-size: 14px;
+	// font-size: 14px;
 	background: #eee;
 	font-family: 'Microsoft Yahei';
+}
+
+@media (max-width: 320px){
+	body,.form-search input{
+		font-size: 14px;
+	}
+}
+
+@media (min-width: 321px) and (max-width: 375px){
+	body,.form-search input{
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 376px){
+	body,.form-search input{
+		font-size: 17px;
+	}
 }
 @color1:#23CD74;
 @color2:#999;
 ::-webkit-input-placeholder{
-	color:#555;
+	// color:#555;
 }
 ::-moz-placeholder{
-	color:#555;
+	// color:#555;
 }
 ::-ms-input-placeholder{
-	color:#555;
+	// color:#555;
 }
 ul,ul li{
 	list-style-type: none;
@@ -84,7 +102,7 @@ em{
 	width:73%;
 	margin:3px auto 8px;
 	border-radius: 4px;
-	height: 25px;
+	height: 29px;
 	border:1px solid #aaa;
 	position: relative;
 	input{
@@ -92,9 +110,9 @@ em{
       left:4px;
       top:0;
       width:90%;
-      height: 23px;
+      height: 28px;
       color:#666;
-      line-height: 23px;
+      line-height: 28px;
       border:0;
       outline: none;
      

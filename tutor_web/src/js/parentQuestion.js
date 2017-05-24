@@ -16,6 +16,7 @@ function dateCompare(date1, date2) {
       el: 'body',
       data: {
         domain: 'http://www.shendaedu.com/',
+        // domain: 'http://shaozi.beansonbar.cn/',
         timer: null,
         calendar:{
           year: 0,
@@ -167,7 +168,7 @@ function dateCompare(date1, date2) {
           'tel': '',
           'address': '',
           'deadline':'',
-          'weekend_tutor_length': Number,
+          'weekend_tutor_length': 2,
           'mon_begin':'',
           'mon_end': '',
           'tues_begin':'',
@@ -341,7 +342,7 @@ function dateCompare(date1, date2) {
           this.status.tipQuestion = true;
         }
         this.status.isLoading = true;
-        
+        this.getSignature();
       },
       methods: {
         getData:function(){
@@ -454,10 +455,10 @@ function dateCompare(date1, date2) {
                 signature: self.signature,// 必填，签名，见附录1
                 jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
               });
-              this.timer && clearTimeout(this.timer);
-              this.timer = setTimeout(function(){
-                self.onAllow();
-              }, 300);
+              // this.timer && clearTimeout(this.timer);
+              // this.timer = setTimeout(function(){
+              //   self.onAllow();
+              // }, 300);
               // this.status.getLocation = true;
             }else{
               console.log(res.json().error);
@@ -797,7 +798,7 @@ function dateCompare(date1, date2) {
               self.status.errorTip = '成功提交';
               self.status.getTip = true;
               if(keyword=='createParentOrder'){
-                this.getSignature();
+                this.onAllow();
                 self.status.getTip = false;
               }else{
                 this.timer && clearTimeout(this.timer);

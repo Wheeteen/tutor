@@ -5,9 +5,25 @@ body,html,header,h1,a,ul,li,p,h3,span{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
+	// font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1{
+		font-size: 14px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1{
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1{
+		font-size: 17px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -41,7 +57,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;
@@ -76,7 +92,7 @@ header{
 			display: inline-block;
 			margin-right: 7%;
 			// font-weight: bold;
-			font-size: 13px;
+			// font-size: 13px;
 			letter-spacing: 1px;
 			// &:last-child{
 			// 	float: right;
@@ -103,189 +119,6 @@ header{
 	
 
 }
-// .tutorInfo{
-// 	position: fixed;
-// 	width:100%;
-// 	height: 100%;
-// 	overflow-y: scroll;
-// 	top:0;
-// 	-webkit-overflow-scrolling: touch;
-// 	.InfoList{
-// 		position: absolute;		
-// 		width:90%;
-// 		left:5%;
-// 		top:7%;
-// 		border:1px solid #53C778;
-// 		background: #fff;
-// 		z-index: 20;
-		
-// 	}
-// 	.greyScreen{
-// 		position: fixed;
-// 		top:0;
-// 		width:100%;
-// 		height: 100%;
-// 		background: rgba(0, 0, 0, 0.3);
-// 		z-index: 13;
-// 	}
-// 	.client{     
-// 		width:96%;
-// 		padding:3px 2% 0;
-// 		margin:0 auto;
-// 		overflow: hidden;
-// 		.image{
-//           width:15%;
-//           float: left;
-//           margin-right: 2%;
-//           img{
-//           	width:100%;
-//           	border-radius: 50%;
-//           	// border:1px solid #666;
-//           }
-// 		}
-// 		.msgName{
-// 			height: 20px;
-// 			line-height: 20px;
-// 			border-bottom: 1px solid #53C778;
-// 		}
-// 		.close{
-// 			float: right;
-// 			margin-right: 3px;
-// 			font-size: 20px;
-// 		}
-// 	}
-// 	.distance{
-// 		overflow: hidden;
-// 		padding-right: 2%;
-// 		margin:0px 0;
-// 		span{
-// 			float: right;
-// 		}
-// 	}
-// 	.info{
-// 		padding:0 2% 5px;
-//         // margin-top: 10px;
-// 		p{
-// 			margin-bottom: 2px;
-// 		}
-// 	}
-// 	.showImg{
-// 		padding:0 2%;
-// 		margin-bottom: 5px;
-// 	}
-// 	.showImage{
-// 		overflow: hidden;
-// 		width:100%;
-// 		li{
-// 			float: left;
-// 			width:30%;
-// 			margin-right: 5%;
-// 			height: 80px;
-// 			&:last-child{
-// 				margin-right: 0;
-// 			}
-// 			img{
-//               width:100%;
-//               height: 100%;
-// 			}
-// 		}
-// 	}
-// 	.submitBtn{
-// 		input{
-// 			width:100%;
-//             height: 30px;
-//             outline: none;
-//             color:#fff;
-//             font-size: 16px;
-//             line-height: 30px;
-//             border:0;
-//             letter-spacing: 1px;
-//             background-color: #666;
-// 		}
-
-// 	}
-// 	.infoBtn{
-// 		width:100%;
-// 		margin-top: 5%;
-// 		span{
-// 			display: inline-block;
-// 			float: left;
-// 			width:50%;
-// 			color:#464;
-// 			height: 30px;
-// 			line-height: 30px;
-// 			font-size: 15px;
-// 			text-align: center;
-// 			box-sizing: border-box;
-// 			-webkit-box-sizing: border-box;
-// 			border-top: 1px solid #ccc;
-// 			&:first-child{
-// 				background-color:@color1;
-// 				color: #fff;
-// 			}
-// 		  }
-// 	  } 
-// 	.InfoRequest{
-// 		width:70%;
-// 		left:15%;
-// 		height: 18%;
-// 		border-radius: 3px;
-// 		border:1px solid #999;
-// 		.infoTip{
-// 			margin-top: 13%;
-// 			p{
-// 				text-align: center;
-// 			}
-// 		}
-// 		.infoBtn{
-// 			position: absolute;
-// 			bottom:0;
-// 			width:100%;
-// 		}
-// 		span{
-// 			display: inline-block;
-// 			float: left;
-// 			width:50%;
-// 			height: 25px;
-// 			line-height: 25px;
-// 			text-align: center;
-// 			box-sizing: border-box;
-// 			-webkit-box-sizing: border-box;
-// 			border-top: 1px solid #ccc;
-// 			&:first-child{
-// 				color:#666 !important;
-// 				background-color: #fff !important;
-// 			}
-// 			&:last-child{
-// 				background-color:@color1;
-// 				color: #fff;
-// 			}
-// 		}
-// 	}
-// }
-// .InfoTipOne{
-// 	position: fixed;
-// 	width:80%;
-// 	height: 14%;
-// 	left:10%;
-// 	color: #666;
-// 	top:30%;
-// 	border:1px solid #999;
-// 	background: #fff;
-// 	z-index: 23;
-// 	.close{
-// 		float: right;
-// 		margin-right: 2%;
-// 		font-size: 20px;
-// 	}
-// 	.infoTip{
-// 		width:90%;
-//         margin-left: 5%;
-//         margin-top: 10%;
-//         font-size: 14px;
-       
-// 	}
-// }
 .btn-default{
 	background-color: @color2 !important;
 }

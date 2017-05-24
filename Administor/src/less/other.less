@@ -4,8 +4,24 @@ html,body,h1,div,span,form,input,ul,li,em{
 }
 body{
 	width:100%;
-	font-size: 14px;
+	// font-size: 14px;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body{
+		font-size: 14px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body{
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 376px){
+	body{
+		font-size: 17px;
+	}
 }
 @color1:#23CD74;
 @color2:#999;
@@ -82,7 +98,7 @@ em{
 		border:1px solid #ccc;
 		height: 38px;
 		line-height: 38px;
-		font-size: 14px;
+		// font-size: 14px;
 		text-align: center;
 		margin-bottom: 15px;
 		border-radius: 3px;

@@ -5,9 +5,45 @@ body,html,header,h1,a,ul,li,p,h3,span{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+.overY{
+	overflow: hidden;
+}
+@media (max-width: 320px){
+	body,header h1,.content textarea{
+		font-size: 14px;
+	}
+	.submitBtn input{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 28px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1,.content textarea{
+		font-size: 16px;
+	}
+	.submitBtn input{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1,.content textarea{
+		font-size: 17px;
+	}
+	.submitBtn input{
+		font-size: 20px;
+	}	
+	.closeSize{
+		font-size: 40px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -42,7 +78,7 @@ header{
 	
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;
@@ -94,13 +130,16 @@ header{
 	width:100%;
 	height: 100%;
 	top:0;
-	overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+	.infoMsg{
+		padding: 5px 2% 15px;
+	}
 	.InfoList{
 		position: absolute;
+		overflow-y: auto;
 		width:90%;
 		left:5%;
-		top:10%;
+		max-height: 80%;
+		top:15%;
 		border:1px solid #ccc;
 		background: #fff;
 		z-index: 20;
@@ -145,8 +184,9 @@ header{
 		border-bottom: 1px solid #53C778;
 		.close{
 			float: right;
-			margin-right: 3px;
-			font-size: 25px;
+			margin-right: 2%;
+			color: #999;
+			// font-size: 25px;
 		}
 	}
 	.distance{
@@ -286,16 +326,16 @@ header{
 		padding:8px 3%;
 		h3{
 			position: absolute;
-			font-size: 14px;
+			// font-size: 14px;
           width:100%;
           text-align: center;
 		}
 		span{
 			position: absolute;
-			top:-4px;
+			top:-3%;
 			right:3%;
-			font-size: 25px;
-			color: #666;
+			// font-size: 25px;
+			color: #999;
 
 		}
 	}
@@ -307,7 +347,7 @@ header{
 		textarea{
 			-webkit-appearance: none;
 			width:100%;
-			font-size: 14px;
+			// font-size: 14px;
 			box-sizing: border-box;
 		    -webkit-box-sizing: border-box;
 	        padding: 3px 2%;
@@ -323,7 +363,7 @@ header{
         height: 30px;
         outline: none;
         color:#fff;
-        font-size: 16px;
+        // font-size: 16px;
         line-height: 30px;
         border:0;
         letter-spacing: 1px;

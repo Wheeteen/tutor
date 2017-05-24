@@ -6,7 +6,7 @@
 	<title>好学吧家教服务平台</title>
 	<link rel="stylesheet" href="../dist/css/tutorPage.min.css">
 </head>
-<body>
+<body v-bind:class="{'overY': status.overY}">
 <div class="container" v-bind:class="{opacity: status.isLoading}"  >
 	<div class="bottomBtn">
 		<span class='active' v-tap="onRecommend()">推荐</span>
@@ -55,21 +55,23 @@
 	<div class="tutorInfo" v-if="status.isTutorInfo">
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
-			<div class="client">
-				<span v-text="detailedList.name"></span>
-				<span class='close' v-tap="onClose()">×</span>
-			</div>
-			<div class="info">
-				<p>科目：<em v-text="detailedList.learning_phase"></em><em v-text="detailedList.grade"></em><em v-text="detailedList.subject"></em><em v-text="detailedList.subject_other"></em></p>
-				<p>老师性别：<em v-text="detailedList.tearcer_sex"></em></p>
-				<p>上课时间：<em v-text="detailedList.time"></em></p>
-				<p>补课目的：<em v-text="detailedList.aim"></em></p>
-				<p>孩子班级排名：<em v-text="detailedList.class_field"></em></p>
-				<p>教学特点：<em v-text="detailedList.tearcer_method"></em><em v-text="detailedList.tearcer_method_other"></em></p>
-				<p v-if='detailedList.require!==""'>其他要求：<em v-text="detailedList.require"></em></p>
-				<p>时薪：<em v-text="detailedList.salary"></em></p>
-				<p v-if='detailedList.bonus!==""'>补贴：<em v-text="detailedList.bonus"></em></p>
-				<p>找到家教的日期：<em v-text="detailedList.deadline"></em>前</p>
+			<div class="infoMsg">
+				<div class="client">
+					<span v-text="detailedList.name"></span>
+					<span class='close closeSize' v-tap="onClose()">×</span>
+				</div>
+				<div class="info">
+					<p>科目：<em v-text="detailedList.learning_phase"></em><em v-text="detailedList.grade"></em><em v-text="detailedList.subject"></em><em v-text="detailedList.subject_other"></em></p>
+					<p>老师性别：<em v-text="detailedList.tearcer_sex"></em></p>
+					<p>上课时间：<em v-text="detailedList.time"></em></p>
+					<p>补课目的：<em v-text="detailedList.aim"></em></p>
+					<p>孩子班级排名：<em v-text="detailedList.class_field"></em></p>
+					<p>教学特点：<em v-text="detailedList.tearcer_method"></em><em v-text="detailedList.tearcer_method_other"></em></p>
+					<p v-if='detailedList.require!==""'>其他要求：<em v-text="detailedList.require"></em></p>
+					<p>时薪：<em v-text="detailedList.salary"></em></p>
+					<p v-if='detailedList.bonus!==""'>补贴：<em v-text="detailedList.bonus"></em></p>
+					<p>找到家教的日期：<em v-text="detailedList.deadline"></em>前</p>
+				</div>
 			</div>
 			<div class="submitBtn">
 				<input type="button" value="{{status.isRegister}}" v-bind:class="{'btn-success':status.isSuccess,'btn-default':status.isDefault}" v-tap="onRegister(form.selected)" >
@@ -82,7 +84,7 @@
       <form class="getExpection" v-on:submit.prevent="onApply(form.selected)"> 
         <div class="fTitle">
             <h3>请填写此次家教的教学设想</h3>
-            <span v-tap="onCloseExp()">×</span>
+            <span v-tap="onCloseExp()" class="closeSize">×</span>
         </div>	      	
 	    <div class="content">
 	    	<textarea v-model='form.expection' required></textarea>
@@ -95,7 +97,7 @@
       </form>
     </div>
     <div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' v-tap="onClose()">×</p>
+	    <p class='close closeSize' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
 </div>

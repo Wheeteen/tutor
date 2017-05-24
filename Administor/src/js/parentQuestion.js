@@ -167,7 +167,7 @@ function dateCompare(date1, date2) {
           'tel': '',
           'address': '',
           'deadline':'',
-          'weekend_tutor_length': Number,
+          'weekend_tutor_length': 2,
           'mon_begin':'',
           'mon_end': '',
           'tues_begin':'',

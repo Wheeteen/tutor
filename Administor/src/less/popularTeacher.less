@@ -5,9 +5,34 @@ body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
+	// font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1,.form-search input{
+		font-size: 14px;
+	}
+	h1.title{
+		font-size: 15px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1,.form-search input{
+		font-size: 16px;
+	}
+	h1.title{
+		font-size: 17px;
+	}
+}
+
+@media (min-width: 376px){
+	body,header h1,.form-search input{
+		font-size: 17px;
+	}
+	h1.title{
+		font-size: 18px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -44,7 +69,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;
@@ -99,7 +124,7 @@ header{
 }
 h1.title{
 	width:100%;
-	font-size: 15px;
+	// font-size: 15px;
 	text-align: center;
 	margin:3px auto 6px;
 }
@@ -108,7 +133,7 @@ h1.title{
 	width:73%;
 	margin:3px auto 8px;
 	border-radius: 4px;
-	height: 25px;
+	height: 30px;
 	border:1px solid #aaa;
 	position: relative;
 	input{
@@ -117,10 +142,10 @@ h1.title{
       left:4px;
       top:0;
       width:90%;
-      height: 23px;
+      height: 28px;
       color:#666;
-      line-height: 23px;
-      font-size: 14px;
+      line-height: 28px;
+      // font-size: 14px;
       border:0;
       outline: none;
      

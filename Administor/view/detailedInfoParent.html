@@ -6,7 +6,7 @@
 	<title>好学吧家教服务平台 后台</title>
 	<link rel="stylesheet" href="../dist/css/detailedInfo.min.css">
 </head>
-<body>
+<body v-bind:class="{'overY': status.overY}">
 <div class="container" v-bind:class="{opacity:status.Loading}">
 	<header>
 	    <a href="javascript:;" class="hs1" v-on:touchend="onReturn"></a>
@@ -56,40 +56,42 @@
 	<div class="tutorInfo" v-if="status.isTutorInfo">
 	    <div class="greyScreen"></div>
 		<div class="InfoList">
-			<div class="client">
-			    <div class="image" v-if="msgDetailedList.certificate_photo">
-			    	<img :src="msgDetailedList.certificate_photo" alt="">
-			    </div>
-				<div class="msgName">
-					<span v-text="msgDetailedList.name"> 
-					</span>
-				    <span class='close' v-tap="onClose()">×</span>
+			<div class="infoMsg">
+				<div class="client">
+				    <div class="image" v-if="msgDetailedList.certificate_photo">
+				    	<img :src="msgDetailedList.certificate_photo" alt="">
+				    </div>
+					<div class="msgName">
+						<span v-text="msgDetailedList.name"> 
+						</span>
+					    <span class='close closeSize' v-tap="onClose()">×</span>
+					</div>
 				</div>
-			</div>
-			<div class="info">
-				<p>性别：<em v-text="msgDetailedList.sex">
-				</em></p>
-				<p>专业：<em v-text="msgDetailedList.campus_major"></em></p>
-				<p>相关成绩：<em v-text="msgDetailedList.score"></em></p>
-				<p>可教科目：<em>
-				{{msgDetailedList.grade}}{{msgDetailedList.subject}}{{msgDetailedList.subject_other}}
-				</em></p>
-				<p>时薪：<em>{{msgDetailedList.salary_bottom}}~{{msgDetailedList.salary_top}}</em></p>
-				<p>上课时间：<em v-text="msgDetailedList.time"></em></p>
-				<p>可接受地点：<em v-text="msgDetailedList.place"></em></p>
-				<p>教学方法：<em>{{msgDetailedList.teacher_method}}{{msgDetailedList.teacher_method_other}}</em></p>
-				<p>自我简介：<em v-text="msgDetailedList.self_comment"></em></p>
-				<p>联系电话：<em v-text="msgDetailedList.tel">
-				</em></p>
-				<p>老师籍贯：<em v-text="msgDetailedList.native_place"></em></p>
-			</div>
-			<div class="showImg" v-if='msgDetailedList.teach_show_photo.length!==0'>
-				<h3>家教秀</h3>
-				<ul class="showImage">
-                   <li v-for="item in msgDetailedList.teach_show_photo">
-                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
-                   </li>             
-				</ul>
+				<div class="info">
+					<p>性别：<em v-text="msgDetailedList.sex">
+					</em></p>
+					<p>专业：<em v-text="msgDetailedList.campus_major"></em></p>
+					<p>相关成绩：<em v-text="msgDetailedList.score"></em></p>
+					<p>可教科目：<em>
+					{{msgDetailedList.grade}}{{msgDetailedList.subject}}{{msgDetailedList.subject_other}}
+					</em></p>
+					<p>时薪：<em>{{msgDetailedList.salary_bottom}}~{{msgDetailedList.salary_top}}</em></p>
+					<p>上课时间：<em v-text="msgDetailedList.time"></em></p>
+					<p>可接受地点：<em v-text="msgDetailedList.place"></em></p>
+					<p>教学方法：<em>{{msgDetailedList.teacher_method}}{{msgDetailedList.teacher_method_other}}</em></p>
+					<p>自我简介：<em v-text="msgDetailedList.self_comment"></em></p>
+					<p>联系电话：<em v-text="msgDetailedList.tel">
+					</em></p>
+					<p>老师籍贯：<em v-text="msgDetailedList.native_place"></em></p>
+				</div>
+				<div class="showImg" v-if='msgDetailedList.teach_show_photo.length!==0'>
+					<h3>家教秀</h3>
+					<ul class="showImage">
+	                   <li v-for="item in msgDetailedList.teach_show_photo">
+	                   	<img v-bind:src="item" alt="" v-tap="showImg($index)">
+	                   </li>             
+					</ul>
+				</div>
 			</div>
 			<div class="submitBtn" v-if='status.isDetailed'>
 				<span v-tap="onDelete(form.selected)" v-text="status.text"></span>
@@ -108,7 +110,7 @@
 		<p v-text="msg.text">{{msg.text}}</p>
 	</div>
 	<div class="InfoTipOne" v-if="status.isInfoTipOne">
-	    <p class='close' v-tap="onClose()">×</p>
+	    <p class='close closeSize' v-tap="onClose()">×</p>
 		<p class="infoTip" v-text='status.errorTip'></p>
 	</div>
 	<div class="tutorInfo" v-if="status.isChangeInfo">

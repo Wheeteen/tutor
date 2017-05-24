@@ -5,9 +5,35 @@ body,html,header,h1,a,ul,li,p,h3,span,div,img,em{
 @color1:#23CD74;
 @color2:#999;
 body{
-	font-size: 14px;
+	// font-size: 14px;
 	width:100%;
 	font-family: 'Microsoft Yahei';
+}
+@media (max-width: 320px){
+	body,header h1,h1.title{
+		font-size: 14px;
+	}
+	.closeSize{
+		font-size: 25px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body,header h1,h1.title{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 33px;
+	}
+
+}
+
+@media (min-width: 376px){
+	body,header h1,h1.title{
+		font-size: 17px;
+	}
+	.closeSize{
+		font-size: 37px;
+	}
 }
 ul,ul li{
 	list-style: none;
@@ -44,7 +70,7 @@ header{
 	}
 	h1{
 		color:@color1;
-		font-size: 14px;
+		// font-size: 14px;
 		margin-left: 16px;
 		font-weight: normal;
 		letter-spacing: 2px;
@@ -100,7 +126,7 @@ header{
 h1.title{
 	width:100%;
 	text-align: center;
-	font-size: 14px;
+	// font-size: 14px;
 	margin:3px auto 6px;
 }
 .noList{
@@ -117,8 +143,8 @@ h1.title{
     	padding:0 5%;
     	box-sizing: border-box;
 		-webkit-box-sizing:border-box;
-		height: 30px;
-		line-height: 30px;
+		height: 42px;
+		line-height: 42px;
 		border:1px solid #bbb;
 		margin-bottom: 10px;
 		border-radius: 3px;
@@ -134,16 +160,17 @@ h1.title{
 		}
 		.fXing{
 			width:100%;	
-			height: 30px;		
+			height: 42px;		
 			li{
 				display: inline-block;
-				width:22px;
-				height: 30px;
+				margin-right: 2%;
+				width:32px;
+				height: 42px;
 				border:0;
 				background: url(../../img/xing.png) no-repeat center;
 			}
 			.active{
-				background: url(../../img/xingGreen.png) no-repeat center;
+				background: url(../../img/xingG1.png) no-repeat center;
 			}
 		}
     }
@@ -184,10 +211,10 @@ h1.title{
 		}
 		span{
 			position: absolute;
-			top:-4px;
+			top:-2%;
 			right:3%;
-			font-size: 30px;
-			color: #666;
+			// font-size: 30px;
+			color: #999;
 
 		}
 	}
@@ -200,7 +227,7 @@ h1.title{
 			width:30%;
 			float: left;
 			text-align: center;
-			line-height: 22px;
+			line-height: 42px;
 		}
 		ul{
             float: left;
@@ -208,12 +235,13 @@ h1.title{
 		}
 		li{
 			display: inline-block;
-			width:22px;
-			height: 22px;
+			margin-right: 2%;
+			width:32px;
+			height:42px;
 			background: url(../../img/xing.png) no-repeat center;
 		}
 		.active{
-			background: url(../../img/xingGreen.png) no-repeat center;
+			background: url(../../img/xingG1.png) no-repeat center;
 		}
 	}
 	.tutorService,.appService{

@@ -8,6 +8,56 @@ body{
 	width:100%;
 	background-color:#f1f1f1;
 }
+.overY{
+	overflow: hidden;
+}
+@media (max-width: 320px){
+	body,.search div select{
+		font-size: 14px;
+	}
+	.consult a,.image img{
+		width: 45px;
+		height: 45px;
+	}
+	.submitBtn input{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 28px;
+	}
+}
+
+@media (min-width: 321px) and (max-width: 375px){
+	body,.search div select{
+		font-size: 16px;
+	}
+	.consult a,.image img{
+		width: 50px;
+		height: 50px;
+	}
+	.submitBtn input{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 376px){
+	body,.search div select{
+		font-size: 17px;
+	}
+	.consult a,.image img{
+		width: 55px;
+		height: 55px;
+	}
+	.submitBtn input{
+		font-size: 20px;
+	}
+	.closeSize{
+		font-size: 40px;
+	}
+}
 @color1:#23CD74;
 @color2:#999;
 a{
@@ -35,7 +85,7 @@ ul,ul li{
 	span{
 		width:50%;
 		text-align: center;
-		font-size: 14px;
+		// font-size: 14px;
 		line-height: 30px;
         display: inline-block;
         float: left;
@@ -58,8 +108,6 @@ ul,ul li{
 		display: inline-block;
 		color:#fff;
 		background: #5D7A93;
-		width:45px;
-		height: 45px;
 		border-radius: 50%;
 
 		em{
@@ -76,13 +124,17 @@ ul,ul li{
 	margin:0 auto;
 	header{
 		margin-top:3px;
+		em{
+			display: inline-block;
+			width: 15%;
+		}
 		p{
-			font-size: 12px;
+			// font-size: 12px;
 			color:@color1;
 			// font-weight: bold;
 		}
 		.blank{
-			margin-left: 35px;
+			margin-left: 15%;
 		}
 
 	}
@@ -95,7 +147,7 @@ ul,ul li{
 			box-sizing: border-box;
 			width:50%;
 			text-align: center;
-			font-size: 12px;
+			// font-size: 12px;
 			line-height: 23px;
 	        display: inline-block;
 	        // height: 18px;
@@ -138,8 +190,6 @@ ul,ul li{
 		float: left;
 		// border:1px solid #000;
 		img{
-			width:48px;
-			height: 48px;
 			border-radius: 50%;
 			border:1px solid #f1f1f1;
 		}
@@ -172,7 +222,7 @@ ul,ul li{
 		overflow: hidden;
 		em{
 			font-weight: bold;
-			font-size: 13px;
+			// font-size: 13px;
 			display: inline-block;
 			margin-right: 2%;
 			margin-bottom: 3px;
@@ -185,7 +235,7 @@ ul,ul li{
 		overflow: hidden;
 		span{
 			float: right;
-			font-size: 10px;
+			// font-size: 10px;
 		}
 	}
 
@@ -194,21 +244,21 @@ ul,ul li{
 	position: fixed;
 	width:100%;
 	height: 100%;
-	overflow-y: scroll;
 	top:0;
 	z-index: 9999;
-	-webkit-overflow-scrolling: touch;
 	.InfoList{
 		position: absolute;
-		// overflow-y: scroll;
+		overflow-y: auto;
 		width:90%;
 		left:5%;
-		// margin:0 auto;
-		top:7%;
+		max-height: 60%;
+		top:20%;
 		border:1px solid #ccc;
 		background: #fff;
 		z-index: 20;
-		margin-bottom: 20px;
+	}
+	.infoMsg{
+		padding: 5px 2% 15px;
 	}
 	.greyScreen{
 		position: fixed;
@@ -217,6 +267,10 @@ ul,ul li{
 		height: 100%;
 		background: rgba(0, 0, 0, 0.3);
 		// z-index: 13;
+	}
+	.informMsg{
+		padding: 20px 10px;
+		line-height: 25px;
 	}
 	.client{    
 		width:96%;
@@ -228,21 +282,21 @@ ul,ul li{
           float: left;
           margin-right: 2%;
           img{
-          	width:48px;
-			height: 48px;
           	border-radius: 50%;
           	border:1px solid #f1f1f1;
           }
 		}
 		.msgName{
-			height: 20px;
-			line-height: 20px;
+			height: 28px;
+			line-height: 28px;
+			margin-left: 17%;
 			border-bottom: 1px solid #53C778;
 		}
 		.close{
 			float: right;
-			margin-right: 3px;
-			font-size: 25px;
+			margin-right: 3%;
+			color: #999;
+			// font-size: 25px;
 		}
 	}
 	.distance{
@@ -289,7 +343,7 @@ ul,ul li{
             height: 30px;
             outline: none;
             color:#fff;
-            font-size: 16px;
+            // font-size: 16px;
             line-height: 30px;
             border:0;
             letter-spacing: 1px;
@@ -343,14 +397,15 @@ ul,ul li{
 	z-index: 23;
 	.close{
 		float: right;
-		margin-right: 2%;
-		font-size: 23px;
+		margin-right: 3%;
+		color: #999;
+		// font-size: 23px;
 	}
 	.infoTip{
 		width:90%;
         margin-left: 5%;
         margin-top: 10%;
-        font-size: 14px;
+        // font-size: 14px;
         color: red;
 	}
 }

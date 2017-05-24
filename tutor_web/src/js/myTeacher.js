@@ -7,6 +7,7 @@
        el: 'body',
        data: {
          	domain:'http://www.shendaedu.com',
+         	// domain: 'http://shaozi.beansonbar.cn',
          	timer: null,
        	    tutorList:[],
 			status:{
@@ -24,7 +25,8 @@
                 onTeacher: false,
                 isEnlargeImg: false,
                 enlargeImg: '',
-                errorTip:'对不起，您只能选择一位老师'
+                errorTip:'对不起，您只能选择一位老师',
+                overY: false,
 			},
 			para:{
 		        'start': 0,
@@ -86,6 +88,7 @@
        		window.location.href="./parentMyPage.html";
        	},
        	onTutorInfo: function(index){
+       		this.status.overY = true;
        		this.detailedList=[];
 			this.status.isTutorInfo = true;
 			this.form.selected = index; 
@@ -122,9 +125,7 @@
 			this.status.onParent = true;
 			this.status.onTeacher = false;
             this.status.isSuccess = true;
-			if(list.result == '管理员审核中'){
-                this.form.isRegister = "管理员审核中";
-			}else if(list.result == '已成交'){
+			if(list.result == '已成交'){
 			   this.form.isRegister = "双方已成交";
 			}else if(list.result == '您已邀请'){
                 this.status.isSuccess = false;
@@ -160,6 +161,7 @@
 					}
 
 				}).then(function(res){
+					this.status.overY = false;
 					console.log(res.json());
 					if(res.json().success==1){
 				       this.form.isRegister = '您已邀请';
@@ -189,6 +191,7 @@
 				this.form.isMsg = '信息';
 				this.status.isChangeInfo = true;
 			}else{
+				this.status.overY = false;
 				this.status.isTutorInfo = false;
 				return false;
 			}
@@ -206,6 +209,7 @@
 				}
 
 			}).then(function(res){
+				this.status.overY = false;
 				if(res.json().success==1){
 					var self = this;
 				    this.timer && clearTimeout(this.timer);
@@ -233,6 +237,7 @@
 
 			}).then(function(res){
 				console.log(res.json());
+				this.status.overY = false;
 			    if(res.json().success==1){
 					var self = this;
 					this.tutorList[index].finish = 1;
@@ -261,6 +266,7 @@
 
 				}).then(function(res){
 					console.log(res.json());
+					this.status.overY = false;
 					if(res.json().success==1){
 						var self = this;
 					    this.timer && clearTimeout(this.timer);
@@ -285,6 +291,7 @@
 					}
 
 				}).then(function(res){
+					this.status.overY = false;
 					console.log(res.json());
 					if(res.json().success==1){
 						this.status.isChangeInfo = false;
@@ -306,6 +313,7 @@
            this.status.isEnlargeImg = false;
 		},
 		onClose: function(){
+			this.status.overY = false;
 			this.status.isChangeInfo = false;
 			this.status.isTutorInfo = false;
 			this.status.isInfoTipOne = false;

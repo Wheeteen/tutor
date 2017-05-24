@@ -8,6 +8,40 @@ body{
 	background: #eee;
 	font-family: 'Microsoft Yahei';
 }
+@media (max-width: 320px){
+	body{
+		font-size: 14px;
+	}
+	.submitBtn .refuse{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 28px;
+	}
+}
+@media (min-width: 321px) and (max-width: 375px){
+	body{
+		font-size: 16px;
+	}
+	.submitBtn .refuse{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 376px){
+	body{
+		font-size: 17px;
+	}
+	.submitBtn .refuse{
+		font-size: 20px;
+	}	
+	.closeSize{
+		font-size: 40px;
+	}
+}
 @color1:#23CD74;
 @color2:#999;
 ::-webkit-input-placeholder{
@@ -150,8 +184,10 @@ em{
 		border-bottom: 1px solid #53C778;
 		.close{
 			float: right;
-			margin-right: 3px;
-			font-size: 25px;
+			margin-right: 2%;
+			margin-top: -1%;
+			color: #999;
+			// font-size: 25px;
 		}
 	}
 	.tel{

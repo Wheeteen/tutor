@@ -7,6 +7,7 @@
 		el: 'body',
 		data:{
 			domain: 'http://www.shendaedu.com',
+			// domain: 'http://shaozi.beansonbar.cn',
 			timer: null,
 			status:{
                 isTutorInfo: false,
@@ -22,6 +23,9 @@
                 isNoTutor: false,
                 isEnlargeImg: false,
                 enlargeImg: '',
+                overY: false,
+                isFinishMsg: false,
+                informMsg: '',
 			},
 			recommendList:[],
 			detailedList:[],
@@ -40,6 +44,7 @@
 		ready: function(){
 			this.renderData();
 			this.status.isLoading = true;
+			this.getSignature();
 		},
 		methods:{
 			down: function(){
@@ -59,6 +64,7 @@
 	              if(res.json().success == 0){
 	              	console.log(res.json().error);
 	              }else{
+	              	console.log(res.json());
 	              	this.jsonData = res.json();
 	              	var data = res.json();
 	              	if(data.length!=0){
@@ -66,7 +72,7 @@
 		              		if(data[i].certificate_photo!=''){
 		              			data[i].certificate_photo = this.domain+data[i].certificate_photo;
 		              		}else{
-		              			data[i].certificate_photo = '../img/user02.png';
+		              			data[i].certificate_photo = '../img/user.png';
 		              		}
 		              		var teach_photo=data[i].teach_show_photo,len=data[i].teach_show_photo.length;
 		              		for(var j=0;j<len;j++){
@@ -75,7 +81,7 @@
 		              		if(data[i].distance!==0){
 		              			data[i].distance = data[i].distance.toFixed(2);
 		              		}
-		              		if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '老师已拒绝'){
+		              		if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '老师已拒绝'||data[i].isInvited == '通知老师失败'){
 			          	   		data[i].isRed = true;
 			          	   	}else{
 			          	   		data[i].isRed = false;
@@ -114,10 +120,10 @@
 	                signature: self.signature,// 必填，签名，见附录1
 	                jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 	              });
-                  this.timer && clearTimeout(this.timer);
-	              this.timer = setTimeout(function(){
-	                 self.onAllow();
-	               }, 300);
+               //    this.timer && clearTimeout(this.timer);
+	              // this.timer = setTimeout(function(){
+	              //    self.onAllow();
+	              //  }, 300);
 	            }else{
 	              console.log(res.json().error);
 	            }
@@ -141,11 +147,11 @@
 	          })
 	        },
 	        setLocation: function(){
-	          if(this.getSignature==''){
-                this.getSignature();
-	          }else{
-	          	this.onAllow();
-	          }
+	          // if(this.getSignature==''){
+           //      this.getSignature();
+	          // }else{
+	          this.onAllow();
+	          // }
 	        },
 	        //发送定位
 	        onAllow: function(){
@@ -174,11 +180,13 @@
               window.location.href = './parentAllTutor.html';				
 			},
 			onTutorInfo: function(index){
+				this.status.overY = true;
 				this.status.isTutorInfo = true;
 				this.status.selected = index; 
 				this.status.isDefault = false;
 				this.status.isSuccess = true;
-				this.detailedList = this.recommendList[index];
+				var selectList = this.recommendList[index];
+				this.detailedList = selectList;
 				switch(this.detailedList.isInvited){
 					case '您已邀请':
 					  this.status.isDefault = true;
@@ -201,11 +209,20 @@
                     case '您已同意':
 	                  this.status.isRegister = "您已接受该老师";
 	                  break;
-	                case '管理员审核中':
-	                  this.status.isRegister = "管理员审核中";
+	                case '正在通知老师':
+	                  this.status.isRegister = "正在通知老师";
 	                  break; 
-	                case '已成交':
-	                  this.status.isRegister = "双方已成交";
+	                case '已成功通知老师':
+	                  this.status.isTutorInfo = false;
+	                  this.status.isFinishMsg = true;
+	                  this.status.informMsg = "已成功通知老师，用户名称："+selectList.name+"老师，联系方式："+selectList.tel+"，请尽快与老师联系确定试课，谢谢！";
+	                  break; 
+	                case '通知老师失败':
+	                  this.status.isDefault = true;
+	              	  this.status.isSuccess = false;
+	              	  this.status.informMsg = "通知老师失败，请重新选择其他老师联系试课！";
+	                  this.status.isTutorInfo = false;
+	                  this.status.isFinishMsg = true;
 	                  break; 
 	                case '':
 	                  this.status.isRegister = "邀请老师";
@@ -240,6 +257,7 @@
 
 				}).then(function(res){
 					console.log(res.json());
+					this.status.overY = false;
 					if(res.json().success==1){
 				       this.status.isRegister =successText;
 		                var self = this;
@@ -271,6 +289,8 @@
 			},
 			onClose: function(){
 	      		this.status.isTutorInfo = false;
+	      		this.status.overY = false;
+	      		this.status.isFinishMsg = false;
 	      	}	      	
 		}
 	})
