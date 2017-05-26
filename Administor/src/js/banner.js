@@ -7,7 +7,8 @@
       el: 'body',
       data: {
         timer: null,
-        domain: 'http://www.shendaedu.com',
+        // domain: 'http://www.shendaedu.com',
+        domain: 'http://shaozi.beansonbar.cn',
         status:{
   	  	  isUser: false,
   	  	  isDeal: true,

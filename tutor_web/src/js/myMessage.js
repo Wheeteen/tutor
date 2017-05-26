@@ -7,8 +7,8 @@
 	var vm = new Vue({
       el:'body',
       data:{
-        domain:'http://www.shendaedu.com/',
-        // domain: 'http://shaozi.beansonbar.cn/',
+        // domain:'http://www.shendaedu.com/',
+        domain: 'http://shaozi.beansonbar.cn/',
       	msgList:[],
       	status:{
       		isFeedBack: false,

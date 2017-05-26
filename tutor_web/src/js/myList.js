@@ -7,8 +7,8 @@
     el: 'body',
     data: {
       timer: null,
-      domain:'http://www.shendaedu.com',
-      // domain: 'http://shaozi.beansonbar.cn',
+      // domain:'http://www.shendaedu.com',
+      domain: 'http://shaozi.beansonbar.cn',
  	    msgList: [],
 			status:{
         isList: true,

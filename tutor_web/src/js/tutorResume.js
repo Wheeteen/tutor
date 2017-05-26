@@ -6,8 +6,8 @@ Vue.http.interceptors.push(function(request, next){
 var vm = new Vue({
   el: 'body',
   data: {
-    domain: 'http://www.shendaedu.com',
-    // domain: 'http://shaozi.beansonbar.cn',
+    // domain: 'http://www.shendaedu.com',
+    domain: 'http://shaozi.beansonbar.cn',
     timer: null,
   	hintData: {
   	   status: false,
