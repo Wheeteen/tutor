@@ -67,7 +67,7 @@
           	  var data = res.json();
           	  if(data.length !=0){
           	   for(var i = 0;i<data.length;i++){
-          	   	if(data[i].result == '您已拒绝'||data[i].result == '老师已拒绝'){
+          	   	if(data[i].result == '您已拒绝'||data[i].result == '老师已拒绝'||data[i].result == '通知老师失败'){
           	   		data[i].isRed = true;
           	   	}else{
           	   		data[i].isRed = false;
@@ -125,8 +125,13 @@
 			this.status.onParent = true;
 			this.status.onTeacher = false;
             this.status.isSuccess = true;
-			if(list.result == '已成交'){
-			   this.form.isRegister = "双方已成交";
+			if(list.result == '已成功通知老师'){
+			   this.form.isRegister = "请尽快与老师联系确定试课";
+			}else if(list.result == '正在通知老师'){
+			   this.form.isRegister = "正在通知老师";
+			}else if(list.result == '通知老师失败'){
+                this.status.isSuccess = false;
+                this.form.isRegister = "请重新选择其他老师";
 			}else if(list.result == '您已邀请'){
                 this.status.isSuccess = false;
                 this.form.isRegister = "取消邀请";
@@ -247,7 +252,7 @@
 		              self.tutorList[index].result = "您已拒绝";  
 		              self.tutorList[index].isRed = true;            
 		            }, 1000);
-				}else{
+				 }else{
 					console.log(res.json().error);
 				}
 			})

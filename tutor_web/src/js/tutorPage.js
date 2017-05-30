@@ -90,7 +90,7 @@
                   }
                   var level=this.grade_level(data[i].class_field);
                   data[i].class_field = level;
-                  if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '家长已拒绝'){
+                  if(data[i].isInvited == '您已拒绝'||data[i].isInvited == '家长已拒绝'||data[i].isInvited == '您未按时上传截图'){
                     data[i].isRed = true;
                   }else{
                     data[i].isRed = false;
@@ -226,6 +226,11 @@
               this.status.isSuccess = false;
               this.status.isRegister = "您已拒绝该家长";
               break;
+            case '您未按时上传截图':
+              this.status.isDefault = true;
+              this.status.isSuccess = false;
+              this.status.isRegister = "您未按时上传截图";
+              break;
             case '家长已拒绝':
               this.status.isDefault = true;
               this.status.isSuccess = false;
@@ -313,6 +318,7 @@
                   this.status.errorTip = res.json().error;
                   this.status.isTutorInfo = false;
                   this.status.isInfoTipOne = true;
+                  self.status.expection = false;
                   this.timer && clearTimeout(this.timer);
                   this.timer=setTimeout(function(){
                     self.status.isInfoTipOne = false;

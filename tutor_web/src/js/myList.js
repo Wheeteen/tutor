@@ -94,7 +94,7 @@
            var data = res.json();
            if(data.length!=0){
              for(var i = 0;i<data.length;i++){
-              if(data[i].result == '您已拒绝'||data[i].result == '家长已拒绝'){
+              if(data[i].result == '您已拒绝'||data[i].result == '家长已拒绝'||data[i].result == '您未按时上传截图'){
                 data[i].isRed = true;
               }else{
                 data[i].isRed = false;
@@ -210,6 +210,11 @@
           this.status.isInvited = false;
           this.status.isReject = true;
           this.status.isSuccess = false;
+        }else if(list.result == '您未按时上传截图'){
+          this.status.text = '您未按时上传截图';
+          this.status.isInvited = false;
+          this.status.isReject = true;
+          this.status.isSuccess = false;
         }
         else if(list.result == '您已报名'){
           this.status.text = '取消报名';
@@ -227,7 +232,7 @@
         this.status.isTutorInfo = false;
         this.form.isMsg = '取消报名';
         this.status.isSureRefuse = true;
-      }else if(this.status.text == '双方已成交' || this.status.text == '您已拒绝邀请'){
+      }else if(this.status.text == '双方已成交' || this.status.text == '您已拒绝邀请'|| this.status.text == '您未按时上传截图'){
         this.status.isTutorInfo = false;
         this.status.overY = false;
       }
