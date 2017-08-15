@@ -80,12 +80,30 @@
 		</div>
 	</div>
 	<!-- 审核按钮 -->
-	<div class="assume">
+	<div class="assume" v-if="status.isExamine">
 		<p class="bgreen" v-on:touchend="YesExamine">通过审核</p>
 		<p v-on:touchend="notExamine">未通过审核</p>
 	</div>
+	<!-- 显示信息费 -->
+	<div class="infoFee" v-if="status.isOnFee">
+		<span>信息费为：<em class="isGreen" v-text="priFee"></em>元</span>
+		<span class="isGreen" v-on:touchstart='onFeeInfo'>修改信息费?</span>
+	</div>
 	<div class="enlargeImg" v-if='status.isEnlargeImg'>
       <img :src="status.enlargeImg" alt="" v-on:touchend="closeImg">
+    </div>
+    <!-- 信息费 -->
+	<div class="feeInfo" v-if="status.isFeeInfo">
+        <div class="greyScreen"></div>
+        <form class="InfoRequest" v-on:submit.prevent='onSubmit'>
+            <p class='close closeSize' v-on:touchstart='onClose'>×</p>
+            <div class="infoTip">
+                <p>信息费 <input type="Number" v-model.trim="fee" required> 元</p>
+            </div>
+            <div class="infoBtn">
+                <input type="submit" value='提交'>
+            </div>
+        </form>
     </div>
 </div>
 <script src="../dist/js/vue.min.js"></script>

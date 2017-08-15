@@ -110,19 +110,22 @@ header{
 	}
 }
 .btnTitle{
-	width:80%;
+	width:96%;
 	margin:5px auto;
 	overflow: hidden;
 	span{
 		display: block;
 		float: left;
-		width:50%;
+		width:33.3%;
 		height: 25px;
 		text-align: center;
 		line-height: 23px;
 		box-sizing: border-box;
 		-webkit-box-sizing: border-box;
 		border: 1px solid #ccc;
+		&:nth-child(n+2){
+			border-left: none;
+		}
 	}
 	.active{
 		background: @color1;
@@ -137,24 +140,31 @@ header{
 	color: red;
 }
 .msgList{
-	width:90%;
+	width:96%;
 	margin:10px auto 50px;
 	overflow: hidden;
 
     li{
-    	padding:0 5%;
+		padding:4px 3%;
     	box-sizing: border-box;
 		-webkit-box-sizing:border-box;
-		height: 30px;
-		line-height: 30px;
 		border:1px solid #bbb;
-		margin-bottom: 10px;
+		margin-bottom: 8px;
 		border-radius: 3px;
-		span:first-child{
-			width:30%;
+		span:first-child{			
 			display: inline-block;
-			float: left;
-			
+			float: left;			
+		}
+		span:last-child{
+			float: right;
+			// width:22%;
+			text-align: right;
+		}
+		div{
+			overflow:hidden;
+		}
+		.reqInfo{
+			width:30%;
 		}
 		.date{
 			width:70%;

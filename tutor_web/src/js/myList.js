@@ -161,17 +161,15 @@
   	  this.form.selected = index;
       this.status.isTutorInfo = true;
       this.status.isSuccess = true;
-      var list = this.msgList[index];
-      if(list.result == '请上传截图'){
+      var list = this.msgList[index],
+          result = list.result;
+      if(result == '请上传截图'){
         if(this.signature==''){
           this.getSignature();
         }
         this.status.isTutorInfo = false;
         this.status.isAccount = true;
-      }else if(list.result == '对方已同意'){
-        this.status.isTutorInfo = false;
-        this.onAccept(index);
-      }else if(list.result == '管理员审核中'){
+      }else if(result == '管理员审核中'){
         this.status.isTutorInfo = false;
         this.status.isRemindTip = true;
       }else{
@@ -193,46 +191,101 @@
             this.detailedList = data;
            }
         });
-        if(list.result == '对方已邀请'){
-          this.status.isInvited = true;
-          this.status.isReject = false;
+        switch(result){
+          case '对方已邀请':
+            this.status.isInvited = true;
+            this.status.isReject = false;
+            break;
+          case '已成交':
+            this.status.text = '双方已成交';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            break;
+          case '管理员审核和定价':
+            this.status.text = '管理员审核和定价';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            break;
+          case '家长已拒绝':
+            this.status.text = '再次报名该家长';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            break;
+          case '您已拒绝':
+            this.status.text = '您已拒绝邀请';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            this.status.isSuccess = false;
+            break;
+          case '管理员审核不通过':
+            this.status.text = '管理员审核不通过';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            this.status.isSuccess = false;
+            break;
+          case '您未按时上传截图':
+            this.status.text = '您未按时上传截图';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            this.status.isSuccess = false;
+            break;
+          case '您已报名':
+            this.status.text = '取消报名';
+            this.status.isInvited = false;
+            this.status.isReject = true;
+            this.status.isSuccess = false;
+            break;
         }
-        else if(list.result == '已成交'){
-          this.status.text = '双方已成交';
-          this.status.isInvited = false;
-          this.status.isReject = true;
-        }else if(list.result == '家长已拒绝'){
-          this.status.text = '再次报名该家长';
-          this.status.isInvited = false;
-          this.status.isReject = true;
-        }else if(list.result == '您已拒绝'){
-          this.status.text = '您已拒绝邀请';
-          this.status.isInvited = false;
-          this.status.isReject = true;
-          this.status.isSuccess = false;
-        }else if(list.result == '您未按时上传截图'){
-          this.status.text = '您未按时上传截图';
-          this.status.isInvited = false;
-          this.status.isReject = true;
-          this.status.isSuccess = false;
-        }
-        else if(list.result == '您已报名'){
-          this.status.text = '取消报名';
-          this.status.isInvited = false;
-          this.status.isReject = true;
-          this.status.isSuccess = false;
-        }
+        // if(list.result == '对方已邀请'){
+        //   this.status.isInvited = true;
+        //   this.status.isReject = false;
+        // }
+        // else if(list.result == '已成交'){
+        //   this.status.text = '双方已成交';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        // }else if(list.result == '管理员定价中'){
+        //   this.status.text = '管理员定价中';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        // }else if(list.result == '家长已拒绝'){
+        //   this.status.text = '再次报名该家长';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        // }else if(list.result == '您已拒绝'){
+        //   this.status.text = '您已拒绝邀请';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        //   this.status.isSuccess = false;
+        // }else if(list.result == '管理员审核不通过'){
+        //   this.status.text = '管理员审核不通过';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        //   this.status.isSuccess = false;
+        // }else if(list.result == '您未按时上传截图'){
+        //   this.status.text = '您未按时上传截图';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        //   this.status.isSuccess = false;
+        // }
+        // else if(list.result == '您已报名'){
+        //   this.status.text = '取消报名';
+        //   this.status.isInvited = false;
+        //   this.status.isReject = true;
+        //   this.status.isSuccess = false;
+        // }
       }      
   	},
     onStep: function(index){
-      if(this.status.text=='再次报名该家长'){
+      var text = this.status.text;
+      if(text=='再次报名该家长'){
         this.status.isTutorInfo = false;
         this.status.expection = true;
-      }else if(this.status.text == '取消报名'){
+      }else if(text == '取消报名'){
         this.status.isTutorInfo = false;
         this.form.isMsg = '取消报名';
         this.status.isSureRefuse = true;
-      }else if(this.status.text == '双方已成交' || this.status.text == '您已拒绝邀请'|| this.status.text == '您未按时上传截图'){
+      }else if(text == '双方已成交' || text == '您已拒绝邀请'|| text == '您未按时上传截图'|| text == "管理员审核和定价" || "管理员审核不通过"){
         this.status.isTutorInfo = false;
         this.status.overY = false;
       }
@@ -281,14 +334,11 @@
       }).then(function(res){
         this.status.overY = false;
         if(res.json().success == 1){
-          if(this.signature==""){
-            this.getSignature();
-          }
-          this.msgList[index].finish = 0;
+          // this.msgList[index].finish = 0;
           this.msgList[index].isRed = false;
-          this.msgList[index].result= '请上传截图';
+          this.msgList[index].result= '管理员审核和定价';
           this.status.isTutorInfo = false;
-          this.status.isAccount = true;
+          // this.status.isAccount = true;
         }else{
           console.log(res.json().error);
         }
@@ -439,7 +489,7 @@
       this.status.isEnlargeImg = false;
     },
     onSureSubmit: function(index){     
-    this.status.overY = false;       
+      this.status.overY = false;       
       this.status.isRemindTip = false;
     }
   }

@@ -30,13 +30,10 @@
 	    	</div>
 	    	<div class="remindInfo">
 	    		消息提醒
-	    		<input type="checkbox" checked="checked">
-	    		<div class="remindBtn">	  
-	    			<span>
-	    				<em></em>
-	    			</span>
-	    		</div>
-
+	    		<div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" v-model="remind">
+                    <label class="onoffswitch-label" for="myonoffswitch"></label>
+                </div>
 	    	</div>
     	</div>
     </div>

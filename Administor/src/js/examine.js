@@ -12,9 +12,11 @@
      	  isLoading: false,
      	  sendResume: true,
      	  parRequest: false,
+        orderEx: false,
      	  isSelecting: true	,
         key: '简历',
         isList: true,
+        isOrderList: false,
         isNoList : false
      	},
      	mainData:[],
@@ -43,6 +45,7 @@
         }
       },
      	getData: function(){
+        var select = this.para.selected;
         this.$http.post(this.domain+'getCheckList',this.para,{
           crossOrigin: true,
         	headers:{
@@ -54,22 +57,40 @@
             console.log(res.json().error);
           }else{
             this.jsonData = res.json();
-            var data = res.json();
-            if(data.length!=0){
+            var data = res.json(),
+                len = data.length;
+            if(len!==0){
               this.status.isNoList = false;
-              this.status.isList = true;
-              var json=this.mainData.concat(res.json());
+              if(select == 3){
+                this.status.isOrderList = true;
+                this.status.isList = false;
+                for(var i =0;i<len;i++){
+                  if(data[i].price !== null){
+                    data[i].isDeal= false;
+                    data[i].result = "已处理";            
+                  }else{
+                    data[i].isDeal = true;
+                    data[i].result = "未处理";                  }
+                }
+              }else{
+                this.status.isOrderList = false;
+                this.status.isList = true;
+              }
+              var json=this.mainData.concat(data);
               this.$set('mainData',json);
               this.status.isSelecting = false;
             }else{
               if(this.mainData.length == 0){
                 if(this.para.selected == 1){
                   this.status.key = '简历';
-                }else{
+                }else if(this.para.selected == 2){
                   this.status.key = '家长需求';
+                }else{
+                  this.status.key = '订单';
                 }
                 this.status.isNoList = true;
                 this.status.isList = false;
+                this.status.isOrderList = false;
               }
             }
           }	
@@ -86,10 +107,16 @@
          	if(selected==1){
          	  this.status.sendResume = true;
             this.status.parRequest = false;
-         	}else{
+            this.status.orderEx = false;
+         	}else if(selected==2){
          	  this.status.sendResume = false;
             this.status.parRequest = true;
-         	}
+            this.status.orderEx = false;
+         	}else{
+            this.status.sendResume = false;
+            this.status.parRequest = false;
+            this.status.orderEx = true;
+          }
          }
      	},
       onUser:function(){
@@ -104,6 +131,7 @@
       onSendResume: function(){
        	this.status.sendResume = true;
        	this.status.parRequest = false;
+        this.status.orderEx = false;
         this.para.start = 0;
         this.para.size = 16;
        	this.para.selected = 1;
@@ -113,9 +141,20 @@
       onParRequest: function(){
        	this.status.sendResume = false;
        	this.status.parRequest = true;
+        this.status.orderEx = false;
         this.para.start = 0;
         this.para.size = 16;
        	this.para.selected = 2;
+        this.mainData = [];
+        this.getData();
+      },
+      onOrderEx: function(){
+        this.status.sendResume = false;
+        this.status.parRequest = false;
+        this.status.orderEx = true;
+        this.para.start = 0;
+        this.para.size = 16;
+        this.para.selected = 3;
         this.mainData = [];
         this.getData();
       },
@@ -130,7 +169,18 @@
         }
         window.location.href='./examineDetailed.html?select='+selectIndex+'&listId='+id;
       },
-      
+      onOrderDetailed: function(index){
+        var teaId,parId,oaId,data=this.mainData[index],pri;
+        teaId = data.tea;
+        parId = data.pd;
+        oaId = data.oa_id;
+        pri = data.price;
+        if(pri!=null){
+          window.location.href='./examineDetailed.html?select=3&listId='+oaId+'&teaId='+teaId+'&parId='+parId+'&price='+pri;
+        }else{
+          window.location.href='./examineDetailed.html?select=3&listId='+oaId+'&teaId='+teaId+'&parId='+parId;
+        }       
+      }
      }
 	});
 })();

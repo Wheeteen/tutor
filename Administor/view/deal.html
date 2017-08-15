@@ -15,7 +15,7 @@
 	</div>
 	<ul class="userList" v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()" v-if='status.isList'>
 		<li v-for="item in mainData" v-tap="onDeal($index)">
-			<div><span>{{item.pd_name}}（家长）-{{item.name}}（老师）</span>
+			<div><span>{{item.pd_name}}(家长)-{{item.name}}(老师)</span>
             <span v-text ="item.result" v-bind:class="{isDeal: item.isDeal}"></span></div>
 		</li>
 	</ul>
@@ -28,7 +28,7 @@
 		<div class="InfoList">
 			<div class="client">
 				<span>{{detailedList.pd_name}}（家长）-{{detailedList.name}}（老师）</span>
-				<span class='close closeSize' @touchstart="onClose">×</span>
+				<span class='close closeSize' v-tap="onClose()">×</span>
 			</div>
 			<div class="infoImg">
 	          <img :src="detailedList.screenshot_path" alt="" v-tap="showImg()">
@@ -36,8 +36,12 @@
             <div class="client tel">
                 <span>该老师的联系方式：<em v-text="detailedList.teacher_tel"></em></span>
             </div>
-    		<div class="submitBtn">
-    			<span v-tap="onSubmitMsg(status.selected)" class='refuse' v-bind:class="{bgreen: status.isGreen}" v-text="status.isSend"></span>
+    		<div class="submitBtn" v-if="status.noDeal">
+    			<span v-tap="onApprove(status.selected)">通过审核</span>
+                <span v-tap="onRefuse(status.selected)">不通过审核</span>
+    		</div>
+    		<div class="submitBtn" v-if="status.haveDeal">
+    			<span v-tap="onClose()" class='refuse' v-bind:class="{bgreen: status.isGreen}" v-text="status.isSend"></span>
     		</div>
 		</div>
     </div>

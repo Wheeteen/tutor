@@ -92,7 +92,8 @@
        		this.detailedList=[];
 			this.status.isTutorInfo = true;
 			this.form.selected = index; 
-			var list = this.tutorList[index];
+			var list = this.tutorList[index],
+				result = list.result;
 			this.$http.post(this.domain+'/getTeacherInfo',{
 				"tea_id": list.tea,
 				"format": true,
@@ -125,30 +126,57 @@
 			this.status.onParent = true;
 			this.status.onTeacher = false;
             this.status.isSuccess = true;
-			if(list.result == '已成功通知老师'){
-			   this.form.isRegister = "请尽快与老师联系确定试课";
-			}else if(list.result == '正在通知老师'){
-			   this.form.isRegister = "正在通知老师";
-			}else if(list.result == '通知老师失败'){
-                this.status.isSuccess = false;
-                this.form.isRegister = "请重新选择其他老师";
-			}else if(list.result == '您已邀请'){
-                this.status.isSuccess = false;
-                this.form.isRegister = "取消邀请";
-			}else if(list.result == '您已拒绝'){
-			    this.status.isSuccess = false;
-                this.form.isRegister = "您已拒绝该老师";
-			}else if(list.result == '老师已拒绝'){
-                this.status.isSuccess = true;
-                this.form.isRegister = "再次邀请该老师";
-			}
-			else if(list.result == '向您报名'){
-				this.status.onParent= false;
-				this.status.onTeacher = true;
-			}else if(list.result == '您已同意'){
-	            this.status.isSuccess = false;
-	            this.form.isRegister = "拒绝选择该老师";
-	        }
+            switch(result){
+            	case "已成功通知老师":
+            		this.form.isRegister = "请尽快与老师联系确定试课";
+            		break;
+        		case "正在通知老师":
+        			this.form.isRegister = "正在通知老师";
+        			break;
+    			case "通知老师失败":
+    				this.status.isSuccess = false;
+                	this.form.isRegister = "请重新选择其他老师";
+                	break;
+            	case "您已邀请":
+        			this.status.isSuccess = false;
+                	this.form.isRegister = "取消邀请";
+                	break;
+            	case "您已拒绝":
+            		this.status.isSuccess = false;
+                	this.form.isRegister = "您已拒绝该老师";
+                	break;
+            	case "老师已拒绝":
+            		this.form.isRegister = "再次邀请该老师";
+            		break;
+        		case "向您报名":
+        			this.status.onParent= false;
+					this.status.onTeacher = true;
+					break;
+            }
+			// if(list.result == '已成功通知老师'){
+			//    this.form.isRegister = "请尽快与老师联系确定试课";
+			// }else if(list.result == '正在通知老师'){
+			//    this.form.isRegister = "正在通知老师";
+			// }else if(list.result == '通知老师失败'){
+   //              this.status.isSuccess = false;
+   //              this.form.isRegister = "请重新选择其他老师";
+			// }else if(list.result == '您已邀请'){
+   //              this.status.isSuccess = false;
+   //              this.form.isRegister = "取消邀请";
+			// }else if(list.result == '您已拒绝'){
+			//     this.status.isSuccess = false;
+   //              this.form.isRegister = "您已拒绝该老师";
+			// }else if(list.result == '老师已拒绝'){
+   //              this.status.isSuccess = true;
+   //              this.form.isRegister = "再次邀请该老师";
+			// }
+			// else if(list.result == '向您报名'){
+			// 	this.status.onParent= false;
+			// 	this.status.onTeacher = true;
+			// }else if(list.result == '您已同意'){
+	  //           this.status.isSuccess = false;
+	  //           this.form.isRegister = "拒绝选择该老师";
+	  //       }
 		},
 		onRegister1: function(index){
            if(this.form.isRegister == "取消邀请"){
@@ -191,11 +219,13 @@
 					}
 					
 				})
-			}else if(this.form.isRegister == '拒绝选择该老师'){
-				this.status.isTutorInfo = false;
-				this.form.isMsg = '信息';
-				this.status.isChangeInfo = true;
-			}else{
+			}
+			// else if(this.form.isRegister == '拒绝选择该老师'){
+			// 	this.status.isTutorInfo = false;
+			// 	this.form.isMsg = '信息';
+			// 	this.status.isChangeInfo = true;
+			// }
+			else{
 				this.status.overY = false;
 				this.status.isTutorInfo = false;
 				return false;
@@ -203,7 +233,7 @@
 		},
 		//选择该老师
 		onSelect: function(index){
-          this.$http.post(this.domain+'/handleOrder',{
+            this.$http.post(this.domain+'/handleOrder',{
 				'type': 1,
 				'id': this.tutorList[index].tea,
 				'accept': 1
@@ -220,7 +250,7 @@
 				    this.timer && clearTimeout(this.timer);
 		            this.timer = setTimeout(function(){
 		              self.status.isTutorInfo = false;
-		              self.tutorList[index].result = "您已同意"; 
+		              self.tutorList[index].result = "正在通知老师"; 
 		              self.tutorList[index].isRed = false;             
 		            }, 1000);
 				}else{

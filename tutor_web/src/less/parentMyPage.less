@@ -107,60 +107,94 @@ ul,ul li{
 	.remindInfo{
 		background: none;
 		position: relative;
-		.remindBtn{
-			position: absolute;
-			left:80%;
-			top:8px;
-			width:14%;
-			height: 16px;
+		// .remindBtn{
+		// 	position: absolute;
+		// 	left:80%;
+		// 	top:8px;
+		// 	width:14%;
+		// 	height: 16px;
 			
 			
-		}
-		input{
-			position: absolute;
-			width:100%;
-			height: 100%;
-			opacity: 0;
-			outline: none;
-			top:0;
-			left:0;
-		}
-		span{
-			position: absolute;
-			width:100%;
-			height: 100%;
-			border-radius: 8px;
-			top:0;
-			left:0;
-			border: 1px solid #ccc;
-            transition:background .2s  ease 0.3;
-		    -webkit-transition: background .2s  ease 0.3;
-		}
-		em{
-			position: absolute;
-			width:16px;
-			height: 16px;
-			border-radius: 50%;
-			left:0;
-			top:0;
-			display: block;
-			z-index: 33;
-			border:1px solid #ccc;
-			box-sizing: border-box;
-			-webkit-box-sizing:border-box;
-			-o-box-sizing:border-box;
-		}
-		input:checked+div span{
-		  background: @color1;
+		// }
+		// input{
+		// 	position: absolute;
+		// 	width:100%;
+		// 	height: 100%;
+		// 	opacity: 0;
+		// 	outline: none;
+		// 	top:0;
+		// 	left:0;
+		// }
+		// span{
+		// 	position: absolute;
+		// 	width:100%;
+		// 	height: 100%;
+		// 	border-radius: 8px;
+		// 	top:0;
+		// 	left:0;
+		// 	border: 1px solid #ccc;
+  //           transition:background .2s  ease 0.3;
+		//     -webkit-transition: background .2s  ease 0.3;
+		// }
+		// em{
+		// 	position: absolute;
+		// 	width:16px;
+		// 	height: 16px;
+		// 	border-radius: 50%;
+		// 	left:0;
+		// 	top:0;
+		// 	display: block;
+		// 	z-index: 33;
+		// 	border:1px solid #ccc;
+		// 	box-sizing: border-box;
+		// 	-webkit-box-sizing:border-box;
+		// 	-o-box-sizing:border-box;
+		// }
+		// input:checked+div span{
+		//   background: @color1;
 
-		}
-		input:checked+div em{
-		  background: #fff !important;
-          animation:swipe .3s forwards;
-          -webkit-animation: swipe .3s forwards;
-		}
+		// }
+		// input:checked+div em{
+		//   background: #fff !important;
+  //         animation:swipe .3s forwards;
+  //         -webkit-animation: swipe .3s forwards;
+		// }
 		
 	}
+}
+.onoffswitch {
+    position: absolute; width: 23%;
+	left: 75%;
+	top: 3px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    height: 25px; padding: 0; line-height: 25px;
+    border: 2px solid #E3E3E3; border-radius: 25px;
+    background-color: #FFFFFF;
+    transition: background-color 0.3s ease-in;
+}
+.onoffswitch-label:before {
+    content: "";
+    display: block; width: 25px; height: 25px;margin: 0px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 60%;
+    border: 2px solid #E3E3E3; border-radius: 25px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label {
+    background-color: #49E845;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+   border-color: #49E845;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    right: 0px; 
 }
 .tutorInfo{
 	position: fixed;

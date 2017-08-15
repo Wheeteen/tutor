@@ -15,11 +15,24 @@
 	<div class="btnTitle">
 		<span v-bind:class="{active: status.sendResume}" v-tap="onSendResume()">简历投递</span>
 		<span v-bind:class="{active: status.parRequest}" v-tap="onParRequest()">家长需求</span>
+		<span v-bind:class="{active: status.orderEx}" v-tap="onOrderEx()">订单</span>
 	</div>
+	<!-- 简历投递和家长需求的 -->
 	<ul class="msgList" v-show='status.isList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
 		<li v-for="item in mainData" v-tap="onDetailed($index)">
-			<span v-text="item.name"></span>
-			<span v-text ="item.create_time" class='date'></span>
+			<div>
+				<span class="reqInfo" v-text="item.name"></span>
+				<span v-text ="item.create_time" class='date'></span>
+			</div>
+		</li>
+	</ul>
+	<!-- 订单 -->
+	<ul class="msgList" v-show='status.isOrderList' v-bind:class="{'opacity': !status.isSelecting}" v-scroll="down()" scroll-foot="50" scroll-top="200" scroll-up="up()">
+		<li v-for="item in mainData" v-tap="onOrderDetailed($index)">
+			<div>
+				<span>{{item.pd_name}}(家长)-{{item.name}}(老师)</span>
+	        	<span v-text ="item.result" v-bind:class="{isDeal: item.isDeal}"></span>
+			</div>      
 		</li>
 	</ul>
 	<!-- 当没有消息的时候，有提示 -->

@@ -15,10 +15,31 @@
          myImg: '../img/user.png',
          name: '',
         },
+        remind: 1
       },
       ready:function(){
          this.getImage();
          this.status.isLoading = true;
+      },
+      watch: {
+        'remind':function(res){
+          var status;
+          if(res==true){
+            status=1;
+          }else{
+            status = 0;
+          }
+          this.$http.post(this.domain+'setMessageWarn', {
+            "status": status
+          }, {
+            emulateJSON:true,
+            headers:{
+              'Content-Type':'application/json' 
+            }
+          }).then(function(res) {
+              console.log(res.json());
+          });
+        }
       },
       methods:{
       	getImage: function(){
@@ -31,6 +52,7 @@
             console.log(res.json());
             this.form.myImg=res.json().headimgurl;
             this.form.name = res.json().nickname;  
+            this.remind = res.json().message_warn;
           });
         },
         onRecommend: function(){

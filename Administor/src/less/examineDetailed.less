@@ -13,16 +13,34 @@ body{
 	body,header h1,.showImg h3{
 		font-size: 14px;
 	}
+	.infoBtn input,.infoTip input{
+		font-size: 16px;
+	}
+	.closeSize{
+		font-size: 25px;
+	}
 }
 @media (min-width: 321px) and (max-width: 375px){
 	body,header h1,.showImg h3{
 		font-size: 16px;
+	}
+	.infoBtn input,.infoTip input{
+		font-size: 18px;
+	}
+	.closeSize{
+		font-size: 33px;
 	}
 }
 
 @media (min-width: 376px){
 	body,header h1,.showImg h3{
 		font-size: 17px;
+	}
+	.infoBtn input,.infoTip input{
+		font-size: 20px;
+	}
+	.closeSize{
+		font-size: 37px;
 	}
 }
 ul,ul li{
@@ -71,7 +89,7 @@ header{
 	position: fixed;
 	bottom:0;
 	width:100%;
-	z-index: 13;
+	// z-index: 13;
 	.deal{
 		position: fixed;
 		left:50%;
@@ -180,7 +198,7 @@ header{
 }
 .assume{
   width:70%;
-  margin: 15px auto 0;
+  margin: 15px auto;
   p{
   	width:100%;
   	height: 30px;
@@ -220,4 +238,83 @@ header{
 	  max-height: 100%;
 
 	}
+}
+.infoFee{
+	width: 90%;
+	margin: 10px auto 50px;
+	span:first-child{
+		float: left;
+	}
+	span:last-child{
+		float: right;
+	}
+}
+.feeInfo{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	top:0;
+	
+	.greyScreen{
+		position: fixed;
+		top:0;
+		width:100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+	}
+	.InfoRequest{
+		position: fixed;
+		width:80%;
+		left:10%;
+		top: 20%;
+		border-radius: 3px;
+		border:1px solid #ccc;
+		background: #fff;
+		.close{
+			width:90%;
+			margin:3px auto;
+			text-align: right;
+			color:#aaa;
+		}
+		.infoTip{
+			margin-top: 6%;
+			p{
+				text-align: center;
+			}
+			input{
+				display: inline-block;
+				margin: 0 3px;
+				width:30%;
+				outline: none;
+				height: 25px;
+				line-height: 25px;
+				border:1px solid #ccc;
+				text-indent: 3px;
+				border-radius: 2px;
+				&:focus{
+					border-color: @color1;
+				}
+			}
+		}
+		.infoBtn{
+			margin-top: 30px;
+			width:100%;
+		}
+		
+		input[type='submit']{
+			display: block;
+			width:100%;
+			color:#fff;
+			height: 28px;
+			line-height: 28px;
+			outline: none;
+			border:0;
+			text-align: center;
+			background: @color1;
+			letter-spacing: 1px;
+		}
+	}
+}
+.isGreen{
+	color: @color1;
 }

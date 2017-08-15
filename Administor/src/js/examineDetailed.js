@@ -13,24 +13,32 @@
       	status: {
       		isFeeInfo: false,
       		isLoading: false,
-      		isParent: true,
-      		isTeacher: true,
+      		isParent: false,
+      		isTeacher: false,
           isEnlargeImg: false,
           enlargeImg: '',
+          isExamine: false,
+          isOnFee: false
       	},
       	form: {
       		'select': 1,
           'id': 0,
-          "user": 'teacher'
+          "user": 'teacher',
+          'tea_id': '',
+          'par_id':''
       	},
       	fee: Number,
+        priFee: ''
       },
       ready: function(){
         this.setOption();
-        if(this.form.select == 1){
+        var select = this.form.select;
+        if(select == 1){
           this.form.user = 'teacher';
-        }else{
+        }else if(select == 2){
           this.form.user = 'parent';
+        }else{
+          this.form.user = 'both';
         }
         this.renderData();
         this.status.isLoading = true;
@@ -42,30 +50,64 @@
             search = search.substr(1, search.length).split("&");
             for (var i = 0, cell, length = search.length; i < length; i++) {
               cell = search[i].split('=');
-              if(cell[0]=='select'){
-                this.form.select = parseInt(cell[1]);
-              }else{
-                this.form.id = parseInt(cell[1]);
+              switch(cell[0]){
+                case 'select':
+                  this.form.select = parseInt(cell[1]);
+                  break;
+                case 'teaId':
+                  this.form.tea_id = parseInt(cell[1]);
+                  break;
+                case 'parId':
+                  this.form.par_id = parseInt(cell[1]);
+                  break;
+                case 'listId':
+                  this.form.id = parseInt(cell[1]);
+                  break;
+                case "price":
+                  this.priFee = parseFloat(cell[1]);
+                  break;
               }
             }
           }
         },
         renderData: function(){
-          this.$http.post(this.domain+'/getInfo',{
-            "id":this.form.id,
+          var data = this.form,
+              select = data.select,
+              user = data.user,
+              id = data.id,
+              teaId = data.tea_id,
+              parId = data.par_id;
+          if(select!==3){
+            this.getData(id,user); 
+            this.status.isExamine = true;           
+          }else{
+            this.getData(parId,'parent');
+            this.getData(teaId,'teacher');
+            if(this.priFee!==''){
+              // this.status.isExamine = false;
+              this.status.isOnFee = true;
+            }else{
+              this.status.isExamine = true;
+            }
+          }
+         
+    	  },
+        getData: function(id,user){
+           this.$http.post(this.domain+'/getInfo',{
+            "id":id,
             "format":true,
-            "user":this.form.user
+            "user":user
           },{
-          	crossOrigin: true,
+            crossOrigin: true,
             headers:{
               'Content-Type':'application/json' 
             }
           }).then(function(res){
-          	console.log(res.json());
+            console.log(res.json());
             if(res.json().success == 0){
               console.log(res.json().error);
             }else{
-              if(this.form.select == 1){
+              if(user == "teacher"){
                 var data = res.json();
                 if(data.certificate_photo!=''&&data.certificate_photo!=null){
                   data.certificate_photo=this.domain+data.certificate_photo;
@@ -76,19 +118,17 @@
                   photo[i]=this.domain+photo[i];
                  }
                 }
-                this.status.isParent = false;
                 this.status.isTeacher = true;
                 this.$set('tutorMsg',data);
               }else{
                 this.status.isParent = true;
-                this.status.isTeacher = false;
                 var data = res.json();
                 data.class_field=this.grade_level(data.class_field);
                 this.$set('parentMsg',data);
               }
             }
           });
-    	  },
+        },
         grade_level: function(key){
           switch(key){
             case 0:
@@ -109,10 +149,12 @@
         	window.location.href = './examine.html?select='+this.form.select;
         },
         notExamine: function(){
-          // setTimeout(function(){
-          //   window.location.href = './examine.html?select='+this.form.select;
-          // },2000);
-          this.onExamine(0);
+          var select = this.form.select;
+          if(select!==3){
+            this.onExamine(0);
+          }else{
+            this.onOrderEx(0);
+          }  
         },
         onUser:function(){
           window.location.href = './userAdministor.html';
@@ -124,8 +166,14 @@
           window.location.href = './other.html';
         },
         YesExamine: function(){
-          this.onExamine(1);
+          var select = this.form.select;
+          if(select!==3){
+            this.onExamine(1);
+          }else{
+            this.status.isFeeInfo = true;
+          }          
         },
+        //审核老师简历和家长需求
         onExamine: function(num){
       		this.$http.post(this.domain+'/setPass', {
             "type":num,
@@ -146,6 +194,36 @@
   					}
   				});
         },
+        //审核订单
+        onOrderEx: function(willing){
+          var json,id=this.form.id;
+          if(willing == 1){
+            json={
+              "oa_id":id,
+              "price":this.fee,
+              'willing': 1,
+            }
+          }else{
+            json={
+              "oa_id":id,
+              'willing': 0,
+            }
+          }          
+          this.$http.post(this.domain+'/makePriceAndApprove', json, {
+            crossOrigin: true,
+            headers:{
+              'Content-Type':'application/json' 
+            }
+          }).then(function(res) {
+            console.log(res.json());
+            if (res.json().success == 0) {
+              console.log(res.json().error);
+            } else {
+              // this.notExamine();
+              this.onReturn();
+            }
+          });
+        },
         showImg: function(index){
           this.status.enlargeImg = this.tutorMsg.teach_show_photo[index];
           this.status.isEnlargeImg = true;
@@ -153,28 +231,16 @@
         closeImg: function(){
           this.status.isEnlargeImg = false;
         },
-        // onSubmit: function(){
-        //     this.$http.post('', {
-      		// 		'fee': this.fee,
-      		// 		'id': this.form.id,
-      		// 	}, {
-      		// 		emulateJSON:true,
-      		// 		headers:{
-      		// 			'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'	
-      		// 		}
-      		// 	}).then(function(res) {
-      		// 		console.log(res.json());
-      		// 		if (res.json().result == 1) {
-      		// 			this.onReturn();
-
-      		// 		} else {
-      				
-      		// 		}
-      		// 	});
-        // },
-        // onClose: function(){
-        // 	this.status.isFeeInfo = false;
-        // }
+        onSubmit: function(){
+          this.onOrderEx(1);
+        },
+        onClose: function(){
+        	this.status.isFeeInfo = false;
+        },
+        onFeeInfo: function(){
+          this.status.isFeeInfo = true;
+          this.fee = this.priFee;
+        }
       }
 	});
 })();
